@@ -1,8 +1,8 @@
 @extends('app')
 
 @section('title')
-    <p>Home</p>
-@stop
+    Domov
+@endsection
 
 @section('content')
 

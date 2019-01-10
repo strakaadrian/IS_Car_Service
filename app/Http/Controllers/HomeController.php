@@ -4,20 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-/**
- * Class HomeController
- * @package App\Http\Controllers
- */
 class HomeController extends Controller
 {
     /**
-     * home metoda vracia home view
-     * posiela title ako atribut
+     * Create a new controller instance.
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return void
      */
-    public function home() {
+    public function __construct()
+    {
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
         $title = 'Domov';
-        return view('home', compact('title'));
+        return view('home',compact('title'));
     }
 }

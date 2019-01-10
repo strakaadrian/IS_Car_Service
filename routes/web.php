@@ -11,5 +11,10 @@
 |
 */
 
-Route::get('/', 'HomeController@home');
-Route::get('home', 'HomeController@home');
+Route::get('/', 'HomeController@index');
+Route::get('home', 'HomeController@index');
+Route::get('logout', 'Auth\LoginController@logout');
+
+Auth::routes(['verify' => true]);
+
+

@@ -22,7 +22,8 @@
 .navbar {
     padding-top: 13px;
     padding-bottom: 13px;
-    border: 0;
+
+
     border-radius: 0;
     margin-bottom: 0;
     font-size: 12px;
@@ -156,3 +157,78 @@ p {font-size: 16px;}
 
 */
 
+/*
+
+---------------------------------------
+--------- LOGIN START -------------
+---------------------------------------
+
+*/
+
+.login {
+    background-color: 	#f4f4f4;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    margin-left: 50%;
+    transform: translate(-50%, 0px);
+    color: #373737;
+    -webkit-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+}
+
+.card-header {
+    padding-bottom: 3%;
+    font-weight: bold;
+    font-size: 50px;
+
+}
+
+.remember {
+    transform: translate(-40px, 0px);
+}
+
+.submit-button {
+    padding-bottom: 10px;
+}
+
+/*
+
+---------------------------------------
+--------- LOGIN END -------------
+---------------------------------------
+
+*/
+
+/*
+
+---------------------------------------
+--------- REGISTER START -------------
+---------------------------------------
+
+*/
+
+.register {
+    background-color: 	#f4f4f4;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    margin-left: 50%;
+    transform: translate(-50%, 0px);
+    color: #373737;
+    -webkit-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+}
+
+
+.submit-button {
+    padding-bottom: 10px;
+}
+
+/*
+
+---------------------------------------
+--------- REGISTER END -------------
+---------------------------------------
+
+*/

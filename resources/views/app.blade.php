@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{ $title }}</title>
+    <title>@yield('title')</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -10,12 +10,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+
 </head>
 <body>
 
 <div class="container-fluid text-center logo">
-    <img src="{{ asset('img/logo.png') }}">
+    <img src="{{ asset('img/logo.png') }}" alt="/">
 </div>
+
 
 <nav class="navbar navbar-default">
         <div class="navbar-header">
@@ -39,16 +41,25 @@
                 <li class="divider-vertical"></li>
                 <li><a href="#">Administratíva</a></li>
             </ul>
-
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Prihlásenie</a></li>
-                <li class="divider-vertical"></li>
-                <li><a href="#">Registrácia</a></li>
+                @guest
+                    <li><a href="{{url('login')}}">Prihlásenie</a></li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="{{url('register')}}">Registrácia</a></li>
+                @else
+                    <li><a><span class="glyphicon glyphicon-user"></span> {{ Auth::user()->name }} </a></li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="{{url('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Odhlásiť </a> </li>
+                @endguest
             </ul>
         </div>
 </nav>
 
+
 @yield('content')
+
+
+
 
 <!-- Footer -->
 <footer class="container-fluid bg-4 text-center home-block footer">

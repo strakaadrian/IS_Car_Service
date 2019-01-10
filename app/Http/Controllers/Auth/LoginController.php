@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -35,5 +36,16 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * odhlási uźívateľa a return nás vráti na povodnú stránku na ktorej sme boli
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function logout(){
+        Auth::logout();
+        request()->session()->flush();
+        return redirect()->back();
     }
 }
