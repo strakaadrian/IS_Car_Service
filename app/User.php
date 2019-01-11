@@ -2,8 +2,10 @@
 
 namespace App;
 
+use App\Customer;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -26,4 +28,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * vrati mi ci je prihlaseny user zaroven zakaznikom
+     */
+    public function isCustomer() {
+        return Customer::where('user_id', Auth::user()->id)->exists();
+    }
+
 }

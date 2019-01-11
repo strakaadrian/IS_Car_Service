@@ -107,7 +107,7 @@
 /* --- MENU NAVBAR  FINISH*/
 
 body {
-    font: 20px Montserrat, sans-serif;
+    font: 20px Verdana, sans-serif;
     line-height: 1.8;
     color: #f5f6f7;
 }
@@ -116,23 +116,39 @@ p {font-size: 16px;}
 .margin {margin-bottom: 45px;}
 
 .bg-1 {
-    background-color: #373737; /* Green */
+    background-color: #373737;
     color: #ffffff;
 }
 .bg-2 {
-    background-color: #f4f4f4; /* Dark Blue */
-    color: #ffffff;
+    background-color: #f4f4f4;
+    color: #555555;
 }
 .bg-3 {
-    background-color: #373737; /* White */
+    background-color: #373737;
     color: #555555;
+}
+
+.sectionHeader {
+    margin-left: 20%;
+    margin-right: 20%;
+    font-size: 30px;
+}
+
+.sectionBody {
+    margin-left: 30%;
+    margin-right: 30%;
+}
+
+.blackHR {
+    border-top: 1px solid #555555;
 }
 
 
 /* FOOTER START */
 .footer{
-    background-color: #2f2f2f; /* Black Gray */
-    font: 20px Montserrat, sans-serif;
+    background-color: #2f2f2f;
+    border-top: 2px solid #c71610;
+    font: 20px Verdana, sans-serif;
     line-height: 1.8;
     color: #f5f6f7;
 }
@@ -193,19 +209,15 @@ p {font-size: 16px;}
 }
 
 /*
-
 ---------------------------------------
 --------- LOGIN END -------------
----------------------------------------
-
+--------------------------------------
 */
 
 /*
-
 ---------------------------------------
 --------- REGISTER START -------------
 ---------------------------------------
-
 */
 
 .register {
@@ -226,9 +238,58 @@ p {font-size: 16px;}
 }
 
 /*
-
 ---------------------------------------
 --------- REGISTER END -------------
 ---------------------------------------
-
 */
+
+/*
+---------------------------------------
+--------- SERVICE START -------------
+---------------------------------------
+*/
+
+.service-table {
+    margin: 5% 5% 5% 5%;
+    -webkit-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+}
+
+.service-table-head {
+    background-color: #373737;
+    color:#f4f4f4;
+}
+
+
+tbody tr:nth-child(even) {
+    background-color: 	#D3D3D3;
+}
+
+tbody tr:hover {
+    background-color: 	#686868;
+    color:#f4f4f4;
+
+}
+
+.service-row {
+    vertical-align: middle !important;
+}
+
+.order-service {
+    margin: 5% 30% 5% 30%;
+    color: #2f2f2f;
+    padding: 3% 3% 3% 3%;
+    -webkit-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+}
+
+
+/*
+---------------------------------------
+--------- SERVICE END -------------
+---------------------------------------
+*/
+
+

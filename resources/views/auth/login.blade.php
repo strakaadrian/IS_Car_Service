@@ -1,8 +1,6 @@
 @extends('app')
 
-@section('title')
-    Prihlásenie
-@endsection
+@section('title', 'Prihlásenie')
 
 @section('content')
 <div class="container">

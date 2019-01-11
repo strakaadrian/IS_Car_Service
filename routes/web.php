@@ -13,7 +13,13 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('home', 'HomeController@index');
+
 Route::get('logout', 'Auth\LoginController@logout');
+
+Route::get('about', 'AboutController@index');
+
+Route::get('service', 'ServiceController@index');
+Route::get('service/order-service/{id}' , 'ServiceController@orderService')->middleware('auth.basic');
 
 Auth::routes(['verify' => true]);
 

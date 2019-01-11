@@ -4,12 +4,13 @@
     <title>@yield('title')</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{{ URL::asset('css/main.css') }} ">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script src="{{ URL::asset('js/main.js') }}"></script>
 
 </head>
 <body>
@@ -31,9 +32,9 @@
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="{{url('home')}}"><span class="glyphicon glyphicon-home"></span></a></li>
                 <li class="divider-vertical"></li>
-                <li><a href="#">O nás</a></li>
+                <li><a href="{{url('about')}}">O nás</a></li>
                 <li class="divider-vertical"></li>
-                <li><a href="#">Služby</a></li>
+                <li><a href="{{url('service')}}">Služby</a></li>
                 <li class="divider-vertical"></li>
                 <li><a href="#">Produkty</a></li>
                 <li class="divider-vertical"></li>
@@ -50,6 +51,8 @@
                     <li><a><span class="glyphicon glyphicon-user"></span> {{ Auth::user()->name }} </a></li>
                     <li class="divider-vertical"></li>
                     <li><a href="{{url('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Odhlásiť </a> </li>
+                    <li class="divider-vertical"></li>
+                    <li><a href="{{url('home')}}"><span class=" glyphicon glyphicon-shopping-cart"></span> Košík </a></li>
                 @endguest
             </ul>
         </div>
@@ -59,9 +62,6 @@
 @yield('content')
 
 
-
-
-<!-- Footer -->
 <footer class="container-fluid bg-4 text-center home-block footer">
     <a href="#top"><i class="fa fa-angle-up fa-3x "></i></a>
     <div>
