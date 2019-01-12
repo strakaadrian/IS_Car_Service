@@ -277,7 +277,7 @@ tbody tr:hover {
 }
 
 .order-service {
-    margin: 5% 30% 5% 30%;
+    margin: 5% 20% 5% 20%;
     color: #2f2f2f;
     padding: 3% 3% 3% 3%;
     -webkit-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
@@ -285,11 +285,36 @@ tbody tr:hover {
     box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
 }
 
+.small-box {
+    margin-right: 60%;
+}
+
+.medium-box {
+    margin-right: 30%;
+}
+
+.customer-submit {
+    padding-top: 5%;
+    padding-bottom: 2%;
+}
+
+.hours-box {
+    margin-right: 80%;
+}
+
+.date-box {
+    margin-right: 50%;
+}
+
+.error-order-div {
+    margin-top: 2%;
+}
 
 /*
 ---------------------------------------
 --------- SERVICE END -------------
 ---------------------------------------
 */
+
 
 

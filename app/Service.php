@@ -11,4 +11,8 @@ class Service extends Model
      * @var string
      */
     protected $table = 'services';
+
+    public $timestamps = false;
+
+
 }
