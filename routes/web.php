@@ -21,7 +21,7 @@ Route::get('about', 'AboutController@index');
 Route::get('service', 'ServiceController@index');
 Route::get('service/order-service/{id}' , 'ServiceController@orderService')->middleware('auth.basic');
 Route::post('create-customer', array('uses' => 'ServiceController@createCustomer'));
-Route::post('service/order-service/getEmployeeByWorkPosition', 'ServiceController@getEmployeeByWorkPosition');
+Route::post('service/order-service/checkInsertConditions', 'ServiceController@checkInsertConditions');
 
 Auth::routes(['verify' => true]);
 

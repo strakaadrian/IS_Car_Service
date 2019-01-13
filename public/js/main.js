@@ -27,22 +27,40 @@ $(document).ready(function() {
     /*Tato funkcia sluzi na zistenie ci sa uzivatel moze rezervovat do daneho autoservisu */
     $('#submit-order-button').click(function () {
         $id = $("#id").val();
+        $ico = $('#car_service').val();
+        $date = $('#date').val();
 
-        // zisti, ci mam technika na danu sluzbu
-        $.ajax({
-            type: "POST",
-            url: "getEmployeeByWorkPosition",
-            dateType: 'json',
-            data: {id: $id},
-            success: function (data) {
-                if(data == '[]') {
-                    $('.error-order-div').show();
-                    $('#error-order-msg').text('Prepáčte, ale technik, ktorý vykonáva danú službu sa v tomto autoservise nenachádza');
+
+        if($date == "") {
+            $('.error-order-div').show();
+            $('#error-order-msg').text('Prosím, zadajte dátum!');
+            return false;
+        } else {
+            // overi nam podmienky, potrebne na to aby sme mohli pridat rezervaciu
+            $.ajax({
+                type: "POST",
+                url: "checkInsertConditions",
+                dateType: 'json',
+                data: {ico: $ico ,id: $id, date: $date},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult == "bad emp") {
+                        $('.error-order-div').show();
+                        $('#error-order-msg').text('Prepáčte, ale technik, ktorý vykonáva danú službu sa v tomto autoservise nenachádza. Vyberte si iný autoservis');
+                        return false;
+                    } else if($dataResult == "wrong day") {
+                        $('.error-order-div').show();
+                        $('#error-order-msg').text('Prepáčte, ale deň, ktorý ste si vybrali je neplatný. Prosím vyberte dátum PO aktuálnom dátume.');
+                        return false;
+                    } else if ($dataResult == "weekend") {
+                        $('.error-order-div').show();
+                        $('#error-order-msg').text('Prepáčte, ale deň, ktorý ste si vybrali je víkend. Vyberte si prosím iný deň.');
+                        return false;
+                    }
                 }
-            }
-        });
-
-
+            });
+        }
+        $('.error-order-div').hide();
     });
 
 });

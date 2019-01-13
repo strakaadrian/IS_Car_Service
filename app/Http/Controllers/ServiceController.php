@@ -15,6 +15,10 @@ use Illuminate\Support\Facades\DB;
 
 class ServiceController extends Controller
 {
+    /**
+     * Funkcia, ktora nam dotiahne vsetky sluzby, ktore su a posle nam ich do view
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index() {
         $services = Service::all();
 
@@ -63,10 +67,29 @@ class ServiceController extends Controller
         die();
     }
 
-    public function getEmployeeByWorkPosition(Request $request) {
-        $employee = new Employee;
-        echo json_encode($employee->dataGetEmpByWorkPos($request->id));
-    }
 
+    /**
+     * funkcia ktora nam skontroluje vstupi od uzivatela, ci moze pridat rezervaciu
+     *
+     * @param Request $request
+     */
+    public function checkInsertConditions(Request $request) {
+        $employee = new Employee;
+        $servcie = new Service;
+
+        $empExists = $employee->dataGetEmpByWorkPos($request->ico,$request->id);
+        $correctDate = $servcie->checkDay($request->date);
+
+        if($empExists[0]->result == 0) {
+            echo json_encode('bad emp');
+            exit();
+        } else if ($correctDate[0]->result == 'wrong day') {
+            echo json_encode('wrong day');
+            exit();
+        } else if ($correctDate[0]->result == 'weekend') {
+            echo json_encode('weekend');
+            exit();
+        }
+    }
 
 }

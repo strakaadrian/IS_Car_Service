@@ -15,11 +15,12 @@ class Employee extends Model
     /**
      * funnkcia nam vrati zamesnanca firmy podla work_position , ktora sa nachadza v services tabulke
      *
+     * @param $ico
      * @param $id
      * @return array
      */
-    public function dataGetEmpByWorkPos($id){
-        return DB::select('select hire_date,ico,identification_no from employee where work_position in (select type from services where service_id = ?)',[$id]);
+    public function dataGetEmpByWorkPos($ico,$id){
+        return DB::select("select get_employee(?, ?) as result",[$ico,$id]);
     }
     
     
