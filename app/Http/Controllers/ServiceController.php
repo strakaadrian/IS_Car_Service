@@ -75,10 +75,11 @@ class ServiceController extends Controller
      */
     public function checkInsertConditions(Request $request) {
         $employee = new Employee;
-        $servcie = new Service;
+        $service = new Service;
 
         $empExists = $employee->dataGetEmpByWorkPos($request->ico,$request->id);
-        $correctDate = $servcie->checkDay($request->date);
+        $correctDate = $service->checkDay($request->date);
+        $absence = $employee->dataCheckEmpAbs($request->ico,$request->id,$request->date);
 
         if($empExists[0]->result == 0) {
             echo json_encode('bad emp');
@@ -88,6 +89,9 @@ class ServiceController extends Controller
             exit();
         } else if ($correctDate[0]->result == 'weekend') {
             echo json_encode('weekend');
+            exit();
+        } else if ($absence[0]->result == 1) {
+            echo json_encode('absence');
             exit();
         }
     }

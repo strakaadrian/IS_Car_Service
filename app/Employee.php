@@ -22,6 +22,17 @@ class Employee extends Model
     public function dataGetEmpByWorkPos($ico,$id){
         return DB::select("select get_employee(?, ?) as result",[$ico,$id]);
     }
+
+    /**
+     * Funkcia, ktora vrati, ci dany employer v dany den nema absenciu
+     *
+     * @param $ico
+     * @param $id
+     * @param $date
+     */
+    public function dataCheckEmpAbs($ico, $id, $date) {
+        return DB::select("select get_absence(?, ?, ?) as result",[$ico,$id,$date]);
+    }
     
     
 }

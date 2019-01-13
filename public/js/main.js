@@ -56,6 +56,10 @@ $(document).ready(function() {
                         $('.error-order-div').show();
                         $('#error-order-msg').text('Prepáčte, ale deň, ktorý ste si vybrali je víkend. Vyberte si prosím iný deň.');
                         return false;
+                    } else if ($dataResult == "absence") {
+                        $('.error-order-div').show();
+                        $('#error-order-msg').text('Prepáčte, ale technik sa v tento deň nenachádza v práci.');
+                        return false;
                     }
                 }
             });
