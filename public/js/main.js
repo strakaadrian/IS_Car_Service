@@ -29,6 +29,7 @@ $(document).ready(function() {
         $id = $("#id").val();
         $ico = $('#car_service').val();
         $date = $('#date').val();
+        $hour = $('#hour').val();
 
 
         if($date == "") {
@@ -39,9 +40,9 @@ $(document).ready(function() {
             // overi nam podmienky, potrebne na to aby sme mohli pridat rezervaciu
             $.ajax({
                 type: "POST",
-                url: "checkInsertConditions",
+                url: "checkInsertReservCond",
                 dateType: 'json',
-                data: {ico: $ico ,id: $id, date: $date},
+                data: {ico: $ico ,id: $id, date: $date, hour: $hour},
                 success: function (data) {
                     $dataResult = JSON.parse(data);
                     if($dataResult == "bad emp") {
@@ -59,6 +60,10 @@ $(document).ready(function() {
                     } else if ($dataResult == "absence") {
                         $('.error-order-div').show();
                         $('#error-order-msg').text('Prepáčte, ale technik sa v tento deň nenachádza v práci.');
+                        return false;
+                    } else if ($dataResult == "work time") {
+                        $('.error-order-div').show();
+                        $('#error-order-msg').text('Prepáčte, ale na danú hodinu sa nedá objednať, zadajte inú hodinu.');
                         return false;
                     }
                 }

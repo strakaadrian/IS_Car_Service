@@ -73,13 +73,14 @@ class ServiceController extends Controller
      *
      * @param Request $request
      */
-    public function checkInsertConditions(Request $request) {
+    public function checkInsertReservCond(Request $request) {
         $employee = new Employee;
         $service = new Service;
 
         $empExists = $employee->dataGetEmpByWorkPos($request->ico,$request->id);
         $correctDate = $service->checkDay($request->date);
         $absence = $employee->dataCheckEmpAbs($request->ico,$request->id,$request->date);
+        $work_time = $employee->checkEmpWorkTime($request->ico, $request->id, $request->hour);
 
         if($empExists[0]->result == 0) {
             echo json_encode('bad emp');
@@ -93,7 +94,12 @@ class ServiceController extends Controller
         } else if ($absence[0]->result == 1) {
             echo json_encode('absence');
             exit();
+        } else if ($work_time[0]->result == 1) {
+            echo json_encode('work time');
+            exit();
         }
+
+        echo json_encode('{}');
     }
 
 }

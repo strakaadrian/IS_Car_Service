@@ -33,6 +33,17 @@ class Employee extends Model
     public function dataCheckEmpAbs($ico, $id, $date) {
         return DB::select("select get_absence(?, ?, ?) as result",[$ico,$id,$date]);
     }
-    
+
+    /**
+     * Funkcia ktora zisti ci dany pracovnik pracuje v dobu kedy sa zakaznik chce objednat
+     *
+     * @param $ico
+     * @param $id
+     * @param $order_hour
+     * @return array
+     */
+    public function checkEmpWorkTime($ico, $id, $order_hour) {
+        return DB::select("select get_employee_work_time(?, ?, ?) as result",[$ico,$id,$order_hour]);
+    }
     
 }

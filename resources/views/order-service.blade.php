@@ -74,7 +74,7 @@
                     </div>
                     {!! Form::label('hour', 'Hodina, na ktorú sa chcete objednať:') !!}
                     <div class="hours-box">
-                        {!! Form::select('hour', array( 7 , 8 , 9, 10, 11, 12, 13, 14, 15, 16, 17), null, array('class'=>'form-control','required')) !!}
+                        {!! Form::select('hour', array( 7 => 7 , 8 => 8 , 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17), null, array('class'=>'form-control')) !!}
                     </div>
                 </div>
                 <div class="alert alert-warning error-order-div" role="alert">
