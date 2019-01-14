@@ -7,6 +7,7 @@ use App\Country;
 use App\Customer;
 use App\Employee;
 use App\Person;
+use App\Reservation;
 use App\Service;
 use App\Town;
 use Illuminate\Http\Request;
@@ -31,7 +32,7 @@ class ServiceController extends Controller
      */
     public function orderService($id) {
         $countries = Country::all('country_id','country_name');
-        $car_services = CarService::all('ico','service_name');
+        $car_services = CarService::pluck('service_name','ico');
         $service = Service::where('service_id', $id)->get();
 
         return view('order-service', compact('service','countries','car_services','id'));
@@ -63,8 +64,7 @@ class ServiceController extends Controller
         $customer->user_id = Auth::user()->id;
         $customer->save();
 
-        header("Location: {$_SERVER['HTTP_REFERER']}");
-        die();
+        return back();
     }
 
 
@@ -76,11 +76,13 @@ class ServiceController extends Controller
     public function checkInsertReservCond(Request $request) {
         $employee = new Employee;
         $service = new Service;
+        $reservation = new Reservation;
 
         $empExists = $employee->dataGetEmpByWorkPos($request->ico,$request->id);
         $correctDate = $service->checkDay($request->date);
         $absence = $employee->dataCheckEmpAbs($request->ico,$request->id,$request->date);
         $work_time = $employee->checkEmpWorkTime($request->ico, $request->id, $request->hour);
+        $reserved = $reservation->checkReservationAtTime($request->ico, $request->date, $request->hour);
 
         if($empExists[0]->result == 0) {
             echo json_encode('bad emp');
@@ -97,9 +99,23 @@ class ServiceController extends Controller
         } else if ($work_time[0]->result == 1) {
             echo json_encode('work time');
             exit();
+        } else if ($reserved[0]->result == 1) {
+            echo json_encode('reserved');
+            exit();
         }
 
         echo json_encode('{}');
+    }
+
+    /**
+     * T8tp funkcia sa postara o vlozenie dat do tabulky rezervacii
+     *
+     * @param Request $request
+     */
+    public function insertReservation(Request $request) {
+        $reservation = new Reservation;
+        $reservation->dataInsertReservation($request->car_service,$request->id,$request->date,$request->hour);
+        return redirect('home');
     }
 
 }

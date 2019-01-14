@@ -47,7 +47,7 @@ $(document).ready(function() {
                     $dataResult = JSON.parse(data);
                     if($dataResult == "bad emp") {
                         $('.error-order-div').show();
-                        $('#error-order-msg').text('Prepáčte, ale technik, ktorý vykonáva danú službu sa v tomto autoservise nenachádza. Vyberte si iný autoservis');
+                        $('#error-order-msg').text('Prepáčte, ale technik, ktorý vykonáva danú službu sa v tomto autoservise nenachádza. Vyberte si iný autoservis.');
                         return false;
                     } else if($dataResult == "wrong day") {
                         $('.error-order-div').show();
@@ -65,11 +65,17 @@ $(document).ready(function() {
                         $('.error-order-div').show();
                         $('#error-order-msg').text('Prepáčte, ale na danú hodinu sa nedá objednať, zadajte inú hodinu.');
                         return false;
+                    } else if ($dataResult == "reserved") {
+                        $('.error-order-div').show();
+                        $('#error-order-msg').text('Prepáčte, ale daná hodina je už rezervovaná, prosím zvolte inú.');
+                        return false;
+                    } else {
+                        alert('Úspešne ste vytvorili rezerváciu.')
+                        $('#order-service-id').submit();
                     }
                 }
             });
         }
         $('.error-order-div').hide();
     });
-
 });

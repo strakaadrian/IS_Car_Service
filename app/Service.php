@@ -21,9 +21,7 @@ class Service extends Model
      * @return array
      */
     public function checkDay($date) {
-        return DB::select("select getDayName(?) as result",[$date]);
-
+        return DB::select("select get_day_name(?) as result",[$date]);
     }
-
 
 }

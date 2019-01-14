@@ -57,16 +57,12 @@
             <p> Vitajte vo formuláry, na dokončenie objednávky pre službu - <strong>{{$service[0]->name}}</strong>.</p>
             <p>Prosím, pre dokončenie objednávky vyplnte nižšie uvedené položky. </p>
 
-            {{ Form::open(array('action' => 'ServiceController@createCustomer', 'id' => 'order-service-id')) }}
+            {{ Form::open(array('action' => 'ServiceController@insertReservation', 'id' => 'order-service-id')) }}
 
             <div class="form-group">
                 <div class="medium-box">
-                    {!! Form::Label('car_service', 'Autoservis:') !!}
-                    <select class="form-control" id="car_service">
-                        @foreach($car_services as $car_service)
-                                <option value="{{$car_service->ico}}">{{$car_service->service_name}}</option>
-                        @endforeach
-                    </select>
+                    {!! Form::Label('ico', 'Autoservis:') !!}
+                    {!! Form::select('car_service', $car_services, null, ['class' => 'form-control', 'id' => 'car_service']) !!}
 
                     {!! Form::label('date', 'Deň, na ktorý sa chcete objednať:') !!}
                     <div class="date-box">
