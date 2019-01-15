@@ -42,27 +42,8 @@ class ServiceController extends Controller
      * Funkcia ktorá nám na základe formulára vytvorí zákazníka
      */
     public function createCustomer(Request $request){
-        $town = new Town;
-        if(!$town->existTown($request->psc)) {
-            $town->town_id = $request->psc;
-            $town->country_id = $request->country_id;
-            $town->town_name = $request->town;
-            $town->save();
-        }
-
-        $person = new Person;
-        $person->identification_no = $request->rc;
-        $person->town_id = $request->psc;
-        $person->first_name = $request->name;
-        $person->last_name = $request->surname;
-        $person->street = $request->street;
-        $person->orientation_no = $request->orientation_no;
-        $person->save();
-
         $customer = new Customer;
-        $customer->identification_no = $request->rc;
-        $customer->user_id = Auth::user()->id;
-        $customer->save();
+        $customer->dataInsertCustomer($request->psc, $request->country_id, $request->town, $request->rc, $request->name, $request->surname, $request->street, $request->orientation_no);
 
         return back();
     }
@@ -107,10 +88,12 @@ class ServiceController extends Controller
         echo json_encode('{}');
     }
 
+
     /**
-     * T8tp funkcia sa postara o vlozenie dat do tabulky rezervacii
+     * Funkcia nam vlozi zaznam do rezervacie na zaklade vyplneneho formulara
      *
      * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function insertReservation(Request $request) {
         $reservation = new Reservation;

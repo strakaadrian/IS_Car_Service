@@ -54,7 +54,7 @@
             </div>
             {{ Form::close() }}
         @else
-            <p> Vitajte vo formuláry, na dokončenie objednávky pre službu - <strong>{{$service[0]->name}}</strong>.</p>
+            <p> Vitajte vo formulári, na dokončenie objednávky pre službu - <strong>{{$service[0]->name}}</strong>.</p>
             <p>Prosím, pre dokončenie objednávky vyplnte nižšie uvedené položky. </p>
 
             {{ Form::open(array('action' => 'ServiceController@insertReservation', 'id' => 'order-service-id')) }}

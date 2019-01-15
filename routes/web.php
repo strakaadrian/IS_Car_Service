@@ -11,18 +11,28 @@
 |
 */
 
+// HOME
 Route::get('/', 'HomeController@index');
 Route::get('home', 'HomeController@index');
 
-Route::get('logout', 'Auth\LoginController@logout');
+// LOGOUT
+Route::get('logout', 'Auth\LoginController@logout')->middleware('auth.basic');;
 
+// ABOUT
 Route::get('about', 'AboutController@index');
 
+// SERVICE
 Route::get('service', 'ServiceController@index');
 Route::get('service/order-service/{id}' , 'ServiceController@orderService')->middleware('auth.basic');
-Route::post('create-customer', array('uses' => 'ServiceController@createCustomer'));
 Route::post('service/order-service/checkInsertReservCond', 'ServiceController@checkInsertReservCond');
 Route::post('service/order-service/insertReservation', 'ServiceController@insertReservation');
+
+//RESERVATION
+Route::get('reservation', 'ReservationController@index')->middleware('auth.basic');;
+
+// CUSTOMER
+Route::post('create-customer', array('uses' => 'ServiceController@createCustomer'));
+
 
 Auth::routes(['verify' => true]);
 

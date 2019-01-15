@@ -48,11 +48,16 @@
                     <li class="divider-vertical"></li>
                     <li><a href="{{url('register')}}">Registrácia</a></li>
                 @else
-                    <li><a><span class="glyphicon glyphicon-user"></span> {{ Auth::user()->name }} </a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-user"></span> {{ Auth::user()->name }}
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"> <span class=" glyphicon glyphicon-shopping-cart"></span>  Košík </a></li>
+                            <li><a href="{{url('reservation')}}"> <span class=" glyphicon glyphicon-list-alt"></span>  Rezervácie </a></li>
+                        </ul>
+                    </li>
                     <li class="divider-vertical"></li>
                     <li><a href="{{url('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Odhlásiť </a> </li>
-                    <li class="divider-vertical"></li>
-                    <li><a href="{{url('home')}}"><span class=" glyphicon glyphicon-shopping-cart"></span> Košík </a></li>
                 @endguest
             </ul>
         </div>
