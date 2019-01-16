@@ -4,6 +4,8 @@ $(document).ready(function() {
      na uvod schovam warningy
     */
     $('.error-order-div').hide();
+    $('.error-profile-div').hide();
+    $('.error-facturation-div').hide();
 
 
     /* toto tu je potrebne aby ajax POST fungoval spravne */
@@ -78,4 +80,141 @@ $(document).ready(function() {
         }
         $('.error-order-div').hide();
     });
+
+    // skontrolujeme ci uzivatel zadava spravne fakturacne udaje pri INSERTE
+    $('#submit-facturation-button').click(function () {
+        $town_id = $('#psc').val();
+        $town_name = $('#town').val();
+        $country_id = $('#country_id').val();
+
+
+        if($('#town').val() == '') {
+            $('.error-facturation-div').show();
+            $('#error-facturation-msg').text('Zadajte hodnotu do pola - Mesto');
+            return false;
+        } else if ($('#psc').val()  == '') {
+            $('.error-facturation-div').show();
+            $('#error-facturation-msg').text('Zadajte hodnotu do pola - PSČ');
+            return false;
+        } else if ($('#rc').val()  == '') {
+            $('.error-facturation-div').show();
+            $('#error-facturation-msg').text('Zadajte hodnotu do pola - Rodné číslo');
+            return false;
+        } else if ($('#name').val()  == '') {
+            $('.error-facturation-div').show();
+            $('#error-facturation-msg').text('Zadajte hodnotu do pola - Meno');
+            return false;
+        } else if ($('#surname').val()  == '') {
+            $('.error-facturation-div').show();
+            $('#error-facturation-msg').text('Zadajte hodnotu do pola - Priezvisko');
+            return false;
+        } else if ($('#street').val()  == '') {
+            $('.error-facturation-div').show();
+            $('#error-facturation-msg').text('Zadajte hodnotu do pola - Ulica');
+            return false;
+        } else if ($('#orientation_no').val()  == '') {
+            $('.error-facturation-div').show();
+            $('#error-facturation-msg').text('Zadajte hodnotu do pola - Číslo domu');
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "../../profile/checkDataProfile",
+                dateType: 'json',
+                data: {town_id: $town_id, town_name: $town_name, country_id: $country_id },
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult[0].result == 0) {
+                        $('.error-facturation-div').show();
+                        $('#error-facturation-msg').text('Zadávate zlé hodnoty do polí ( Štát, Mesto alebo PSČ ).');
+                        return false;
+                    }
+                    alert('Úspešne ste vytvorili svoje fakturačné údaje.');
+                    $('#facturation-id').submit();
+                }
+            });
+        }
+        $('.error-facturation-div').hide();
+    });
+
+
+
+    // skontrolujeme ci uzivatel zadava spravne fakturacne udaje pri UPDATE
+    $('#submit-profile-button').click(function () {
+        $town_id = $('#psc').val();
+        $town_name = $('#town').val();
+        $country_id = $('#country_id').val();
+
+
+        if($('#town').val() == '') {
+            $('.error-profile-div').show();
+            $('#error-profile-msg').text('Zadajte hodnotu do pola - Mesto');
+            return false;
+        } else if ($('#psc').val()  == '') {
+            $('.error-profile-div').show();
+            $('#error-profile-msg').text('Zadajte hodnotu do pola - PSČ');
+            return false;
+        } else if ($('#name').val()  == '') {
+            $('.error-profile-div').show();
+            $('#error-profile-msg').text('Zadajte hodnotu do pola - Meno');
+            return false;
+        } else if ($('#surname').val()  == '') {
+            $('.error-profile-div').show();
+            $('#error-profile-msg').text('Zadajte hodnotu do pola - Priezvisko');
+            return false;
+        } else if ($('#street').val()  == '') {
+            $('.error-profile-div').show();
+            $('#error-profile-msg').text('Zadajte hodnotu do pola - Ulica');
+            return false;
+        } else if ($('#orientation_no').val()  == '') {
+            $('.error-profile-div').show();
+            $('#error-profile-msg').text('Zadajte hodnotu do pola - Číslo domu');
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "profile/checkDataProfile",
+                dateType: 'json',
+                data: {town_id: $town_id, town_name: $town_name, country_id: $country_id },
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult[0].result == 0) {
+                        $('.error-profile-div').show();
+                        $('#error-profile-msg').text('Zadávate zlé hodnoty do polí ( Štát, Mesto alebo PSČ ).');
+                        return false;
+                    }
+                    alert('Úspešne ste aktualizovali svoje fakturačné údaje.');
+                    $('#profile-id').submit();
+                }
+            });
+        }
+        $('.error-profile-div').hide();
+    });
+
+
+    // tato funckia sa spusti ak si uzivatel vyberie iny autoservis
+    $("#car_service_contact").change(function() {
+
+        $ico = $('#car_service_contact').val();
+
+        $.ajax({
+            type: "POST",
+            url: "contact/getCarServiceByIco",
+            dateType: 'json',
+            data: {ico: $ico},
+            success: function (data) {
+                $dataResult = JSON.parse(data);
+                $('#service-town').text($dataResult[0].town_name);
+                $('#service-name').text($dataResult[0].service_name);
+                $('#service-street').text($dataResult[0].street);
+                $('#service-oc').text($dataResult[0].orientation_no);
+                $('#service-phone').text($dataResult[0].phone_number);
+                $('#service-email').text($dataResult[0].contact);
+            }
+        });
+    });
+
+
+
+
 });

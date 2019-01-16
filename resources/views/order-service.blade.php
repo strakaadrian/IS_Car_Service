@@ -13,10 +13,10 @@
             <p>Vidim, že stále nieste u nás zákazníkom.</p>
             <p>Pred pokračovaním na objednávku služby - <strong>{{$service[0]->name}}</strong> prosím vyplnte formulár uvedený nižšie.</p>
 
-            {{ Form::open(array('action' => 'ServiceController@createCustomer')) }}
+            {{ Form::open(array('action' => 'ServiceController@createCustomer', 'id' => 'facturation-id')) }}
             <div class="form-group">
                 {!! Form::Label('country_id', 'Štát:') !!}
-                <select class="form-control" name="country_id">
+                <select class="form-control" name="country_id" id="country_id">
                     @foreach($countries as $country)
                         @if($country->country_id == 'SVK')
                             <option selected="selected" value="{{$country->country_id}}">{{$country->country_name}}</option>
@@ -48,8 +48,11 @@
                     {!! Form::label('orientation_no', 'Č. domu:') !!}
                     {!! Form::number('orientation_no', $value = null, ['class' => 'form-control', 'required']); !!}
                 </div>
-                <div class="text-center customer-submit">
-                    {!! Form::submit('Odošli formulár',['class' => 'btn btn-lg btn-warning text-center' , 'required']); !!}
+                <div class="alert alert-warning error-facturation-div" role="alert">
+                    <p id="error-facturation-msg"></p>
+                </div>
+                <div class="text-center facturation-submit ">
+                    <button id="submit-facturation-button" type="button" class="btn btn-warning btn-lg">Odošli formulár</button>
                 </div>
             </div>
             {{ Form::close() }}
@@ -62,7 +65,7 @@
             <div class="form-group">
                 <div class="medium-box">
                     {!! Form::Label('ico', 'Autoservis:') !!}
-                    {!! Form::select('car_service', $car_services, null, ['class' => 'form-control', 'id' => 'car_service']) !!}
+                    {!! Form::select('car_service', $car_services, null, ['class' => 'form-control', 'id' => 'car_service]) !!}
 
                     {!! Form::label('date', 'Deň, na ktorý sa chcete objednať:') !!}
                     <div class="date-box">

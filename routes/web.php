@@ -16,7 +16,7 @@ Route::get('/', 'HomeController@index');
 Route::get('home', 'HomeController@index');
 
 // LOGOUT
-Route::get('logout', 'Auth\LoginController@logout')->middleware('auth.basic');;
+Route::get('logout', 'Auth\LoginController@logout')->middleware('auth.basic');
 
 // ABOUT
 Route::get('about', 'AboutController@index');
@@ -32,6 +32,15 @@ Route::get('reservation', 'ReservationController@index')->middleware('auth.basic
 
 // CUSTOMER
 Route::post('create-customer', array('uses' => 'ServiceController@createCustomer'));
+
+// PROFILE
+Route::get('profile', 'ProfileController@index')->middleware('auth.basic');
+Route::post('profile/checkDataProfile', 'ProfileController@checkDataProfile');
+Route::post('profile/updateProfile', 'ProfileController@updateProfile');
+
+//CONTACT
+Route::get('contact','ContactController@index');
+Route::post('contact/getCarServiceByIco', 'ContactController@getCarServiceByIco');
 
 
 Auth::routes(['verify' => true]);

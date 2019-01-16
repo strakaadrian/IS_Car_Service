@@ -310,11 +310,45 @@ tbody tr:hover {
     margin-top: 2%;
 }
 
+.facturation-submit {
+    padding-top: 5%;
+    padding-bottom: 2%;
+}
+
+.error-facturation-div {
+    margin-top: 2%;
+}
 /*
 ---------------------------------------
 --------- SERVICE END -------------
 ---------------------------------------
 */
 
+/*
+---------------------------------------
+--------- CONTACT START -------------
+---------------------------------------
+*/
+
+.contact-box {
+    margin: 5% 5% 5% 5%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+.service-contact   {
+    font-size: 30px;
+}
+
+.service-contact  > span {
+    font-weight: bold;
+    color: #FF4136
+}
+
+/*
+---------------------------------------
+--------- CONTACT END -------------
+---------------------------------------
+*/
 
 

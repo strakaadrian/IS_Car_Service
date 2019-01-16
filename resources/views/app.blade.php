@@ -38,7 +38,7 @@
                 <li class="divider-vertical"></li>
                 <li><a href="#">Produkty</a></li>
                 <li class="divider-vertical"></li>
-                <li><a href="#">Kontakt</a></li>
+                <li><a href="{{url('contact')}}">Kontakt</a></li>
                 <li class="divider-vertical"></li>
                 <li><a href="#">Administratíva</a></li>
             </ul>
@@ -54,6 +54,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="#"> <span class=" glyphicon glyphicon-shopping-cart"></span>  Košík </a></li>
                             <li><a href="{{url('reservation')}}"> <span class=" glyphicon glyphicon-list-alt"></span>  Rezervácie </a></li>
+                            <li><a href="{{url('profile')}}"> <i class="glyphicon glyphicon-edit"></i>  Profil </a></li>
                         </ul>
                     </li>
                     <li class="divider-vertical"></li>
@@ -72,7 +73,7 @@
     <div>
             <a href="https://www.facebook.com"><i class="fa fa-facebook-square fa-3x "></i></a>
             <a href="mailto:carworld@gmail.com"><i class="fa fa-envelope-square fa-3x gmail"></i></a>
-            <p><i class="fa fa-phone fa-3x"></i> +421 339-2889</p>
+            <p><i class="fa fa-phone fa-3x"></i> +421 339-2889 </p>
     </div>
 </footer>
 
