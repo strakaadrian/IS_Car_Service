@@ -65,11 +65,11 @@
             <div class="form-group">
                 <div class="medium-box">
                     {!! Form::Label('ico', 'Autoservis:') !!}
-                    {!! Form::select('car_service', $car_services, null, ['class' => 'form-control', 'id' => 'car_service]) !!}
+                    {!! Form::select('car_service', $car_services, null, ['class' => 'form-control', 'id' => 'car_service']) !!}
 
                     {!! Form::label('date', 'Deň, na ktorý sa chcete objednať:') !!}
                     <div class="date-box">
-                        {!! Form::date('date',null, ['class' => 'form-control hours-box', 'required']); !!}
+                        {!! Form::date('date',null, ['class' => 'form-control hours-box', 'required']) !!}
                     </div>
                     {!! Form::label('hour', 'Hodina, na ktorú sa chcete objednať:') !!}
                     <div class="hours-box">
