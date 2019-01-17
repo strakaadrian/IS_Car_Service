@@ -337,12 +337,12 @@ tbody tr:hover {
 }
 
 .service-contact   {
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .service-contact  > span {
     font-weight: bold;
-    color: #FF4136
+    color: #C00000;
 }
 
 /*

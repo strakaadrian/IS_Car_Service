@@ -6,6 +6,7 @@ $(document).ready(function() {
     $('.error-order-div').hide();
     $('.error-profile-div').hide();
     $('.error-facturation-div').hide();
+    $('.contact-box').hide();
 
 
     /* toto tu je potrebne aby ajax POST fungoval spravne */
@@ -204,6 +205,7 @@ $(document).ready(function() {
             data: {ico: $ico},
             success: function (data) {
                 $dataResult = JSON.parse(data);
+                $('.contact-box').show();
                 $('#service-town').text($dataResult[0].town_name);
                 $('#service-name').text($dataResult[0].service_name);
                 $('#service-street').text($dataResult[0].street);

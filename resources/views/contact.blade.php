@@ -26,11 +26,5 @@
                 <p class="service-contact"><i class="fa fa-envelope"></i> Email: <span id="service-email"></span> </p>
             </div>
         </div>
-
-
-
     </div>
-
-
-
 @endsection
