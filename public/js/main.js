@@ -7,6 +7,11 @@ $(document).ready(function() {
     $('.error-profile-div').hide();
     $('.error-facturation-div').hide();
     $('.contact-box').hide();
+    $('.shopping-cart-error').hide();
+
+    $('#car_type_select').hide();
+    $('#car_part_select').hide();
+    $('.error-products').hide();
 
 
     /* toto tu je potrebne aby ajax POST fungoval spravne */
@@ -216,6 +221,122 @@ $(document).ready(function() {
         });
     });
 
+
+    // tato funkcia mi skontroluje mnozstvo v kosiku ktore menim ci je povoelene robit taku zmenu
+    $(".shopping-cart-quantity").change(function() {
+
+        $id = this.id;
+        $valueOld  = parseInt(this.defaultValue);
+        $value = parseInt(this.value);
+        $max = parseInt($(this).attr('max'));
+        $min = parseInt($(this).attr('min'));
+
+
+        if($max == 0) {
+            $('.shopping-cart-error').show();
+            $('#shopping-cart-error-msg').text('Tovar je vypredaný.');
+            return false;
+        } else if($value > $max) {
+            $('.shopping-cart-error').show();
+            $('#shopping-cart-error-msg').text('Maximálny počet KS na sklade je : ' + $max);
+            this.value = $valueOld;
+            return false;
+        } else if($value <= 0) {
+            $('.shopping-cart-error').show();
+            $('#shopping-cart-error-msg').text('Minimány počet, ktorý môžte zadate je: ' + $min + ' KS');
+            this.value = $valueOld;
+            return false;
+        } else {
+            $('.shopping-cart-error').hide();
+
+            if(confirm('Prajete si zmenit množstvo na ' +  $value + ' ?')) {
+                $.ajax({
+                    type: "POST",
+                    url: "cart/insertIntoShoppingCart",
+                    dateType: 'json',
+                    data: {car_part_id: $id, quantity: $value},
+                    success: function (data) {
+                        location.reload();
+                    }
+                });
+
+            }
+        }
+    });
+
+    // tato funckia nam zmaze produkt z nakupneho kosika
+    $('.shopping-cart-delete-button').click(function() {
+        $car_part_id = parseInt($(this).attr('value'));
+
+        if(confirm('Prajete si daný produkt odstrániť z košíka ?')) {
+            $.ajax({
+                type: "POST",
+                url: "cart/deleteItemFromCart",
+                dateType: 'json',
+                data: {car_part_id: $car_part_id},
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }
+    });
+
+
+    // funkcia, ktora nam zobrazi modely aut pre danu značku
+    $("#car_brand").change(function() {
+        $('#car_type').empty();
+        $car_brand = this.value;
+
+        $.ajax({
+            type: "POST",
+            url: "products/getCarModels",
+            dateType: 'json',
+            data: {car_brand: $car_brand},
+            success: function (data) {
+                $dataResult = JSON.parse(data);
+                if($dataResult.length == 0) {
+                    $('.error-products').show();
+                    $('#error-products-not-found').text('Pre danú značku auta nemáme prístupné modely áut.');
+                    $('#car_type_select').hide();
+                    $('#car_part_select').hide();
+                } else {
+                    $('.error-products').hide();
+                    $.each($dataResult, function () {
+                        $("<option/>").val(this.car_type_id).text(this.car_type_name).appendTo("#car_type");
+                    });
+                    $('#car_type_select').show();
+                }
+            }
+        });
+    });
+
+    // funkcia, ktora nam zobrazi autodieli na zaklade daneho modelu
+    $("#car_type").click(function() {
+        $('#car_part').empty();
+        $car_type = this.value;
+
+        $.ajax({
+            type: "POST",
+            url: "products/getCarParts",
+            dateType: 'json',
+            data: {car_type: $car_type},
+            success: function (data) {
+                $dataResult = JSON.parse(data);
+
+                if($dataResult.length == 0) {
+                    $('.error-products').show();
+                    $('#error-products-not-found').text('Pre daný model auta momentálne nemáme prístupné autosúčiastky.');
+                    $('#car_part_select').hide();
+                } else {
+                    $('.error-products').hide();
+                    $.each($dataResult, function () {
+                        $("<option/>").val(this.car_part_id).text(this.part_name).appendTo("#car_part");
+                    });
+                    $('#car_part_select').show();
+                }
+            }
+        });
+    });
 
 
 

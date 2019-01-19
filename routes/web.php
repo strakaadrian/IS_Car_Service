@@ -42,6 +42,16 @@ Route::post('profile/updateProfile', 'ProfileController@updateProfile');
 Route::get('contact','ContactController@index');
 Route::post('contact/getCarServiceByIco', 'ContactController@getCarServiceByIco');
 
+// CART
+Route::get('cart','CartController@index')->middleware('auth.basic');
+Route::post('cart/insertIntoShoppingCart', 'CartController@insertIntoShoppingCart');
+Route::post('cart/deleteItemFromCart', 'CartController@deleteItemFromCart');
+
+// PRODUCTS
+Route::get('products','ProductController@index');
+Route::post('products/getCarModels','ProductController@getCarModels');
+Route::post('products/getCarParts','ProductController@getCarParts');
+
 
 Auth::routes(['verify' => true]);
 

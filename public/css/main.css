@@ -351,4 +351,68 @@ tbody tr:hover {
 ---------------------------------------
 */
 
+/*
+---------------------------------------
+--------- SHOPPING CART  START -------------
+---------------------------------------
+*/
+
+.shopping-cart {
+    margin: 5% 5% 5% 5%;
+    color: #2f2f2f;
+    padding: 3% 3% 3% 3%;
+    -webkit-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+    box-shadow: -1px 1px 5px 9px rgba(0,0,0,0.75);
+}
+
+.shopping-image > img {
+    width: 150px;
+    height: 150px;
+}
+
+.shopping-cart-delete-button {
+    font-size: 20px;
+    text-align: center;
+}
+
+.shopping-cart-error {
+    margin-bottom: 10px;
+}
+
+.cart-for-payment {
+    font-size: 25px;
+}
+
+/*
+---------------------------------------
+--------- SHOPPING CART  END -------------
+---------------------------------------
+*/
+
+/*
+---------------------------------------
+--------- PRODUCTS  START -------------
+---------------------------------------
+*/
+
+.products {
+    color: #2f2f2f;
+}
+
+.products-form {
+    margin-top: 5%;
+    margin-bottom: 2%;
+}
+
+
+/*
+---------------------------------------
+--------- PRODUCTS  END -------------
+---------------------------------------
+*/
+
+
+
+
 

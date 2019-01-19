@@ -46,7 +46,7 @@
                         {!! Form::number('orientation_no', $value = $customer[0]->orientation_no, ['class' => 'form-control', 'required']); !!}
                     </div>
                 </div>
-                <div class="alert alert-warning error-profile-div" role="alert">
+                <div class="alert alert-danger error-profile-div" role="alert">
                     <p id="error-profile-msg"></p>
                 </div>
                 <div class="text-center customer-submit ">

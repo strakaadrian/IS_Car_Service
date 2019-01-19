@@ -76,7 +76,7 @@
                         {!! Form::select('hour', array( 7 => 7 , 8 => 8 , 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17), null, array('class'=>'form-control')) !!}
                     </div>
                 </div>
-                <div class="alert alert-warning error-order-div" role="alert">
+                <div class="alert alert-danger error-order-div" role="alert">
                     <p id="error-order-msg"></p>
                 </div>
                 <div class="text-center customer-submit ">

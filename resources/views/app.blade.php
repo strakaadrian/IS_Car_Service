@@ -36,7 +36,7 @@
                 <li class="divider-vertical"></li>
                 <li><a href="{{url('service')}}">Služby</a></li>
                 <li class="divider-vertical"></li>
-                <li><a href="#">Produkty</a></li>
+                <li><a href="{{url('products')}}">Produkty</a></li>
                 <li class="divider-vertical"></li>
                 <li><a href="{{url('contact')}}">Kontakt</a></li>
                 <li class="divider-vertical"></li>
@@ -52,7 +52,7 @@
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#"> <span class="glyphicon glyphicon-user"></span> {{ Auth::user()->name }}
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="#"> <span class=" glyphicon glyphicon-shopping-cart"></span>  Košík </a></li>
+                            <li><a href="{{url('cart')}}"> <span class=" glyphicon glyphicon-shopping-cart"></span>  Košík </a></li>
                             <li><a href="{{url('reservation')}}"> <span class=" glyphicon glyphicon-list-alt"></span>  Rezervácie </a></li>
                             <li><a href="{{url('profile')}}"> <i class="glyphicon glyphicon-edit"></i>  Profil </a></li>
                         </ul>
