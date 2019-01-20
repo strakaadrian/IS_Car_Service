@@ -412,10 +412,19 @@ tbody tr:hover {
 }
 
 .product-item {
+    width: 400px;
+    display: inline-block;
     color: #2f2f2f;
     margin: 2% 2% 2% 2%;
     padding: 2% 2% 2% 2%;
     border: 2px solid #ccc;
+}
+
+@media only screen and (max-width: 900px) {
+    .product-item {
+        margin-left: 50%;
+        transform: translate(-50%);
+    }
 }
 
 .products-image{
@@ -425,6 +434,11 @@ tbody tr:hover {
 
 .product-name {
     padding: 5% 2% 2% 2%;
+}
+
+.products-row {
+    margin-left: 3%;
+    margin-right: 3%;
 }
 
 /*

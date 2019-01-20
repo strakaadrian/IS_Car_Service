@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <div class="container products-items">
+    <div class="container-fluid products-items">
 
     </div>
 

@@ -1,7 +1,7 @@
 @if(!$car_parts_by_model->isEmpty())
-    <div class="row">
+    <div class="row products-row" >
         @foreach($car_parts_by_model as $car_part)
-            <div class="col-lg-4 product-item">
+            <div class=" product-item" >
                 <img class="products-image" src="{{ asset('storage/'. $car_part->image) }}" alt="/">
                 <div class="product-name text-center"><strong> {{ $car_part->part_name }} </strong> </div>
                 @if($car_part->stock > 0)
