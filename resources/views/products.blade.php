@@ -12,7 +12,9 @@
             </div>
             <div id="car_type_select" class="col-md-4 products-form">
                 {!! Form::Label('car_type', 'Model auta:') !!}
-                {!! Form::select('car_type',array('' => 'Vyberte model auta...') ,null, ['class' => 'form-control', 'id' => 'car_type',]) !!}
+                {!! Form::select('car_type',$car_type ,null, ['class' => 'form-control', 'id' => 'car_type',]) !!}
+                <input type="checkbox" class="form-check-input" id="products-check-all">
+                <label class="form-check-label" for="products-check-all"> Zobraziť všetky autodiely ? </label>
             </div>
             <div id="car_part_select" class="col-md-4 products-form">
                 {!! Form::Label('car_part', 'Náhradný diel:') !!}
@@ -23,6 +25,13 @@
         <div class="alert alert-danger error-products">
             <strong>Pozor!</strong> <span id="error-products-not-found">  </span>
         </div>
+        <div class="text-center customer-submit ">
+            <button id="submit-products-button" type="button" class="btn btn-warning btn-lg"> <i class="fa fa-search"></i> Vyhľadaj </button>
+        </div>
+    </div>
+
+    <div class="container products-items">
+
     </div>
 
 

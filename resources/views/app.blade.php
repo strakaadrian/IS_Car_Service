@@ -64,11 +64,9 @@
         </div>
 </nav>
 
-
 @yield('content')
 
-
-<footer class="container-fluid bg-4 text-center home-block footer">
+<footer class="container-fluid text-center home-block footer">
     <a href="#top"><i class="fa fa-angle-up fa-3x "></i></a>
     <div>
             <a href="https://www.facebook.com"><i class="fa fa-facebook-square fa-3x "></i></a>

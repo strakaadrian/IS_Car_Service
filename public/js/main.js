@@ -12,7 +12,7 @@ $(document).ready(function() {
     $('#car_type_select').hide();
     $('#car_part_select').hide();
     $('.error-products').hide();
-
+    $('#submit-products-button').hide();
 
     /* toto tu je potrebne aby ajax POST fungoval spravne */
     $.ajaxSetup({
@@ -296,15 +296,17 @@ $(document).ready(function() {
                 $dataResult = JSON.parse(data);
                 if($dataResult.length == 0) {
                     $('.error-products').show();
-                    $('#error-products-not-found').text('Pre danú značku auta nemáme prístupné modely áut.');
+                    $('#error-products-not-found').text('Pre danú značku auta nemáme dostupné modely áut.');
                     $('#car_type_select').hide();
                     $('#car_part_select').hide();
+                    $("#submit-products-button").hide();
                 } else {
                     $('.error-products').hide();
                     $.each($dataResult, function () {
                         $("<option/>").val(this.car_type_id).text(this.car_type_name).appendTo("#car_type");
                     });
                     $('#car_type_select').show();
+                    $('#submit-products-button').show();
                 }
             }
         });
@@ -325,19 +327,42 @@ $(document).ready(function() {
 
                 if($dataResult.length == 0) {
                     $('.error-products').show();
-                    $('#error-products-not-found').text('Pre daný model auta momentálne nemáme prístupné autosúčiastky.');
+                    $('#error-products-not-found').text('Pre daný model auta momentálne nemáme dostupné autosúčiastky.');
                     $('#car_part_select').hide();
+                    $('#products-check-all').hide();
+                    $("#submit-products-button").hide();
                 } else {
                     $('.error-products').hide();
                     $.each($dataResult, function () {
                         $("<option/>").val(this.car_part_id).text(this.part_name).appendTo("#car_part");
                     });
                     $('#car_part_select').show();
+                    $('#products-check-all').show();
+                    $("#submit-products-button").show();
                 }
             }
         });
     });
 
+    // funkcia, ktorá na základe daných parametrov vyhľadá autosúčiastky
 
+    $("#submit-products-button").click(function() {
+        $brand_id = $('#car_brand').val();
+        $car_type_id = $('#car_type').val();
+        $car_part_id = $('#car_part').val();
+        $all_parts = $('#products-check-all').is( ":checked" );
 
+        if($car_part_id == "") {
+            $all_parts = true;
+        }
+        $.ajax({
+            type: "POST",
+            url: "products/getCarPartsForSale",
+            dateType: 'json',
+            data: {brand_id: $brand_id, car_type_id: $car_type_id, car_part_id: $car_part_id, all_parts: $all_parts},
+            success: function (data) {
+                $('.products-items').html(data.html);
+            }
+        });
+    });
 });

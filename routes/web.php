@@ -51,6 +51,7 @@ Route::post('cart/deleteItemFromCart', 'CartController@deleteItemFromCart');
 Route::get('products','ProductController@index');
 Route::post('products/getCarModels','ProductController@getCarModels');
 Route::post('products/getCarParts','ProductController@getCarParts');
+Route::post('products/getCarPartsForSale','ProductController@getCarPartsForSale');
 
 
 Auth::routes(['verify' => true]);

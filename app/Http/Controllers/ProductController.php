@@ -18,8 +18,9 @@ class ProductController extends Controller
         $car_brand = CarBrand::pluck('brand_name','brand_id');
         $car_type = CarType::pluck('car_type_name','car_type_id');
         $car_part = CarPart::pluck('part_name','car_part_id');
+        $car_parts_by_model = collect([]);
 
-        return view('products',compact('car_brand','car_type','car_part'));
+        return view('products',compact('car_brand','car_type','car_part', 'car_parts_by_model'));
     }
 
     /**
@@ -44,5 +45,30 @@ class ProductController extends Controller
 
         echo json_encode($car_parts);
         exit();
+    }
+
+    /**
+     *
+     * Funkcia, ktorá nám dotiahne konkrétne autosúčiastky
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Throwable
+     */
+    public function getCarPartsForSale(Request $request) {
+        if($request->all_parts == "true") {
+            $car_parts_by_model = CarPart::where('car_type_id',$request->car_type_id)
+                ->select('car_part_id','part_name','part_price','stock','image')
+                ->get();
+        } else {
+            $car_parts_by_model = CarPart::where([
+                ['car_type_id', '=', $request->car_type_id],
+                ['car_part_id', '=', $request->car_part_id],
+            ])->select('car_part_id','part_name','part_price','stock','image')
+                ->get();
+        }
+
+        $outputView =  view('products-items',compact('car_parts_by_model'))->render();
+        return response()->json(['html'=>$outputView]);
     }
 }
