@@ -23,7 +23,7 @@
             {{ Form::close() }}
          </div>
         <div class="alert alert-danger error-products">
-            <strong>Pozor!</strong> <span id="error-products-not-found">  </span>
+            <strong>Prepáčte.</strong> <span id="error-products-not-found">  </span>
         </div>
         <div class="text-center customer-submit ">
             <button id="submit-products-button" type="button" class="btn btn-warning btn-lg"> <i class="fa fa-search"></i> Vyhľadaj </button>

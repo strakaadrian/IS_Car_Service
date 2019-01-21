@@ -71,4 +71,5 @@ class ProductController extends Controller
         $outputView =  view('products-items',compact('car_parts_by_model'))->render();
         return response()->json(['html'=>$outputView]);
     }
+
 }

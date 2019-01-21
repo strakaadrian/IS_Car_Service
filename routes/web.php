@@ -44,8 +44,10 @@ Route::post('contact/getCarServiceByIco', 'ContactController@getCarServiceByIco'
 
 // CART
 Route::get('cart','CartController@index')->middleware('auth.basic');
-Route::post('cart/insertIntoShoppingCart', 'CartController@insertIntoShoppingCart');
+Route::post('cart/updateDataInShoppingCart', 'CartController@updateDataInShoppingCart');
 Route::post('cart/deleteItemFromCart', 'CartController@deleteItemFromCart');
+Route::post('cart/addItemToShoppingCart', 'CartController@addItemToShoppingCart')->middleware('auth.basic');;
+Route::get('cart/confirmShoppingCart', 'CartController@confirmShoppingCart');
 
 // PRODUCTS
 Route::get('products','ProductController@index');

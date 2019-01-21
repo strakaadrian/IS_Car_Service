@@ -44,7 +44,7 @@
                 <p class="text-right cart-for-payment"> Celkovo k úhrade : <strong> {{ $forPayment }} </strong></p>
 
                 <div class="text-center">
-                    <button type="button" class="btn btn-success btn-lg" value=""><i class="fa fa-credit-card"></i> Prejdi k platbe </button>
+                    <button type="button" class="btn btn-success btn-lg" id="confirm-shopping-cart" value=""><i class="fa fa-credit-card"></i> Prejdi k platbe </button>
                     <a href="{{url('products')}}"> Pokračovať v nákupe. </a>
                 </div>
 

@@ -30,14 +30,36 @@ class CartController extends Controller
      *
      * @param Request $request
      */
-    public function insertIntoShoppingCart(Request $request) {
+    public function updateDataInShoppingCart(Request $request) {
         $shopping_cart = new Cart;
-        $shopping_cart->insertDataToShoppingCart($request->car_part_id, $request->quantity);
+        $shopping_cart->updateShoppingCart($request->car_part_id, $request->quantity);
     }
 
+    /**
+     * Funkcia, ktorá vymaže dáta z košíka
+     *
+     * @param Request $request
+     */
     public function deleteItemFromCart(Request $request) {
         $shopping_cart = new Cart;
         $shopping_cart->deleteItemFromShoppingCart($request->car_part_id);
     }
 
+    /**
+     *
+     * Funkcia, ktorá pridá daný item do košíku
+     * @param Request $request
+     */
+    public function addItemToShoppingCart(Request $request) {
+        $shopping_cart = new Cart;
+        $shopping_cart->insertDataToShoppingCart($request->car_part_id, $request->quantity);
+    }
+
+    /**
+     *Funkcia, ktorá potvrdí obsah nákupného košika
+     */
+    public function confirmShoppingCart() {
+        $shopping_cart = new Cart;
+        $shopping_cart->confirmItemsInCart();
+    }
 }

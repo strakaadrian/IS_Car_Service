@@ -252,7 +252,7 @@ $(document).ready(function() {
             if(confirm('Prajete si zmenit množstvo na ' +  $value + ' ?')) {
                 $.ajax({
                     type: "POST",
-                    url: "cart/insertIntoShoppingCart",
+                    url: "cart/updateDataInShoppingCart",
                     dateType: 'json',
                     data: {car_part_id: $id, quantity: $value},
                     success: function (data) {
@@ -365,4 +365,63 @@ $(document).ready(function() {
             }
         });
     });
+
+
+    // táto funkcia nám skontroluje množstvo produktu, ktoré môžme dať do košíka na základe množstva na sklade
+    $('body').on('change','.product-quantity',function(){
+        $id = this.id;
+        $valueOld  = parseInt(this.defaultValue);
+        $value = parseInt(this.value);
+        $max = parseInt($(this).attr('max'));
+        $min = parseInt($(this).attr('min'));
+
+        if($value > $max) {
+            $('#error-product-quantity-' + $id).show();
+            $('#error-product-quantity-' + $id).text("Zadávate zlé množstvo!");
+            this.value = $valueOld;
+            return false;
+        } else if ($value <= 0) {
+            $('#error-product-quantity-' + $id).show();
+            $('#error-product-quantity-' + $id).text("Zadávate zlé množstvo!");
+            this.value = $valueOld;
+            return false;
+        } else {
+            $('#error-product-quantity-' + $id).hide();
+            return false;
+        }
+    });
+
+    // funkcia ktorá prídá produkt do košíka
+    $('body').on('click','.product-item-to-cart',function(){
+        $car_part_id = this.id;
+        $quantity = $('#' + this.id).val();
+
+        $.ajax({
+            type: "POST",
+            url: "cart/addItemToShoppingCart",
+            dateType: 'json',
+            data: {car_part_id: $car_part_id, quantity: $quantity},
+            success: function (data) {
+                confirm("Pridali ste súčiastku do košíka.");
+            }
+        });
+    });
+
+    // funkcia, ktorá sa spustí ak chce užívateľ potvrdiť obsah košíka
+
+    $("#confirm-shopping-cart").click(function() {
+
+        if(confirm("Prajete si zaplatiť obsah košíka ?")) {
+            $.ajax({
+                type: "GET",
+                url: "cart/confirmShoppingCart",
+                success: function () {
+                    confirm("Úspešne ste potvrdili obsah košíka.");
+                    window.location.href = "/";
+                }
+            });
+        }
+    });
+
+
 });

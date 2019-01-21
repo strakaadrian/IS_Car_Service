@@ -425,6 +425,11 @@ tbody tr:hover {
         margin-left: 50%;
         transform: translate(-50%);
     }
+
+    .product-quantity-box {
+        margin-left: 30%;
+        margin-right: 30%;
+    }
 }
 
 .products-image{
@@ -439,6 +444,19 @@ tbody tr:hover {
 .products-row {
     margin-left: 3%;
     margin-right: 3%;
+}
+
+.product-item-to-cart {
+    margin-top: 4%;
+}
+
+.error-product-quantity {
+    color: red;
+    display:none;
+}
+
+.product-out-of-stock{
+    color: red;
 }
 
 /*

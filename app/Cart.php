@@ -27,14 +27,14 @@ class Cart extends Model
 
     /**
      *
-     * Funkcia, ktorá pridá alebo updatuje hodnoty v košíku
+     * Funkcia, ktorá updatuje hodnoty v košíku
      *
      * @param $car_part_id
      * @param $quantity
      * @return array
      */
-    public function insertDataToShoppingCart($car_part_id, $quantity) {
-        return DB::select("call create_shopping_cart(?, ?, ?)",[Auth::user()->id, $car_part_id, $quantity]);
+    public function updateShoppingCart($car_part_id, $quantity) {
+        return DB::select("call update_shopping_cart(?, ?, ?)",[Auth::user()->id, $car_part_id, $quantity]);
     }
 
     /**
@@ -45,6 +45,24 @@ class Cart extends Model
      */
     public function deleteItemFromShoppingCart($car_part_id) {
         return DB::select("call delete_from_shopping_cart(?, ?)",[Auth::user()->id, $car_part_id]);
+    }
+
+    /**
+     * Funkcia, ktorá pridá veci do košíka
+     *
+     * @return array
+     */
+    public function insertDataToShoppingCart($car_part_id, $quantity) {
+        return DB::select("call add_to_shopping_cart(?, ?, ?)",[Auth::user()->id, $car_part_id, $quantity]);
+    }
+
+    /**
+     * Funkcia, ktorá zoberie veci z košíka, vytvorí objednávku a pridá ich do order_items
+     *
+     * @return array
+     */
+    public function confirmItemsInCart() {
+        return DB::select("call confirm_shopping_cart(?)",[Auth::user()->id]);
     }
 
 }
