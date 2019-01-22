@@ -264,6 +264,14 @@ $(document).ready(function() {
         }
     });
 
+
+    // zabranuje stlačeniu enter na zmenu množstva
+    $('.shopping-cart-quantity').keypress(function (event) {
+        if (event.keyCode === 10 || event.keyCode === 13) {
+            event.preventDefault();
+        }
+    });
+
     // tato funckia nam zmaze produkt z nakupneho kosika
     $('.shopping-cart-delete-button').click(function() {
         $car_part_id = parseInt($(this).attr('value'));
@@ -422,6 +430,5 @@ $(document).ready(function() {
             });
         }
     });
-
 
 });

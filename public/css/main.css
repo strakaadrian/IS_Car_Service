@@ -466,9 +466,32 @@ tbody tr:hover {
 */
 
 
+.invoice-body {
+    color: black;
+    font-family: DejaVu Sans !important;
+}
 
+#invoice-title {
+    display: block;
+}
 
+#invoice-hr {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
 
+#invoice-id {
+    display: inline;
+    float: right;
+    margin-bottom: 3%;
+}
 
+#invoice-company {
+    float: right;
+    display: inline-block;
+}
 
+#invoice-customer {
+    display: inline-block;
+}
 

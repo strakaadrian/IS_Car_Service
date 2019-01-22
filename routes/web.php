@@ -46,7 +46,7 @@ Route::post('contact/getCarServiceByIco', 'ContactController@getCarServiceByIco'
 Route::get('cart','CartController@index')->middleware('auth.basic');
 Route::post('cart/updateDataInShoppingCart', 'CartController@updateDataInShoppingCart');
 Route::post('cart/deleteItemFromCart', 'CartController@deleteItemFromCart');
-Route::post('cart/addItemToShoppingCart', 'CartController@addItemToShoppingCart')->middleware('auth.basic');;
+Route::post('cart/addItemToShoppingCart', 'CartController@addItemToShoppingCart')->middleware('auth.basic');
 Route::get('cart/confirmShoppingCart', 'CartController@confirmShoppingCart');
 
 // PRODUCTS
@@ -54,6 +54,10 @@ Route::get('products','ProductController@index');
 Route::post('products/getCarModels','ProductController@getCarModels');
 Route::post('products/getCarParts','ProductController@getCarParts');
 Route::post('products/getCarPartsForSale','ProductController@getCarPartsForSale');
+
+//CUSTOMER ORDER
+Route::get('orders','CustomerOrderController@index')->middleware('auth.basic');
+Route::get('order-to-pdf/{id}','CustomerOrderController@getOrderToPDF')->middleware('auth.basic');
 
 
 Auth::routes(['verify' => true]);

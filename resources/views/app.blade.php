@@ -54,6 +54,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{url('cart')}}"> <span class=" glyphicon glyphicon-shopping-cart"></span>  Košík </a></li>
                             <li><a href="{{url('reservation')}}"> <span class=" glyphicon glyphicon-list-alt"></span>  Rezervácie </a></li>
+                            <li><a href="{{url('orders')}}"> <i class="fa fa-list"></i>  Objednávky </a></li>
                             <li><a href="{{url('profile')}}"> <i class="glyphicon glyphicon-edit"></i>  Profil </a></li>
                         </ul>
                     </li>
