@@ -27,6 +27,8 @@
                         <td class="text-center service-row"> {{ $order->order_date }} </td>
                         @if($order->status != 'zrusena')
                             <td class="text-center service-row"><a href="order-to-pdf/{{$order->order_id}}" class="btn btn-default" role="button">Zobraz faktúru </a></td>
+                        @else
+                            <td class="text-center service-row"></td>
                         @endif
                     </tr>
                 @endforeach
