@@ -33,5 +33,9 @@ class Customer extends Model
         return DB::select("call create_customer(?, ?, ?, ?, ?, ?, ?, ?, ?)",[$psc,$country_id,$town_name, $identification_no, $first_name, $last_name, $street, $orientation_no, Auth::user()->id]);
     }
 
+    public function duplicateCustomer($identification_no) {
+        return DB::select("select duplicate_customer(?) as result",[$identification_no]);
+    }
+
 
 }

@@ -4,12 +4,12 @@
 
 
 @section('content')
-    <div class="container-fluid bg-2  home-block">
+    <div class="order-service">
         <div class="sectionHeader">
             <h2 class="text-center"> Objednávky </h2>
             <hr class="blackHR">
         </div>
-        <div class="service-table">
+        <div>
             <table class="table">
                 <thead class="service-table-head">
                 <tr>
@@ -25,7 +25,9 @@
                         <td class="text-center service-row"> {{ $order->order_id }} </td>
                         <td class="text-center service-row"> {{ $order->status }} </td>
                         <td class="text-center service-row"> {{ $order->order_date }} </td>
-                        <td class="text-center service-row"><a href="order-to-pdf/{{$order->order_id}}" class="btn btn-default" role="button">Zobraz faktúru </a></td>
+                        @if($order->status != 'zrusena')
+                            <td class="text-center service-row"><a href="order-to-pdf/{{$order->order_id}}" class="btn btn-default" role="button">Zobraz faktúru </a></td>
+                        @endif
                     </tr>
                 @endforeach
                 </tbody>

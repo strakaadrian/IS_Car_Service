@@ -15,10 +15,22 @@ class ReservationController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        $reservation = new Reservation;
+        $reserModel = new Reservation;
 
-        $reserv = $reservation->getReservations();
+        $reserv = $reserModel->getReservations();
 
-        return view('reservation', compact('reserv'));
+        return view('reservation', compact('reserv','reserModel'));
     }
+
+    /**
+     * Funkcia, ktorá odstráni z tabuľky reservations záznam podľa reservation_id
+     *
+     * @param Request $request
+     *
+     */
+    public function deleteFromReservations(Request $request) {
+        $reserModel = new Reservation;
+        $reserModel->deleteFromReservationsById($request->reservation_id);
+    }
+
 }

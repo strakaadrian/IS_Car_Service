@@ -48,7 +48,7 @@
                     {!! Form::label('orientation_no', 'Č. domu:') !!}
                     {!! Form::number('orientation_no', $value = null, ['class' => 'form-control', 'required']); !!}
                 </div>
-                <div class="alert alert-warning error-facturation-div" role="alert">
+                <div class="alert alert-danger error-facturation-div" role="alert">
                     <p id="error-facturation-msg"></p>
                 </div>
                 <div class="text-center facturation-submit ">

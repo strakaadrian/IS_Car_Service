@@ -65,6 +65,10 @@ $(document).ready(function() {
                         $('.error-order-div').show();
                         $('#error-order-msg').text('Prepáčte, ale deň, ktorý ste si vybrali je víkend. Vyberte si prosím iný deň.');
                         return false;
+                    } else if ($dataResult == "too far") {
+                        $('.error-order-div').show();
+                        $('#error-order-msg').text('Prepáčte, ale môžete si výbrať deň maximálne pol roka dopredu.');
+                        return false;
                     } else if ($dataResult == "absence") {
                         $('.error-order-div').show();
                         $('#error-order-msg').text('Prepáčte, ale technik sa v tento deň nenachádza v práci.');
@@ -92,6 +96,7 @@ $(document).ready(function() {
         $town_id = $('#psc').val();
         $town_name = $('#town').val();
         $country_id = $('#country_id').val();
+        $rc =  $('#rc').val();
 
 
         if($('#town').val() == '') {
@@ -125,24 +130,26 @@ $(document).ready(function() {
         } else {
             $.ajax({
                 type: "POST",
-                url: "../../profile/checkDataProfile",
+                url: "../../customer/checkDataCustomer",
                 dateType: 'json',
-                data: {town_id: $town_id, town_name: $town_name, country_id: $country_id },
+                data: {town_id: $town_id, town_name: $town_name, country_id: $country_id,identification_no: $rc},
                 success: function (data) {
                     $dataResult = JSON.parse(data);
-                    if($dataResult[0].result == 0) {
+                    if($dataResult == "wrong_location") {
                         $('.error-facturation-div').show();
                         $('#error-facturation-msg').text('Zadávate zlé hodnoty do polí ( Štát, Mesto alebo PSČ ).');
                         return false;
+                    } else if($dataResult == "duplicate_customer") {
+                        $('.error-facturation-div').show();
+                        $('#error-facturation-msg').text('Zákazník už existuje.');
+                        return false;
                     }
-                    alert('Úspešne ste vytvorili svoje fakturačné údaje.');
                     $('#facturation-id').submit();
                 }
             });
         }
         $('.error-facturation-div').hide();
     });
-
 
 
     // skontrolujeme ci uzivatel zadava spravne fakturacne udaje pri UPDATE
@@ -415,8 +422,8 @@ $(document).ready(function() {
         });
     });
 
-    // funkcia, ktorá sa spustí ak chce užívateľ potvrdiť obsah košíka
 
+    // funkcia, ktorá sa spustí ak chce užívateľ potvrdiť obsah košíka
     $("#confirm-shopping-cart").click(function() {
 
         if(confirm("Prajete si zaplatiť obsah košíka ?")) {
@@ -430,5 +437,25 @@ $(document).ready(function() {
             });
         }
     });
+
+    // Funkcia, ktorá odstráni danú zákazníkovu rezerváciu
+
+    $(".reservation-delete-button").click(function() {
+
+        $reservation_id = this.id;
+
+        if(confirm("Prajete si odstrániť danú rezerváciu ?")) {
+            $.ajax({
+                type: "POST",
+                url: "reservation/delete-reservation",
+                dateType: 'json',
+                data: {reservation_id: $reservation_id},
+                success: function () {
+                    location.reload();
+                }
+            });
+        }
+    });
+
 
 });

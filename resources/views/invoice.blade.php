@@ -33,7 +33,6 @@
                 Car world a.s.<br>
                 Bratislavská 247/7 <br>
                 952 45 Bratislava<br>
-
             </address>
         </td>
         <td align="right">

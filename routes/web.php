@@ -28,10 +28,12 @@ Route::post('service/order-service/checkInsertReservCond', 'ServiceController@ch
 Route::post('service/order-service/insertReservation', 'ServiceController@insertReservation');
 
 //RESERVATION
-Route::get('reservation', 'ReservationController@index')->middleware('auth.basic');;
+Route::get('reservation', 'ReservationController@index')->middleware('auth.basic');
+Route::post('reservation/delete-reservation','ReservationController@deleteFromReservations');
 
 // CUSTOMER
 Route::post('create-customer', array('uses' => 'ServiceController@createCustomer'));
+Route::post('customer/checkDataCustomer', 'CustomerController@checkDataCustomer');
 
 // PROFILE
 Route::get('profile', 'ProfileController@index')->middleware('auth.basic');

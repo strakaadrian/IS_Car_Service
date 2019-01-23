@@ -74,6 +74,9 @@ class ServiceController extends Controller
         } else if ($correctDate[0]->result == 'weekend') {
             echo json_encode('weekend');
             exit();
+        } else if ($correctDate[0]->result == 'too far') {
+            echo json_encode('too far');
+            exit();
         } else if ($absence[0]->result == 1) {
             echo json_encode('absence');
             exit();
