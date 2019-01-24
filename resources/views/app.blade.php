@@ -39,8 +39,12 @@
                 <li><a href="{{url('products')}}">Produkty</a></li>
                 <li class="divider-vertical"></li>
                 <li><a href="{{url('contact')}}">Kontakt</a></li>
-                <li class="divider-vertical"></li>
-                <li><a href="#">Administratíva</a></li>
+                @if(!Auth::guest())
+                    @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
+                        <li class="divider-vertical"></li>
+                        <li><a href="{{url('administration')}}">Administratíva</a></li>
+                    @endif
+                @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 @guest
@@ -65,7 +69,10 @@
         </div>
 </nav>
 
+
 @yield('content')
+
+
 
 <footer class="container-fluid text-center home-block footer">
     <a href="#top"><i class="fa fa-angle-up fa-3x "></i></a>

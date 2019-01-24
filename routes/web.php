@@ -61,6 +61,10 @@ Route::post('products/getCarPartsForSale','ProductController@getCarPartsForSale'
 Route::get('orders','CustomerOrderController@index')->middleware('auth.basic');
 Route::get('order-to-pdf/{id}','CustomerOrderController@getOrderToPDF')->middleware('auth.basic');
 
+//ADMINISTRATION
+Route::get('administration','AdministrationController@index')->middleware('auth.basic','admin');
+
+
 
 Auth::routes(['verify' => true]);
 

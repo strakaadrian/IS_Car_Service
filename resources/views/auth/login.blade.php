@@ -58,12 +58,6 @@
                                 <button type="submit" class="btn btn-danger">
                                     {{ __('Prihlásiť') }}
                                 </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Zabudli ste heslo?') }}
-                                    </a>
-                                @endif
                             </div>
                         </div>
                     </form>

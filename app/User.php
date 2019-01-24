@@ -36,4 +36,31 @@ class User extends Authenticatable
         return Customer::where('user_id', Auth::user()->id)->exists();
     }
 
+    /**
+     *
+     * Funkcia, ktorá zistí ču užívatel je adminom
+     *
+     * @return mixed
+     *
+     */
+    public function isAdmin() {
+        if(Auth::guest()) {
+            return false;
+        } else {
+            return UserRole::where([
+                ['user_id', Auth::user()->id],
+                ['role_id', 1]])->exists();
+        }
+    }
+
+    public function isSuperAdmin() {
+        if(Auth::guest()) {
+            return false;
+        } else {
+            return UserRole::where([
+                ['user_id', Auth::user()->id],
+                ['role_id', 2]])->exists();
+        }
+    }
+
 }
