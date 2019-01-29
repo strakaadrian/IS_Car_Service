@@ -294,6 +294,8 @@ tbody tr:hover {
 
 .medium-box {
     margin-right: 30%;
+    margin-left: 5%;
+    margin-bottom: 5%;
 }
 
 .customer-submit {
@@ -473,13 +475,17 @@ tbody tr:hover {
 
 /* SIDEBAR START */
 
-.sidenav {
-    position: relative;
-    height: 100%;
-    background-color: #2f2f2f;
+.dropdown-admin li {
+    background-color: #D3D3D3;
 }
 
-.sidenav a {
+.sidebar {
+    background-color: #2f2f2f;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.sidebar a {
     padding: 2% 2% 2% 5%;
     text-decoration: none;
     font-size: 20px;
@@ -487,20 +493,36 @@ tbody tr:hover {
     display: block;
 }
 
-.sidenav a:hover {
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar a:hover,
+.sidebar a:focus,
+.sidebar a:active {
     color: #2f2f2f;
     background-color: #D3D3D3;
 }
 
+
 @media screen and (max-height: 450px) {
-    .sidenav {padding-top: 15px;}
-    .sidenav a {font-size: 15px;}
+    .sidebar {padding-top: 15px;}
+    .sidebar a {font-size: 15px;}
 }
+
+.row-admin {
+    width: 100%;
+}
+
 
 /* SIDEBAR END*/
 
 /* ADMIN BODY START */
 
+.admin-body {
+    color: #2f2f2f;
+}
 
 
 

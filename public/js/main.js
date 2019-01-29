@@ -13,6 +13,10 @@ $(document).ready(function() {
     $('#car_part_select').hide();
     $('.error-products').hide();
     $('#submit-products-button').hide();
+    $('.error-new-emp-div').hide();
+    $('.update-emp').hide();
+
+
 
     /* toto tu je potrebne aby ajax POST fungoval spravne */
     $.ajaxSetup({
@@ -454,6 +458,63 @@ $(document).ready(function() {
                     location.reload();
                 }
             });
+        }
+    });
+
+    // skontrolujeme ci administrator zadave spravne udaje pri pridavani zamestnanca
+    $('#submit-new-emp-button').click(function () {
+        $town_id = $('#psc').val();
+        $town_name = $('#town').val();
+        $country_id = $('#country_id').val();
+
+            $.ajax({
+                type: "POST",
+                url: "../profile/checkDataProfile",
+                dateType: 'json',
+                data: {town_id: $town_id, town_name: $town_name, country_id: $country_id},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult[0].result == 0) {
+                        $('.error-new-emp-div').show();
+                        $('#error-new-emp-msg').text('Zadávate zlé hodnoty do polí ( Štát, Mesto alebo PSČ ).');
+                        return false;
+                    }
+                    alert('Úspešne ste vytvorili nového zamestnanca.');
+                    $('#new-employee-id').submit();
+                }
+            });
+        $('.error-new-emp-div').hide();
+    });
+
+    // dotiahnem zamestnanca na zaklade RC aby ho administrator mohol updatnut
+    $('#update-rc').change(function () {
+        $rc = $('#update-rc').val();
+        $haha = $('#town').val();
+
+        if($rc != "") {
+            $.ajax({
+                type: "POST",
+                url: "update-employee/getEmployeeData",
+                dateType: 'json',
+                data: {rc: $rc},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    $('#town').val($dataResult[0].town_name);
+                    $('#psc').val($dataResult[0].town_id);
+                    $('#name').val($dataResult[0].first_name);
+                    $('#surname').val($dataResult[0].last_name);
+                    $('#street').val($dataResult[0].street);
+                    $('#orientation_no').val($dataResult[0].orientation_no);
+                    $('#position').val($dataResult[0].work_position);
+                    $('#hour_start').val($dataResult[0].working_hour_start);
+                    $('#hour_end').val($dataResult[0].working_hour_end);
+                    $('#price_per_hour').val($dataResult[0].price_per_hour);
+
+                    $('.update-emp').show();
+                }
+            });
+        } else {
+            $('.update-emp').hide();
         }
     });
 

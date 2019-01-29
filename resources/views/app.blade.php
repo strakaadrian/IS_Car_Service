@@ -69,10 +69,7 @@
         </div>
 </nav>
 
-
 @yield('content')
-
-
 
 <footer class="container-fluid text-center home-block footer">
     <a href="#top"><i class="fa fa-angle-up fa-3x "></i></a>

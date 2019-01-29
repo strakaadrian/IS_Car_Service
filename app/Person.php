@@ -40,4 +40,16 @@ class Person extends Model
         return DB::select("call update_customer(?, ?, ?, ?, ?, ?, ?, ?)",[$country_id, $town_name, $psc, $first_name, $last_name, $street, $orientation_no, Auth::user()->id]);
     }
 
+    /**
+     * Funkcia zistí či daná osoba v systéme už existuje
+     *
+     * @param $identification_no
+     * @return mixed
+     */
+    public function checkExistingPerson($identification_no) {
+        $result = Person::where('identification_no', $identification_no)->get();
+
+        return $result;
+    }
+
 }

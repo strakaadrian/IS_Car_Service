@@ -62,8 +62,15 @@ Route::get('orders','CustomerOrderController@index')->middleware('auth.basic');
 Route::get('order-to-pdf/{id}','CustomerOrderController@getOrderToPDF')->middleware('auth.basic');
 
 //ADMINISTRATION
-Route::get('administration','AdministrationController@index')->middleware('auth.basic','admin');
+Route::get('administration','AdministrationController@index');
+Route::get('administration/add-employee', 'AdministrationController@addEmployee');
+Route::get('administration/terminate-employee', 'AdministrationController@getEmployeeRc');
+Route::get('administration/update-employee', 'AdministrationController@updateEmployee');
 
+//administration EMPLOYEE
+Route::post('administration/add-employee/new-employee', 'AdministrationController@createEmployee');
+Route::post('administration/terminate-employee/terminate', 'AdministrationController@terminateEmployee');
+Route::post('administration/update-employee/getEmployeeData', 'AdministrationController@getEmployeeData');
 
 
 Auth::routes(['verify' => true]);
