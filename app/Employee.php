@@ -84,10 +84,62 @@ class Employee extends Model
         $employee = Employee::where('employee.identification_no',$rc)
             ->join('person','person.identification_no', '=', 'employee.identification_no')
             ->join('town','town.town_id', '=', 'person.town_id')
-            ->select('town.town_name', 'town.town_id', 'person.first_name','person.last_name', 'person.street','person.orientation_no','employee.work_position','employee.working_hour_start','employee.working_hour_end','employee.price_per_hour')
+            ->select('town.country_id','town.town_name', 'town.town_id', 'person.first_name','person.last_name', 'person.street','person.orientation_no','employee.work_position','employee.working_hour_start','employee.working_hour_end','employee.price_per_hour')
             ->get();
 
         return $employee;
+    }
+
+    /**
+     *Funkcia, ktorá aktualizuje zamestnanca na základe identification_no
+     */
+    public function updateEmployee($identification_no, $country_id, $town_id, $town_name, $first_name, $last_name, $street, $orientation_no, $work_position, $working_hour_start, $working_hour_end, $price_per_hour) {
+        return DB::select("call update_employee(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",[$identification_no,$country_id,$town_id,$town_name,$first_name,$last_name,$street,$orientation_no,$work_position,$working_hour_start,$working_hour_end,$price_per_hour]);
+    }
+
+    /**
+     * Funkcia, ktorá vrati ICO firmy kde pracuje administrátor
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function getAdminCompany($id) {
+        $ico = Customer::where('customer.user_id', $id)
+            ->join('person','person.identification_no', '=', 'customer.identification_no')
+            ->join('employee', 'employee.identification_no', '=' , 'person.identification_no')
+            ->select('employee.ico')
+            ->get();
+
+        return $ico;
+    }
+
+    /**
+     * Funkcia, ktorá vráti zamestnancov danej firmy na základe ICO
+     *
+     * @param $ico
+     * @return mixed
+     */
+    public function getEmployeeByIco($ico) {
+        $employees = Employee::where('ico',$ico)
+            ->join('person','person.identification_no', '=', 'employee.identification_no')
+            ->select('person.first_name', 'person.last_name', 'employee.identification_no')
+            ->get();
+
+        return $employees;
+    }
+
+    /**
+     * Funckia vráti všetkych zamestnancov firiem
+     *
+     * @return mixed
+     */
+    public function getAllEmployees() {
+        $employees =  DB::table('employee')
+            ->join('person','person.identification_no', '=', 'employee.identification_no')
+            ->select('person.first_name', 'person.last_name', 'employee.identification_no')
+            ->get();
+
+        return $employees;
     }
 
 }

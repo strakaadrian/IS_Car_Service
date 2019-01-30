@@ -20,7 +20,7 @@
                 @endforeach
             </select>
 
-            {!! Form::label('termination_date', 'Dátum ukončenia pracovného pomeru:' , 'required') !!}
+            {!! Form::label('termination_date', 'Dátum ukončenia pracovného pomeru:') !!}
             <div class="hours-box">
                 {!! Form::date('termination_date',null, array('class'=>'form-control hours-box', 'required')) !!}
             </div>

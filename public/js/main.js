@@ -499,6 +499,7 @@ $(document).ready(function() {
                 data: {rc: $rc},
                 success: function (data) {
                     $dataResult = JSON.parse(data);
+                    $('#country_id').val($dataResult[0].country_id);
                     $('#town').val($dataResult[0].town_name);
                     $('#psc').val($dataResult[0].town_id);
                     $('#name').val($dataResult[0].first_name);

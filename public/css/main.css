@@ -63,7 +63,7 @@ body, html {
 }
 
 /* toto mi zabezpecuje aby ked je mesnia obrazovka ako 1200px sa mi collapsol navbar */
-@media only screen and (max-width : 1200px) {
+@media only screen and (max-width : 1270px) {
 
     .navbar-header {
         float: none;
@@ -481,15 +481,18 @@ tbody tr:hover {
 
 .sidebar {
     background-color: #2f2f2f;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    border-radius: 25px;
+    padding: 3% 3% 3% 3%;
+    margin: 5% 0% 10% 3%;
+    box-shadow: 10px 10px 5px grey;
 }
 
 .sidebar a {
     padding: 2% 2% 2% 5%;
+    margin-bottom: 2%;
     text-decoration: none;
     font-size: 20px;
-    color: #D3D3D3;
+    color: white;
     display: block;
 }
 
@@ -503,6 +506,12 @@ tbody tr:hover {
 .sidebar a:active {
     color: #2f2f2f;
     background-color: #D3D3D3;
+    border-radius: 25px;
+    -o-transition:color .2s ease-out, background 1s ease-in;
+    -ms-transition:color .2s ease-out, background 1s ease-in;
+    -moz-transition:color .2s ease-out, background 1s ease-in;
+    -webkit-transition:color .2s ease-out, background 1s ease-in;
+    transition:color .2s ease-out, background 1s ease-in;
 }
 
 
@@ -524,6 +533,23 @@ tbody tr:hover {
     color: #2f2f2f;
 }
 
+@media only screen and (max-width : 991px) {
+    .admin-body {
+        margin-left: 5%;
+    }
+
+}
+
+.dropdown-admin {
+    border-radius: 25px;
+    padding: 2% 2% 2% 2%;
+    background-color: #2f2f2f;
+    box-shadow: 0px 7px 5px -2px #D3D3D3, 7px 0px 5px -2px #2f2f2f, -7px 0px 5px -2px #D3D3D3;
+}
+
+.dropdown-admin li {
+    border-radius: 25px;
+}
 
 
 /* ADMIN BODY END */

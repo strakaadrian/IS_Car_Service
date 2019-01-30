@@ -14,6 +14,7 @@
                             <li><a href="{{url('administration/add-employee')}}"> Pridaj zamestnanca </a></li>
                             <li><a href="{{url('administration/update-employee')}}"> Aktualizuj zamestnanca </a></li>
                             <li><a href="{{url('administration/terminate-employee')}}"> Ukonči p. pomer </a></li>
+                            <li><a href="{{url('administration/absence')}}"> Správa absencii </a></li>
                         </ul>
                     </li>
                     <li><a href="#">Explore</a></li>

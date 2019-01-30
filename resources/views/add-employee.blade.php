@@ -57,29 +57,29 @@
         </div>
 
         {!! Form::label('ico', 'Firma:') !!}
-        {!! Form::select('ico', $car_service ,null, ['class' => 'form-control', 'required']); !!}
+        {!! Form::select('ico', $car_service ,null, ['class' => 'form-control']); !!}
 
         <div class="small-box">
             {!! Form::label('position', 'Pracovná pozícia:') !!}
-            {!! Form::select('position', array( 'administrativa' => 'administrativa' , 'mechanik' => 'mechanik' , 'elektrotechnik' => 'elektrotechnik', 'karosar' => 'karosar', 'lakyrnik' => 'lakyrnik'), null, array('class'=>'form-control' , 'required')) !!}
+            {!! Form::select('position', array( 'administrativa' => 'administrativa' , 'mechanik' => 'mechanik' , 'elektrotechnik' => 'elektrotechnik', 'karosar' => 'karosar', 'lakyrnik' => 'lakyrnik'), null, array('class'=>'form-control')) !!}
         </div>
 
         {!! Form::label('hour_start', 'Hodina, nástupu do práce:') !!}
         <div class="hours-box">
-            {!! Form::select('hour_start', array( 7 => 7 , 8 => 8 , 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17), null, array('class'=>'form-control' , 'required')) !!}
+            {!! Form::select('hour_start', array( 7 => 7 , 8 => 8 , 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17), null, array('class'=>'form-control')) !!}
         </div>
 
         {!! Form::label('hour_end', 'Hodina, ukončenia práce:') !!}
         <div class="hours-box">
-            {!! Form::select('hour_end', array( 7 => 7 , 8 => 8 , 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17), null, array('class'=>'form-control' , 'required')) !!}
+            {!! Form::select('hour_end', array( 7 => 7 , 8 => 8 , 9 => 9, 10 => 10, 11 => 11, 12 => 12, 13 => 13, 14 => 14, 15 => 15, 16 => 16, 17 => 17), null, array('class'=>'form-control' ,)) !!}
         </div>
 
         {!! Form::label('price_per_hour', 'Cena práce za hodinu:') !!}
         <div class="hours-box">
-            {!! Form::number('price_per_hour',null, array('class'=>'form-control' , 'required')) !!}
+            {!! Form::number('price_per_hour',null, array('class'=>'form-control' , 'required', 'step' => '0.01')) !!}
         </div>
 
-        {!! Form::label('termination_date', 'Dátum ukončenia pracovného pomeru:' , 'required') !!}
+        {!! Form::label('termination_date', 'Dátum ukončenia pracovného pomeru:') !!}
         <div class="hours-box">
             {!! Form::date('termination_date',null, array('class'=>'form-control hours-box', 'required')) !!}
         </div>

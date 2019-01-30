@@ -34,14 +34,11 @@ class AdministrationController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function addEmployee() {
+        $service = new CarService;
         $countries = Country::all('country_id','country_name');
 
         if(Auth::user()->isAdmin()) {
-            $car_service = Customer::where('customer.user_id', Auth::user()->id)
-                ->join('person','person.identification_no', '=', 'customer.identification_no')
-                ->join('employee', 'employee.identification_no', '=' , 'person.identification_no')
-                ->join('car_service', 'employee.ico', '=', 'car_service.ico')
-                ->pluck('car_service.service_name','car_service.ico');
+            $car_service = $service->getEmpCarService(Auth::user()->id);
         } else {
             $car_service = CarService::pluck('service_name','ico');
         }
@@ -65,23 +62,14 @@ class AdministrationController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getEmployeeRc() {
+        $emp = new Employee;
 
         if(Auth::user()->isAdmin()) {
-            $ico = Customer::where('customer.user_id', Auth::user()->id)
-                ->join('person','person.identification_no', '=', 'customer.identification_no')
-                ->join('employee', 'employee.identification_no', '=' , 'person.identification_no')
-                ->select('employee.ico')
-                ->get();
+            $ico = $emp->getAdminCompany(Auth::user()->id);
 
-            $employees = Employee::where('ico',$ico[0]->ico)
-                ->join('person','person.identification_no', '=', 'employee.identification_no')
-                ->select('person.first_name', 'person.last_name', 'employee.identification_no')
-                ->get();
+            $employees = $emp->getEmployeeByIco($ico[0]->ico);
         } else {
-            $employees =  DB::table('employee')
-                ->join('person','person.identification_no', '=', 'employee.identification_no')
-                ->select('person.first_name', 'person.last_name', 'employee.identification_no')
-                ->get();
+            $employees =  $emp->getAllEmployees();
         }
 
         return view('terminate-emp', compact('employees'));
@@ -101,31 +89,25 @@ class AdministrationController extends Controller
         return redirect('administration');
     }
 
+    /**
+     * Funkcia, ktora aktualize udaje o zamestnancovi
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function updateEmployee() {
+        $emp = new Employee;
+        $service = new CarService;
         $countries = Country::all('country_id','country_name');
 
+
         if(Auth::user()->isAdmin()) {
-            $ico = Customer::where('customer.user_id', Auth::user()->id)
-                ->join('person','person.identification_no', '=', 'customer.identification_no')
-                ->join('employee', 'employee.identification_no', '=' , 'person.identification_no')
-                ->select('employee.ico')
-                ->get();
+            $ico = $emp->getAdminCompany(Auth::user()->id);
 
-            $employees = Employee::where('ico',$ico[0]->ico)
-                ->join('person','person.identification_no', '=', 'employee.identification_no')
-                ->select('person.first_name', 'person.last_name', 'employee.identification_no')
-                ->get();
+            $employees = $emp->getEmployeeByIco($ico[0]->ico);
 
-            $car_service = Customer::where('customer.user_id', Auth::user()->id)
-                ->join('person','person.identification_no', '=', 'customer.identification_no')
-                ->join('employee', 'employee.identification_no', '=' , 'person.identification_no')
-                ->join('car_service', 'employee.ico', '=', 'car_service.ico')
-                ->pluck('car_service.service_name','car_service.ico');
+            $car_service = $service->getEmpCarService(Auth::user()->id);
         } else {
-            $employees =  DB::table('employee')
-                ->join('person','person.identification_no', '=', 'employee.identification_no')
-                ->select('person.first_name', 'person.last_name', 'employee.identification_no')
-                ->get();
+            $employees =  $emp->getAllEmployees();
 
             $car_service = CarService::pluck('service_name','ico');
         }
@@ -144,5 +126,38 @@ class AdministrationController extends Controller
 
         echo json_encode($result);
     }
+
+    /**
+     *Funkcia, ktorá aktualizuje údaje o zamestnancovi / spravuje ju administrátor
+     *
+     *
+     */
+    public function updateEmployeeData(Request $request) {
+        $employee = new Employee;
+        $employee->updateEmployee($request->rc,$request->country_id, $request->psc, $request->town, $request->name, $request->surname, $request->street, $request->orientation_no, $request->position, $request->hour_start, $request->hour_end, $request->price_per_hour);
+
+        return redirect('administration/update-employee');
+    }
+
+    /**
+     * Funkcia, ktora vrati menu spravovania absencii
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function absence() {
+        $emp = new Employee;
+
+        if(Auth::user()->isAdmin()) {
+            $ico = $emp->getAdminCompany(Auth::user()->id);
+
+            $employees = $emp->getEmployeeByIco($ico[0]->ico);
+        } else {
+            $employees =  $emp->getAllEmployees();
+        }
+        return view('absence', compact('employees'));
+    }
+
+
+
 
 }

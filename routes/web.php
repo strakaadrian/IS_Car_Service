@@ -66,11 +66,14 @@ Route::get('administration','AdministrationController@index');
 Route::get('administration/add-employee', 'AdministrationController@addEmployee');
 Route::get('administration/terminate-employee', 'AdministrationController@getEmployeeRc');
 Route::get('administration/update-employee', 'AdministrationController@updateEmployee');
+Route::get('administration/absence', 'AdministrationController@absence');
 
 //administration EMPLOYEE
 Route::post('administration/add-employee/new-employee', 'AdministrationController@createEmployee');
 Route::post('administration/terminate-employee/terminate', 'AdministrationController@terminateEmployee');
 Route::post('administration/update-employee/getEmployeeData', 'AdministrationController@getEmployeeData');
+Route::post('administration/update-employee/updateEmployeeData', 'AdministrationController@updateEmployeeData');
+
 
 
 Auth::routes(['verify' => true]);
