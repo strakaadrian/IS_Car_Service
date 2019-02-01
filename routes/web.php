@@ -68,11 +68,16 @@ Route::get('administration/terminate-employee', 'AdministrationController@getEmp
 Route::get('administration/update-employee', 'AdministrationController@updateEmployee');
 Route::get('administration/absence', 'AdministrationController@absence');
 
+
+
 //administration EMPLOYEE
 Route::post('administration/add-employee/new-employee', 'AdministrationController@createEmployee');
 Route::post('administration/terminate-employee/terminate', 'AdministrationController@terminateEmployee');
 Route::post('administration/update-employee/getEmployeeData', 'AdministrationController@getEmployeeData');
 Route::post('administration/update-employee/updateEmployeeData', 'AdministrationController@updateEmployeeData');
+Route::post('administration/absence/employee/employeeAbsence', 'AdministrationController@employeeAbsence');
+Route::post('administration/absence/employee/deleteEmployeeAbsence', 'AbsenceController@deleteEmployeeAbsence');
+Route::post('administration/absence/employee/addAbsence', 'AbsenceController@addAbsence');
 
 
 

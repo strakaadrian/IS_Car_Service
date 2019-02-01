@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -140,6 +141,18 @@ class Employee extends Model
             ->get();
 
         return $employees;
+    }
+
+    /**
+     * Funkcia dotiahne  id absencia a od kedy do kedy plati pre daneho uzivatela
+     *
+     * @param $rc
+     * @return mixed
+     */
+    public function getEmpAbsence($rc) {
+        $absence = DB::select( DB::raw("SELECT a.absence_id, a.absence_from, a.absence_to   FROM   absence a   JOIN   employee e ON (a.hire_date = e.hire_date AND e.ico = a.ico AND  a.identification_no = e.identification_no) WHERE   e.identification_no = ? AND (e.termination_date > sysdate() OR e.termination_date IS NULL)  AND a.absence_to > sysdate() ORDER BY absence_from"),  [$rc]);
+
+        return $absence;
     }
 
 }

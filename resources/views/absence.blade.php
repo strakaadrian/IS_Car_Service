@@ -9,16 +9,21 @@
             <hr class="blackHR">
         </div>
 
-        {{ Form::open() }}
+        {{ Form::open()}}
         <div class="medium-box">
 
-            {!! Form::Label('rc', 'Vyberte si zamestnanca:') !!}
-            <select class="form-control" name="rc" id="rc">
+            {!! Form::Label('absence-employee', 'Vyberte si zamestnanca:') !!}
+            <select class="form-control " name="rc" id="absence-employee">
+                <option> Vyberte si zamestnanca...</option>
                 @foreach($employees as $employee)
                     <option  value="{{$employee->identification_no}}">{{ $employee->identification_no }} - {{ $employee->first_name  }} {{ $employee->last_name  }}</option>
                 @endforeach
             </select>
         </div>
         {{ Form::close() }}
+
+        <div id="absence-extension">
+
+        </div>
     </div>
 @endsection

@@ -17,7 +17,6 @@ $(document).ready(function() {
     $('.update-emp').hide();
 
 
-
     /* toto tu je potrebne aby ajax POST fungoval spravne */
     $.ajaxSetup({
         headers: {
@@ -518,6 +517,76 @@ $(document).ready(function() {
             $('.update-emp').hide();
         }
     });
+
+
+    // funkcia, ktora zobrazi absencie daneho zamestnanca
+    $("#absence-employee").change(function() {
+
+        $rc = $('#absence-employee').val();
+
+        if($rc != "") {
+            $.ajax({
+                type: "POST",
+                url: "absence/employee/employeeAbsence",
+                dateType: 'json',
+                data: {rc: $rc},
+                success: function (data) {
+                    $('#absence-extension').html(data.html);
+                }
+            });
+        }
+    });
+
+    // funkcia, ktora zmaze danu absenciu zamestnanca
+    $('body').on('click','.absence-delete-button',function(){
+        $absence_id = parseInt($(this).attr('value'));
+
+        if(confirm('Prajete si zrušiť absenciu zamestnancovi ?')) {
+            $.ajax({
+                type: "POST",
+                url: "absence/employee/deleteEmployeeAbsence",
+                dateType: 'json',
+                data: {absence_id: $absence_id},
+                success: function (data) {
+                    $("#absence-employee").trigger("change");
+                }
+            });
+        }
+    });
+
+    // funkcia, ktora zmaze danu absenciu zamestnanca
+    $('body').on('click','#submit-absence-button',function(){
+        $rc = $('#absence-employee').val();
+        $absence_from = $('#absence_from').val();
+        $absence_to = $('#absence_to').val();
+
+        $dateFrom = new Date($absence_from);
+        $dateTo = new Date($absence_to);
+
+        if( ($absence_from == "") || ($absence_to == "") ) {
+            $('#error-absence-msg').text('Prosím vyplnte oba formuláre dátum absencie.');
+            $('.error-absence-div').show();
+            return false;
+        } else if($dateFrom > $dateTo) {
+            $('#error-absence-msg').text('Dátum začiatku absencie musí býť menši alebo rovný ako dátum ukončenia absencie.');
+            $('.error-absence-div').show();
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "absence/employee/addAbsence",
+                dateType: 'json',
+                data: {identification_no: $rc, absence_from: $absence_from, absence_to: $absence_to},
+                success: function (data) {
+                    $("#absence-employee").trigger("change");
+                    $('.error-absence-div').hide();
+                }
+            });
+
+        }
+    });
+
+
 
 
 });

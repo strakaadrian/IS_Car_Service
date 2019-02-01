@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\CarService;
 use App\Country;
-use App\Customer;
 use App\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+
 
 class AdministrationController extends Controller
 {
@@ -157,7 +156,22 @@ class AdministrationController extends Controller
         return view('absence', compact('employees'));
     }
 
+    /**
+     * Funckia, ktora dotiahne zamestnancove absenice a nasledne zavola view kam ich vypise
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function employeeAbsence(Request $request) {
+        $emp = new Employee;
+        $emp_absence = $emp->getEmpAbsence($request->rc);
 
+        $identification_no = $request->rc;
+
+        $outputView =  view('absence-emp',compact('emp_absence','identification_no'))->render();
+        return response()->json(['html'=>$outputView]);
+    }
 
 
 }
