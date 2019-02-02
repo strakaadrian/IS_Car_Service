@@ -84,10 +84,10 @@
             {!! Form::date('termination_date',null, array('class'=>'form-control hours-box', 'required')) !!}
         </div>
 
-        <div class="alert alert-danger error-new-emp-div" role="alert">
+        <div class="alert alert-danger error error-new-emp-div" role="alert">
             <p id="error-new-emp-msg"></p>
         </div>
-        <div class="text-center new-emp-submit ">
+        <div class="text-center submit-div-button new-emp-submit ">
             <button id="submit-new-emp-button" type="button" class="btn btn-warning btn-lg">Odošli formulár</button>
         </div>
     </div>

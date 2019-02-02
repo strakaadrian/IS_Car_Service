@@ -586,6 +586,108 @@ $(document).ready(function() {
         }
     });
 
+    // prida noveho zakaznika
+    $('#submit-new-cust-button').click(function () {
+        $town_id = $('#psc').val();
+        $town_name = $('#town').val();
+        $country_id = $('#country_id').val();
+        $rc = $('#rc').val();
+
+        if($('#town').val() == '') {
+            $('.error-new-cust-div').show();
+            $('#error-new-cust-msg').text('Zadajte hodnotu do pola - Mesto');
+            return false;
+        } else if ($('#psc').val()  == '') {
+            $('.error-new-cust-div').show();
+            $('#error-new-cust-msg').text('Zadajte hodnotu do pola - PSČ');
+            return false;
+        } else if ($('#rc').val()  == '') {
+            $('.error-new-cust-div').show();
+            $('#error-new-cust-msg').text('Zadajte hodnotu do pola - Rodné číslo');
+            return false;
+        } else if ($('#name').val()  == '') {
+            $('.error-new-cust-div').show();
+            $('#error-new-cust-msg').text('Zadajte hodnotu do pola - Meno');
+            return false;
+        } else if ($('#surname').val()  == '') {
+            $('.error-new-cust-div').show();
+            $('#error-new-cust-msg').text('Zadajte hodnotu do pola - Priezvisko');
+            return false;
+        } else if ($('#street').val()  == '') {
+            $('.error-new-cust-div').show();
+            $('#error-new-cust-msg').text('Zadajte hodnotu do pola - Ulica');
+            return false;
+        } else if ($('#orientation_no').val()  == '') {
+            $('.error-new-cust-div').show();
+            $('#error-new-cust-msg').text('Zadajte hodnotu do pola - Číslo domu');
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "add-customer/checkData",
+                dateType: 'json',
+                data: {town_id: $town_id, town_name: $town_name, country_id: $country_id, rc: $rc},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult == "bad town") {
+                        $('.error-new-cust-div').show();
+                        $('#error-new-cust-msg').text('Zadávate zlé hodnoty do polí ( Štát, Mesto alebo PSČ ).');
+                        return false;
+                    } else if ($dataResult == "duplicate") {
+                        $('.error-new-cust-div').show();
+                        $('#error-new-cust-msg').text('Zákazník už existuje. ');
+                        return false;
+                    } else {
+                        alert('Úspešne ste pridali zákazníka.');
+                        $('#new-customer-id').submit();
+                    }
+                }
+            });
+        }
+        $('.error-new-cust-div').hide();
+    });
+
+
+    // zmažeme danu rezerváciu
+    $('.reservation-delete-admin').click(function () {
+        $reservation_id = this.id;
+
+        if(confirm('Prajete si zmazať rezerváciu ?')) {
+            $.ajax({
+                type: "POST",
+                url: "admin-reservations/deleteReservation",
+                dateType: 'json',
+                data: {reservation_id: $reservation_id},
+                success: function (data) {
+                    location.reload();
+                }
+            });
+        }
+    });
+
+
+    // funkcia, ktora dotiahne pocet hodin na danej rezervacii
+    $(".complete-reservation-id").change(function() {
+        $reservation_id = parseInt($('#reservation_id').val());
+
+            if(!isNaN($reservation_id)) {
+                $.ajax({
+                    type: "POST",
+                    url: "admin-reservations/getWorkHours",
+                    dateType: 'json',
+                    data: {reservation_id: $reservation_id},
+                    success: function (data) {
+                        $dataResult = JSON.parse(data);
+                        $('.complete-reservation-hours').val($dataResult[0].work_hours);
+                    }
+                });
+            } else {
+                $('.complete-reservation-hours').val("");
+            }
+    });
+
+
+
 
 
 

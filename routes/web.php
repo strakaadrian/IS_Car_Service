@@ -79,6 +79,15 @@ Route::post('administration/absence/employee/employeeAbsence', 'AdministrationCo
 Route::post('administration/absence/employee/deleteEmployeeAbsence', 'AbsenceController@deleteEmployeeAbsence');
 Route::post('administration/absence/employee/addAbsence', 'AbsenceController@addAbsence');
 
+//administration CUSTOMER
+Route::get('administration/add-customer', 'CustomerController@addCustomer');
+Route::post('administration/add-customer/new-customer', 'CustomerController@createCustomer');
+Route::post('administration/add-customer/checkData', 'CustomerController@checkData');
+Route::get('administration/admin-reservations', 'ReservationController@adminReservations');
+Route::post('administration/admin-reservations/deleteReservation', 'ReservationController@deleteReservation');
+Route::post('administration/admin-reservations/getWorkHours', 'ReservationController@getWorkHours');
+Route::post('administration/admin-reservations/realizeReservation', 'ReservationController@realizeReservation');
+
 
 
 Auth::routes(['verify' => true]);

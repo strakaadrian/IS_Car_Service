@@ -21,14 +21,16 @@
                 </thead>
                 <tbody>
                     @foreach($reserv as $reservation)
-                        <tr>
-                            <td class="text-center service-row"> {{ $reservation->service_name }} </td>
-                            <td class="text-center service-row"> {{ $reservation->repair_date }} </td>
-                            <td class="text-center service-row"> {{ $reservation->name }} </td>
-                            @if($reserModel->checkReservationDate($reservation->reservation_id)[0]->result)
-                                <td class="text-center service-row"><button type="button" id="{{$reservation->reservation_id}}" class="btn btn-default btn-lg reservation-delete-button" name="reservation-delete"  value="">  <i class="fa fa-trash"></i> Zruš </button></td>
-                            @endif
-                        </tr>
+                        @if($reservation->status != 'zrealizovana')
+                            <tr>
+                                <td class="text-center service-row"> {{ $reservation->service_name }} </td>
+                                <td class="text-center service-row"> {{ $reservation->repair_date }} </td>
+                                <td class="text-center service-row"> {{ $reservation->name }} </td>
+                                @if($reserModel->checkReservationDate($reservation->reservation_id)[0]->result)
+                                    <td class="text-center service-row"><button type="button" id="{{$reservation->reservation_id}}" class="btn btn-default btn-lg reservation-delete-button" name="reservation-delete"  value="">  <i class="fa fa-trash"></i> Zruš </button></td>
+                                @endif
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>

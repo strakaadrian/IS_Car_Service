@@ -28,10 +28,10 @@
         {!! Form::label('absence_to', 'Koniec absencie:') !!}
         {!! Form::date('absence_to',null, ['class' => 'form-control hours-box', 'required']) !!}
 
-        <div class="alert alert-danger error-absence-div" role="alert">
+        <div class="alert alert-danger error error-absence-div" role="alert">
             <p id="error-absence-msg"></p>
         </div>
-        <div class="text-center absence-submit ">
+        <div class="text-center submit-div-button absence-submit ">
             <button id="submit-absence-button" type="button" class="btn btn-warning btn-lg">Pridaj absenciu</button>
         </div>
     </div>

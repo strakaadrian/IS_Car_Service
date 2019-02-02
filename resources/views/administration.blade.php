@@ -17,7 +17,14 @@
                             <li><a href="{{url('administration/absence')}}"> Správa absencii </a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Explore</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Správa zákazníkov
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu dropdown-admin" style="color: black">
+                            <li><a href="{{url('administration/add-customer')}}"> Vytvor zákazníka </a></li>
+                            <li><a href="{{url('administration/admin-reservations')}}"> Rezervácie</a></li>
+                        </ul>
+                    </li>
                     <li><a href="#">Users</a></li>
                     <li><a href="#">Sign Out</a></li>
                 </ul>

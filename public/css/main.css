@@ -560,14 +560,27 @@ tbody tr:hover {
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
-.error-absence-div {
+.error {
     display: none;
     margin-top: 3%;
 }
 
-.absence-submit {
+.submit-div-button {
     margin-top: 3%;
     margin-bottom: 3%;
+}
+
+.admin-reservation-table {
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.admin-reservation-table {
+    display: block;
+    margin-bottom: 5%;
+    max-height: 400px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 
