@@ -61,8 +61,11 @@ class Cart extends Model
      *
      * @return array
      */
-    public function confirmItemsInCart() {
-        return DB::select("call confirm_shopping_cart(?)",[Auth::user()->id]);
+    public function confirmItemsInCart($order_id) {
+        if($order_id == "") {
+            return DB::select("call confirm_shopping_cart(?, ?)",[Auth::user()->id,null]);
+        } else {
+            return DB::select("call confirm_shopping_cart(?, ?)",[Auth::user()->id,$order_id]);
+        }
     }
-
 }

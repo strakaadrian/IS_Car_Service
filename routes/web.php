@@ -49,7 +49,7 @@ Route::get('cart','CartController@index')->middleware('auth.basic');
 Route::post('cart/updateDataInShoppingCart', 'CartController@updateDataInShoppingCart');
 Route::post('cart/deleteItemFromCart', 'CartController@deleteItemFromCart');
 Route::post('cart/addItemToShoppingCart', 'CartController@addItemToShoppingCart')->middleware('auth.basic');
-Route::get('cart/confirmShoppingCart', 'CartController@confirmShoppingCart');
+Route::post('cart/confirmShoppingCart', 'CartController@confirmShoppingCart');
 
 // PRODUCTS
 Route::get('products','ProductController@index');
@@ -88,7 +88,10 @@ Route::post('administration/admin-reservations/deleteReservation', 'ReservationC
 Route::post('administration/admin-reservations/getWorkHours', 'ReservationController@getWorkHours');
 Route::post('administration/admin-reservations/realizeReservation', 'ReservationController@realizeReservation');
 
-
+//administration CAR PARTS
+Route::get('administration/watch-car-parts', 'CarPartsController@watchCarParts')->middleware('warehouse');
+Route::post('administration/watch-car-parts/updateCarParts', 'CarPartsController@updateCarParts')->middleware('warehouse');
+Route::post('administration/watch-car-parts/getCarPartStock','CarPartsController@getCarPartStock')->middleware('warehouse');
 
 Auth::routes(['verify' => true]);
 

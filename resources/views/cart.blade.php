@@ -34,6 +34,16 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="hours-box">
+                    @if(!Auth::guest())
+                        @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
+                            {!! Form::Label('order_id', 'Id objednávky:') !!}
+                            {!! Form::number('order_id', $value = null, ['class' => 'form-control', 'required', 'id' => 'order_id_form']); !!}
+                        @endif
+                    @endif
+                </div>
+
+
                 {{ Form::close() }}
 
                 <div class="alert alert-danger  shopping-cart-error" role="alert">

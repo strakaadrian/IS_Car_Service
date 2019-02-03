@@ -25,6 +25,16 @@
                             <li><a href="{{url('administration/admin-reservations')}}"> Rezervácie</a></li>
                         </ul>
                     </li>
+                    @if(!Auth::guest())
+                        @if(Auth::user()->isSuperAdmin() && Auth::user()->isWareHouse())
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Správa súčiastok <span class="caret"></span></a>
+                                <ul class="dropdown-menu dropdown-admin" style="color: black">
+                                    <li><a href="{{url('administration/watch-car-parts')}}"> Stav na sklade </a></li>
+                                </ul>
+                            </li>
+                        @endif
+                    @endif
                     <li><a href="#">Users</a></li>
                     <li><a href="#">Sign Out</a></li>
                 </ul>

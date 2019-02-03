@@ -58,8 +58,8 @@ class CartController extends Controller
     /**
      *Funkcia, ktorá potvrdí obsah nákupného košika
      */
-    public function confirmShoppingCart() {
+    public function confirmShoppingCart(Request $request) {
         $shopping_cart = new Cart;
-        $shopping_cart->confirmItemsInCart();
+        $shopping_cart->confirmItemsInCart($request->order_id);
     }
 }

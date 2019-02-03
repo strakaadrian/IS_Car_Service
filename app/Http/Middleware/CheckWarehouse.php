@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckAdmin
+class CheckWarehouse
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class CheckAdmin
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin()) {
+        if(Auth::user()->isSuperAdmin() && Auth::user()->isWareHouse()) {
             return $next($request);
         } else {
             return redirect('home');

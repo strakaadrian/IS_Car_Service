@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CarPart;
 use App\CarService;
 use App\Country;
 use App\Employee;
@@ -24,6 +25,7 @@ class AdministrationController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
+
         return view('admin-home');
     }
 

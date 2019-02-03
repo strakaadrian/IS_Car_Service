@@ -429,10 +429,14 @@ $(document).ready(function() {
     // funkcia, ktorá sa spustí ak chce užívateľ potvrdiť obsah košíka
     $("#confirm-shopping-cart").click(function() {
 
+        $order_id = $('#order_id_form').val();
+
         if(confirm("Prajete si zaplatiť obsah košíka ?")) {
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: "cart/confirmShoppingCart",
+                dateType: 'json',
+                data: {order_id: $order_id},
                 success: function () {
                     confirm("Úspešne ste potvrdili obsah košíka.");
                     window.location.href = "/";
@@ -686,8 +690,25 @@ $(document).ready(function() {
             }
     });
 
+    // funkcia, ktora dotiahne pocet kusov danej suciastky na sklade
+    $(".car-part-id-update").change(function() {
+        $car_part_id = parseInt($('#car_part_id').val());
 
-
+        if(!isNaN($car_part_id)) {
+            $.ajax({
+                type: "POST",
+                url: "watch-car-parts/getCarPartStock",
+                dateType: 'json',
+                data: {car_part_id: $car_part_id},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    $('.stock-car-part').val($dataResult[0].stock);
+                }
+            });
+        } else {
+            $('.stock-car-part').val("");
+        }
+    });
 
 
 

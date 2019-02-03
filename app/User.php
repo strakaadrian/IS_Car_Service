@@ -53,6 +53,11 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * Super admin spravuje vsetky firmy
+     *
+     * @return bool
+     */
     public function isSuperAdmin() {
         if(Auth::guest()) {
             return false;
@@ -60,6 +65,21 @@ class User extends Authenticatable
             return UserRole::where([
                 ['user_id', Auth::user()->id],
                 ['role_id', 2]])->exists();
+        }
+    }
+
+    /**
+     * CI je super admin aj skladníkom
+     *
+     * @return bool
+     */
+    public function isWareHouse() {
+        if(Auth::guest()) {
+            return false;
+        } else {
+            return UserRole::where([
+                ['user_id', Auth::user()->id],
+                ['role_id', 3]])->exists();
         }
     }
 

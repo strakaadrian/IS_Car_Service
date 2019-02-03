@@ -583,6 +583,36 @@ tbody tr:hover {
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
+.car_part_out {
+    background-color: #ff6666 !important;
+}
+
+.car_part_low {
+    background-color: #ffed4a !important;
+}
+
+.admin-watch-parts {
+    display: block;
+    margin-bottom: 5%;
+    max-height: 700px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+#car_part_body  tr{
+    background-color:transparent;
+}
+
+#car_part_body  tr:hover {
+    background-color:transparent;
+    color: #2f2f2f;
+}
+
+
+
+
+
+
 
 /* ADMIN BODY END */
 
