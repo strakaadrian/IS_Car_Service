@@ -92,6 +92,16 @@ Route::post('administration/admin-reservations/realizeReservation', 'Reservation
 Route::get('administration/watch-car-parts', 'CarPartsController@watchCarParts')->middleware('warehouse');
 Route::post('administration/watch-car-parts/updateCarParts', 'CarPartsController@updateCarParts')->middleware('warehouse');
 Route::post('administration/watch-car-parts/getCarPartStock','CarPartsController@getCarPartStock')->middleware('warehouse');
+Route::get('administration/administrate-car-parts', 'CarPartsController@administrateCarParts')->middleware('warehouse');
+Route::post('administration/administrate-car-parts/checkCarBrandByName', 'CarPartsController@checkCarBrandByName')->middleware('warehouse');
+Route::post('administration/administrate-car-parts/addCarBrand', 'CarPartsController@addCarBrand')->middleware('warehouse');
+Route::post('administration/administrate-car-parts/checkCarType', 'CarPartsController@checkCarType')->middleware('warehouse');
+Route::post('administration/administrate-car-parts/addCarType', 'CarPartsController@addCarType')->middleware('warehouse');
+Route::post('administration/administrate-car-parts/getCarTypes', 'CarPartsController@getCarTypes')->middleware('warehouse');
+Route::post('administration/administrate-car-parts/addCarPart', 'CarPartsController@addCarPart')->middleware('warehouse');
+Route::post('administration/administrate-car-parts/checkCarPart', 'CarPartsController@checkCarPart')->middleware('warehouse');
+
+
 
 Auth::routes(['verify' => true]);
 

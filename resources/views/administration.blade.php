@@ -31,6 +31,7 @@
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Správa súčiastok <span class="caret"></span></a>
                                 <ul class="dropdown-menu dropdown-admin" style="color: black">
                                     <li><a href="{{url('administration/watch-car-parts')}}"> Stav na sklade </a></li>
+                                    <li><a href="{{url('administration/administrate-car-parts')}}"> Správa autodielov </a></li>
                                 </ul>
                             </li>
                         @endif

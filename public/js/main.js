@@ -1,5 +1,12 @@
 $(document).ready(function() {
 
+    $(document).keypress(function(event){
+        if (event.which == '13') {
+            event.preventDefault();
+        }
+    });
+
+
     /*
      na uvod schovam warningy
     */
@@ -15,6 +22,11 @@ $(document).ready(function() {
     $('#submit-products-button').hide();
     $('.error-new-emp-div').hide();
     $('.update-emp').hide();
+    $('.error-add-car-brand-div').hide();
+    $('.error-add-car-type-div').hide();
+    $('#car_type_parts_div').hide();
+    $('.error-add-car-parts-div').hide();
+
 
 
     /* toto tu je potrebne aby ajax POST fungoval spravne */
@@ -709,6 +721,165 @@ $(document).ready(function() {
             $('.stock-car-part').val("");
         }
     });
+
+    // skontrolujem a pridam novu car brand
+    $('#button-add-car-brand').click(function (e) {
+        $brand_name = $('#car_brand').val();
+
+        if($('#car_brand').val() == "") {
+            $('.error-add-car-brand-div').show();
+            $('#error-add-car-brand-msg').text('Zadajte hodnotu do pola - Značka auta.');
+            return false;
+        } else if($('#car_brand').val().length > 30) {
+            $('.error-add-car-brand-div').show();
+            $('#error-add-car-brand-msg').text('Dĺžka značky, ktorú ste zadali je príliš dlhá, prosím zadajte kratšiu.');
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "administrate-car-parts/checkCarBrandByName",
+                dateType: 'json',
+                data: {brand_name: $brand_name},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult == "duplicate") {
+                        $('.error-add-car-brand-div').show();
+                        $('#error-add-car-brand-msg').text('Značka auta už existuje.');
+                        return false;
+                    } else {
+                        alert('Úspečne ste pridali novú značku auta.');
+                        $('#submit-add-car-brand').submit();
+                    }
+                }
+            });
+        }
+        $('.error-add-car-brand-div').hide();
+    });
+
+    // skontrolujem a pridam novy car type
+    $('#button-add-car-type').click(function (e) {
+        $car_type_name = $('#car_type').val();
+        $brand_id = $('#car_brand_all').val();
+
+        if($('#car_brand_all').val() == "") {
+            $('.error-add-car-type-div').show();
+            $('#error-add-car-type-msg').text('Zadajte hodnotu do pola - Značka auta.');
+            return false;
+        } else if($('#car_type').val() == "") {
+            $('.error-add-car-type-div').show();
+            $('#error-add-car-type-msg').text('Zadajte hodnotu do pola - Model auta.');
+            return false;
+        } else if($('#car_type').val().length > 100) {
+            $('.error-add-car-type-div').show();
+            $('#error-add-car-type-msg').text('Dĺžka modelu, ktorú ste zadali je príliš dlhá, prosím zadajte kratší názov.');
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "administrate-car-parts/checkCarType",
+                dateType: 'json',
+                data: {brand_id: $brand_id, car_type_name: $car_type_name},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult == "duplicate") {
+                        $('.error-add-car-type-div').show();
+                        $('#error-add-car-type-msg').text('Model auta už existuje.');
+                        return false;
+                    } else {
+                        alert('Úspečne ste pridali nový model auta.');
+                        $('#submit-add-car-type').submit();
+                    }
+                }
+            });
+        }
+        $('.error-add-car-type-div').hide();
+    });
+
+
+    // funkcia, ktora nam zobrazi modely aut pre danu značku
+    $("#car_brand_parts").change(function() {
+        $('#car_type_parts').empty();
+        $car_brand_parts = this.value;
+
+        $.ajax({
+            type: "POST",
+            url: "administrate-car-parts/getCarTypes",
+            dateType: 'json',
+            data: {car_brand_parts: $car_brand_parts},
+            success: function (data) {
+                $dataResult = JSON.parse(data);
+                if($dataResult.length == 0) {
+                    $('.error-add-car-parts-div').show();
+                    $('#error-add-car-parts-msg').text('Pre danú značku nemáme žiadne modely áut. Prosím najskvôr vytvorte model pre danú značku.');
+                    $('#car_type_parts_div').hide();
+                    return false;
+                } else {
+                    $('.error-products').hide();
+                    $.each($dataResult, function () {
+                        $("<option/>").val(this.car_type_id).text(this.car_type_name).appendTo("#car_type_parts");
+                    });
+                    $('#car_type_parts_div').show();
+                    $('.error-add-car-parts-div').hide();
+                }
+            }
+        });
+    });
+
+
+    // skontrolujem a pridam novu autosuciastku
+
+    $('#button-add-car-parts').click(function (e) {
+
+        $car_type_parts = $('#car_type_parts').val();
+        $car_part_name  = $('#car_part_name').val();
+
+        if($('#car_brand_parts').val() == "") {
+            $('.error-add-car-parts-div').show();
+            $('#error-add-car-parts-msg').text('Zadajte hodnotu do pola - Značka auta.');
+            return false;
+        } else if( ($('#car_type_parts').val() == "") || ($('#car_type_parts').val() == null)) {
+            $('.error-add-car-parts-div').show();
+            $('#error-add-car-parts-msg').text('Zadajte hodnotu do pola - Model auta.');
+            return false;
+        } else if($('#car_part_name').val() == "") {
+            $('.error-add-car-parts-div').show();
+            $('#error-add-car-parts-msg').text('Zadajte hodnotu do pola - Názov autosúčiastky.');
+            return false;
+        } else if($('#part_price').val() == "") {
+                $('.error-add-car-parts-div').show();
+                $('#error-add-car-parts-msg').text('Zadajte hodnotu do pola - Cena.');
+                return false;
+        } else if($('#stock').val() == "")  {
+            $('.error-add-car-parts-div').show();
+            $('#error-add-car-parts-msg').text('Zadajte hodnotu do pola - Počet KS na sklade.');
+            return false;
+        } else if ($('#image').val() == "") {
+            $('.error-add-car-parts-div').show();
+            $('#error-add-car-parts-msg').text('Prosím vložte obrázok.');
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "administrate-car-parts/checkCarPart",
+                dateType: 'json',
+                data: {car_type_parts: $car_type_parts, car_part_name: $car_part_name},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult == "duplicate") {
+                        $('.error-add-car-parts-div').show();
+                        $('#error-add-car-parts-msg').text('Autosúčiastka už existuje.');
+                        return false;
+                    } else{
+                        $('#submit-add-car-part').submit();
+                        $('.error-add-car-parts-div').hide();
+                    }
+                }
+            });
+        }
+        $('.error-add-car-parts-div').hide();
+    });
+
+
 
 
 
