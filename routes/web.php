@@ -101,6 +101,13 @@ Route::post('administration/administrate-car-parts/getCarTypes', 'CarPartsContro
 Route::post('administration/administrate-car-parts/addCarPart', 'CarPartsController@addCarPart')->middleware('warehouse');
 Route::post('administration/administrate-car-parts/checkCarPart', 'CarPartsController@checkCarPart')->middleware('warehouse');
 
+//administration SERVICES
+Route::get('administration/admin-services', 'ServiceController@adminServices')->middleware('service.admin');
+Route::post('administration/admin-services/getServiceHours', 'ServiceController@getServiceHours')->middleware('service.admin');
+Route::post('administration/admin-services/updateServices', 'ServiceController@updateServices')->middleware('service.admin');
+Route::get('administration/addService', 'ServiceController@addService')->middleware('service.admin');
+Route::post('administration/addService/addNewService', 'ServiceController@addNewService')->middleware('service.admin');
+
 
 
 Auth::routes(['verify' => true]);

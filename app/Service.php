@@ -24,4 +24,16 @@ class Service extends Model
         return DB::select("select get_day_name(?) as result",[$date]);
     }
 
+    /**
+     * Funkcia updatne tabulku services podla ID
+     *
+     * @param $service_id
+     * @param $hour_duration
+     * @param $price_per_hour
+     * @return array
+     */
+    public function updateServicesByID($service_id, $hour_duration, $price_per_hour) {
+        return DB::select("call update_services(?,?,?)",[$service_id,$hour_duration,$price_per_hour]);
+    }
+
 }

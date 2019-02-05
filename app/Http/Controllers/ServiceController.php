@@ -104,4 +104,53 @@ class ServiceController extends Controller
         return redirect('home');
     }
 
+
+    /**
+     * Funkcia vytvori pohlad pre spravu services
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function adminServices() {
+
+        $services = Service::all('service_id','name','hour_duration','price_per_hour');
+
+        return view('Administration/Services/admin-services', compact('services'));
+    }
+
+    /**
+     * Vrati pocet hodin a cenu prace pre dany service id
+     *
+     * @param Request $request
+     */
+    public function getServiceHours(Request $request) {
+        $services = Service::where('service_id', $request->service_update_id)
+            ->select('hour_duration','price_per_hour')
+            ->get();
+
+        echo json_encode($services);
+    }
+
+    /**
+     * Funkcia updatne tabulku services podla ID
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function updateServices(Request $request) {
+        $service = new Service;
+        $service->updateServicesByID($request->service_update, $request->hour_duration, $request->price_per_hour);
+
+        return redirect()->back();
+    }
+
+    /**
+     * Funkcia, ktora zobrazi view na pridanie sluzby
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function addService() {
+        return view('Administration/Services/add-service');
+    }
+
+
 }

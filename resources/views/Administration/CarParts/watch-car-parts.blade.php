@@ -1,6 +1,6 @@
 @extends('administration')
 
-@section('title', 'Množstvo súčiastok')
+@section('title', 'Množstvo na sklade')
 
 @section('admin-content')
     <div class="sectionHeader">

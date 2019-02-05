@@ -880,6 +880,31 @@ $(document).ready(function() {
     });
 
 
+    // funkcia, ktora dotiahne pocet hodin a cenu prace za sluzbu
+    $(".service_update").change(function() {
+        $service_update_id = parseInt($('#service_update_id').val());
+
+        if(!isNaN($service_update_id)) {
+            $.ajax({
+                type: "POST",
+                url: "admin-services/getServiceHours",
+                dateType: 'json',
+                data: {service_update_id: $service_update_id},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    $('#hour_duration').val($dataResult[0].hour_duration);
+                    $('#price_per_hour').val($dataResult[0].price_per_hour);
+                }
+            });
+        } else {
+            $('#hour_duration').val("");
+            $('#price_per_hour').val("");
+        }
+    });
+
+
+
+
 
 
 

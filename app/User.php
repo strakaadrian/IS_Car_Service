@@ -83,4 +83,19 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * CI je super admin aj správca služieb
+     *
+     * @return bool
+     */
+    public function isServiceAdmin() {
+        if(Auth::guest()) {
+            return false;
+        } else {
+            return UserRole::where([
+                ['user_id', Auth::user()->id],
+                ['role_id', 4]])->exists();
+        }
+    }
+
 }

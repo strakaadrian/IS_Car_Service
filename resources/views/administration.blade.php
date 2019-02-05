@@ -28,16 +28,23 @@
                     @if(!Auth::guest())
                         @if(Auth::user()->isSuperAdmin() && Auth::user()->isWareHouse())
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Správa súčiastok <span class="caret"></span></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Správa autosúčiastok <span class="caret"></span></a>
                                 <ul class="dropdown-menu dropdown-admin" style="color: black">
                                     <li><a href="{{url('administration/watch-car-parts')}}"> Stav na sklade </a></li>
                                     <li><a href="{{url('administration/administrate-car-parts')}}"> Správa autodielov </a></li>
                                 </ul>
                             </li>
                         @endif
+                        @if(Auth::user()->isSuperAdmin() && Auth::user()->isServiceAdmin())
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Správa služieb<span class="caret"></span></a>
+                                <ul class="dropdown-menu dropdown-admin" style="color: black">
+                                    <li><a href="{{url('administration/admin-services')}}"> Zobraz služby </a></li>
+                                    <li><a href="{{url('administration/addService')}}"> Pridaj službu </a></li>
+                                </ul>
+                            </li>
+                        @endif
                     @endif
-                    <li><a href="#">Users</a></li>
-                    <li><a href="#">Sign Out</a></li>
                 </ul>
             </div>
         </div>
@@ -45,5 +52,4 @@
             @yield('admin-content')
         </div>
     </div>
-
 @endsection
