@@ -36,4 +36,17 @@ class Service extends Model
         return DB::select("call update_services(?,?,?)",[$service_id,$hour_duration,$price_per_hour]);
     }
 
+    /**
+     * Funkcia prida novy servis do systemu
+     *
+     * @param $name
+     * @param $type
+     * @param $hour_duration
+     * @param $price_per_hour
+     * @return array
+     */
+    public function addService($name, $type,$hour_duration, $price_per_hour) {
+        return DB::select("call create_service(?,?,?,?)",[$name,$type,$hour_duration,$price_per_hour]);
+    }
+
 }

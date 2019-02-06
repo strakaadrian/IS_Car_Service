@@ -30,8 +30,8 @@
             {!! Form::Label('car_brand_all', 'Prosím vyberte si značku auta:') !!}
             {!! Form::select('car_brand_select', $car_brands, null, ['class' => 'form-control', 'id' => 'car_brand_all', 'placeholder' => 'Vyberte značku auta...']) !!}
         </div>
-        {!! Form::label('car_type', 'Model auta:') !!}
-        {!! Form::text('car_type', $value = null, ['class' => 'form-control', 'required']); !!}
+        {!! Form::label('car_type_add', 'Model auta:') !!}
+        {!! Form::text('car_type_add', $value = null, ['class' => 'form-control', 'required']); !!}
         <div class="alert alert-danger error-add-car-type-div" role="alert">
             <p id="error-add-car-type-msg"></p>
         </div>

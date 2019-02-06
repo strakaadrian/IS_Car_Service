@@ -21,7 +21,7 @@ class ServiceController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        $services = Service::all();
+        $services = Service::orderBy('type')->get();
 
         return view('service',compact('services'));
     }
@@ -112,7 +112,7 @@ class ServiceController extends Controller
      */
     public function adminServices() {
 
-        $services = Service::all('service_id','name','hour_duration','price_per_hour');
+        $services = Service::orderBy('type')->get();
 
         return view('Administration/Services/admin-services', compact('services'));
     }
@@ -150,6 +150,33 @@ class ServiceController extends Controller
      */
     public function addService() {
         return view('Administration/Services/add-service');
+    }
+
+    /**
+     * Funkcia skontroluje či sa servis s rovnakým nazvom uz nenachadza v systeme
+     *
+     * @param Request $request
+     */
+    public function checkNewService(Request $request) {
+        if(Service::where('name', $request->name)->exists()) {
+            echo json_encode('duplicate');
+            exit();
+        } else {
+            echo json_encode('');
+        }
+    }
+
+    /**
+     * Funkcia prida novy servis do systemu
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addNewService(Request $request) {
+        $service = new Service;
+        $service->addService($request->service_name, $request->service_type,$request->hour_duration, $request->price_per_hour);
+
+        return redirect()->back();
     }
 
 

@@ -123,7 +123,7 @@ class CarPartsController extends Controller
      */
     public function addCarType(Request $request) {
         $car_part = new CarPart;
-        $car_part->addNewCarType($request->car_brand_select,$request->car_type);
+        $car_part->addNewCarType($request->car_brand_select,$request->car_type_add);
 
         return redirect()->back();
     }

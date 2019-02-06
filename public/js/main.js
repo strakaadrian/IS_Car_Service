@@ -26,6 +26,8 @@ $(document).ready(function() {
     $('.error-add-car-type-div').hide();
     $('#car_type_parts_div').hide();
     $('.error-add-car-parts-div').hide();
+    $('.error-add-new-service-div').hide();
+
 
 
 
@@ -758,18 +760,18 @@ $(document).ready(function() {
 
     // skontrolujem a pridam novy car type
     $('#button-add-car-type').click(function (e) {
-        $car_type_name = $('#car_type').val();
+        $car_type_name = $('#car_type_add').val();
         $brand_id = $('#car_brand_all').val();
 
         if($('#car_brand_all').val() == "") {
             $('.error-add-car-type-div').show();
             $('#error-add-car-type-msg').text('Zadajte hodnotu do pola - Značka auta.');
             return false;
-        } else if($('#car_type').val() == "") {
+        } else if($('#car_type_add').val() == "") {
             $('.error-add-car-type-div').show();
             $('#error-add-car-type-msg').text('Zadajte hodnotu do pola - Model auta.');
             return false;
-        } else if($('#car_type').val().length > 100) {
+        } else if($('#car_type_add').val().length > 100) {
             $('.error-add-car-type-div').show();
             $('#error-add-car-type-msg').text('Dĺžka modelu, ktorú ste zadali je príliš dlhá, prosím zadajte kratší názov.');
             return false;
@@ -903,6 +905,50 @@ $(document).ready(function() {
     });
 
 
+
+
+
+    // funkcia ci sa dany servic uz v systeme nenachadza
+    $('.add-new-service-button').click(function (e) {
+
+        $name = $('#service_name').val();
+        $hour_duration = $('#hour_duration').val();
+        $price_per_hour = $('#price_per_hour').val();
+
+
+        if($('#service_name').val() == "") {
+            $('.error-add-new-service-div').show();
+            $('#error-add-new-service-msg').text('Zadajte hodnotu do pola - Názov služby.');
+            return false;
+        } else if( ($('#hour_duration').val() == "")) {
+            $('.error-add-new-service-div').show();
+            $('#error-add-new-service-msg').text('Zadajte hodnotu do pola - Počet hodín práce.');
+            return false;
+        } else if($('#price_per_hour').val() == "") {
+            $('.error-add-new-service-div').show();
+            $('#error-add-new-service-msg').text('Zadajte hodnotu do pola - Cena za hodinu.');
+            return false;
+        } else {
+            $.ajax({
+                type: "POST",
+                url: "addService/checkNewService",
+                dateType: 'json',
+                data: {name: $name, hour_duration: $hour_duration, price_per_hour: $price_per_hour},
+                success: function (data) {
+                    $dataResult = JSON.parse(data);
+                    if($dataResult == "duplicate") {
+                        $('.error-add-new-service-div').show();
+                        $('#error-add-new-service-msg').text('Služba s rovnakým názvom sa v systéme už nachádza.');
+                        return false;
+                    } else{
+                        $('#add-new-service-submit').submit();
+                        $('.error-add-new-service-div').hide();
+                    }
+                }
+            });
+        }
+        $('.error-add-new-service-div').hide();
+    });
 
 
 

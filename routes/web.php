@@ -107,6 +107,8 @@ Route::post('administration/admin-services/getServiceHours', 'ServiceController@
 Route::post('administration/admin-services/updateServices', 'ServiceController@updateServices')->middleware('service.admin');
 Route::get('administration/addService', 'ServiceController@addService')->middleware('service.admin');
 Route::post('administration/addService/addNewService', 'ServiceController@addNewService')->middleware('service.admin');
+Route::post('administration/addService/checkNewService', 'ServiceController@checkNewService')->middleware('service.admin');
+
 
 
 
