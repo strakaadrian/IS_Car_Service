@@ -90,5 +90,17 @@ class CarPart extends Model
         return DB::select("select check_car_part(?,?) as result",[$car_type_id,$part_name]);
     }
 
+    /**
+     * Funckcia vrati najpredavanejsie suciastky podla znacky auta
+     *
+     * @param $car_type_id
+     *
+     * @return array
+     */
+    public function getBestCarPartsSales($car_type_id)
+    {
+        return DB::select("call  get_best_car_part_sales(?)", [$car_type_id]);
+    }
+
 
 }

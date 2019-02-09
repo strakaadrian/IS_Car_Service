@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CarBrand;
 use App\CarPart;
 use App\CarType;
+use App\Charts\SampleChart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -61,7 +62,7 @@ class CarPartsController extends Controller
      */
     public function administrateCarParts() {
         $car_brands = CarBrand::pluck('brand_name','brand_id');
-        $car_type = CarType::pluck('car_type_name','car_type_id');$car_type;
+        $car_type = CarType::pluck('car_type_name','car_type_id');
 
         return view('Administration/CarParts/administrate-car-parts',compact('car_brands','car_type'));
     }
@@ -190,6 +191,50 @@ class CarPartsController extends Controller
             echo json_encode('');
             exit();
         }
+    }
+
+    /**
+     * Funckia zobrazi view s grafom podla daneho modelu auta
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function bestCarPartsSales() {
+        $car_brand = CarBrand::pluck('brand_name','brand_id');
+        $car_type = CarType::pluck('car_type_name','car_type_id');
+
+        return view('Administration/Graphs/best-car-parts-sales',compact('car_brand','car_type'));
+    }
+
+    /**
+     * Funckia vrati graf pre najpredavanejsie autosuciastky
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Throwable
+     */
+    public function getBestSalesGraph(Request $request) {
+        $car_brand = CarBrand::pluck('brand_name','brand_id');
+        $car_type = CarType::pluck('car_type_name','car_type_id');
+        $carParts = new CarPart;
+        $resLabels = array();
+        $resDataset = array();
+        $chart = new SampleChart;
+
+        $result = $carParts->getBestCarPartsSales($request->car_type_graph);
+
+        foreach($result as $bestCarParts) {
+            array_push($resLabels,$bestCarParts->part_name);
+            array_push($resDataset, $bestCarParts->quantity);
+        }
+
+        $chart->labels($resLabels);
+        $chart->displayLegend(false);
+        $chart->title('Najviac predávané autosúčiastky', $font_size = 14);
+        $dataset = $chart->dataset('Predaných', 'bar', $resDataset);
+        $dataset->backgroundColor(collect(['#003f5c','#374c80', '#7a5195','#bc5090','#ef5675','#ff764a','#ffa600']));
+        $dataset->color(collect(['#003f5c','#374c80', '#7a5195','#bc5090','#ef5675','#ff764a','#ffa600']));
+
+        return view('Administration/Graphs/best-car-parts-sales-graph', compact('chart','car_brand','car_type'));
     }
 
 }

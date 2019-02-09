@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CarService extends Model
 {
@@ -40,4 +41,18 @@ class CarService extends Model
 
         return $car_service;
     }
+
+    /**
+     * Funkcia dotiahne najlepsie zarabajuce firmy za posledny mesiac
+     *
+     * @return array
+     */
+    public function getBestEarningCompanies() {
+        $totalEarnings = DB::select( DB::raw("select cs.service_name, SUM(r.work_hours*s.price_per_hour) as total_earnings from reservation r join services s on(s.service_id = r.service_id) join car_service cs on (r.ico = cs.ico) where DATE_FORMAT(r.repair_date,'%m-%Y') = DATE_FORMAT(sysdate(),'%m-%Y') group by cs.service_name order by total_earnings DESC LIMIT 5;"));
+
+        return $totalEarnings;
+    }
+
+
+
 }

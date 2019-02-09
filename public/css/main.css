@@ -616,6 +616,11 @@ tbody tr:hover {
     color: #2f2f2f;
 }
 
+.graph-div {
+    height: 500px;
+    margin-bottom: 5%;
+}
+
 
 
 

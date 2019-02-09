@@ -130,10 +130,38 @@ class Reservation extends Model
      *
      * @param $reservation_id
      * @param $work_hours
+     * @return array
      */
     public function updateReservationById($reservation_id, $work_hours) {
         return DB::select("call realize_reservation(?, ?)",[$reservation_id, $work_hours]);
     }
+
+
+    /**
+     * Dotiahne do grafu rezervacie na najblizsich 7 dni dopredu
+     *
+     * @param $ico
+     * @return array
+     */
+    public function getWeekReservations() {
+        $weekRes = DB::select( DB::raw("select repair_date, count(reservation_id) as numb from reservation where (repair_date >= sysdate() AND repair_date < DATE(sysdate()) + INTERVAL +7 DAY) group by repair_date;"));
+
+        return $weekRes;
+    }
+
+    /**
+     * Dotiahne do grafu rezervacie na najblizsich 7 dni dopredu podla ICO firmy
+     *
+     * @param $ico
+     * @return array
+     */
+    public function getWeekReservationsByIco($ico) {
+        $weekRes = DB::select( DB::raw("select repair_date, count(reservation_id) as numb from reservation where (repair_date >= sysdate() AND repair_date < DATE(sysdate()) + INTERVAL +7 DAY) AND ICO = ?  group by repair_date;"),  [$ico]);
+
+        return $weekRes;
+    }
+
+
 
 
 }

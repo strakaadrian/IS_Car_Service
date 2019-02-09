@@ -110,6 +110,12 @@ Route::post('administration/addService/addNewService', 'ServiceController@addNew
 Route::post('administration/addService/checkNewService', 'ServiceController@checkNewService')->middleware('service.admin');
 
 
+// GRAPHS
+Route::get('administration/week-reservations', 'ReservationController@getWeekReservations');
+Route::get('administration/number-of-orders', 'CustomerOrderController@getNumberOfOrders')->middleware('superAdmin');
+Route::get('administration/best-month-earnings', 'CarServiceController@bestMonthEarnings')->middleware('superAdmin');
+Route::get('administration/best-car-parts-sales', 'CarPartsController@bestCarPartsSales')->middleware('superAdmin');
+Route::post('administration/best-car-parts-sales/getBestSalesGraph', 'CarPartsController@getBestSalesGraph')->middleware('superAdmin');
 
 
 Auth::routes(['verify' => true]);

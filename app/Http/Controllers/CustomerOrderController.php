@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\SampleChart;
 use App\Customer;
 use App\CustomerOrder;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use PDF;
 use Zend\Diactoros\Request;
@@ -49,5 +51,38 @@ class CustomerOrderController extends Controller
             $pdf = PDF::loadView('invoice', compact('carParts','reservations', 'person', 'id','sum'));
             return $pdf->stream("invoice.pdf", array("Attachment" => false));
         }
+    }
+
+    public function getNumberOfOrders() {
+        $resLabels = array();
+        $resDataset = array();
+        $chart = new SampleChart;
+        $customerOrder = new CustomerOrder;
+
+        $result = $customerOrder->getNumbOfOrders();
+
+
+
+        foreach($result as $weekReservations) {
+            array_push($resDataset, $weekReservations->numb);
+
+            if($weekReservations->order_date == Carbon::now()->toDateString()) {
+                array_push($resLabels, 'Dnes');
+            } elseif($weekReservations->order_date == Carbon::yesterday()->toDateString()) {
+                array_push($resLabels, 'Včera');
+            } elseif($weekReservations->order_date == Carbon::tomorrow()->toDateString()) {
+                array_push($resLabels, 'Zajtra');
+            }
+        }
+
+        $chart->labels($resLabels);
+        $chart->displayAxes(false);
+        $chart->title('Počet objednávok', $font_size = 14);
+        $dataset = $chart->dataset('Počet objednávok', 'pie', $resDataset);
+        $dataset->backgroundColor(collect(['#003f5c','#bc5090','#ffa600']));
+        $dataset->color(collect(['#003f5c','#bc5090','#ffa600']));
+
+
+        return view('Administration/Graphs/number-of-orders',compact('chart'));
     }
 }

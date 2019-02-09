@@ -45,6 +45,17 @@
                             </li>
                         @endif
                     @endif
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"> Grafy <span class="caret"></span></a>
+                        <ul class="dropdown-menu dropdown-admin" style="color: black">
+                            <li><a href="{{url('administration/week-reservations')}}"> Počty rezervácii na najbl. týžden </a></li>
+                            @if(Auth::user()->isSuperAdmin())
+                                <li><a href="{{url('administration/number-of-orders')}}"> Počty objednávok za najbližšie dni </a></li>
+                                <li><a href="{{url('administration/best-month-earnings')}}"> Najlepšie zarabajúce firmy mesiaca </a></li>
+                                <li><a href="{{url('administration/best-car-parts-sales')}}"> Najlepšie zarabajúce produkty </a></li>
+                            @endif
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

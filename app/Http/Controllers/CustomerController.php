@@ -73,6 +73,29 @@ class CustomerController extends Controller
         echo json_encode('{}');
     }
 
+    public function getNumberOfNewCustomers() {
+        $resLabels = array();
+        $resDataset = array();
+        $chart = new SampleChart;
+
+        foreach($result as $weekReservations) {
+            array_push($resLabels,$weekReservations->repair_date);
+            array_push($resDataset, $weekReservations->numb);
+        }
+
+        $chart->labels($resLabels);
+        $chart->displayLegend(false);
+        $chart->title('Počet rezervácii na najbližší týžden', $font_size = 14);
+        $dataset = $chart->dataset('Počet rezervácii', 'bar', $resDataset);
+        $dataset->backgroundColor(collect(['#003f5c','#374c80', '#7a5195','#bc5090','#ef5675','#ff764a','#ffa600']));
+        $dataset->color(collect(['#003f5c','#374c80', '#7a5195','#bc5090','#ef5675','#ff764a','#ffa600']));
+
+
+        return view('Administration/Graphs/next-week-reservations', compact('chart'));
+
+
+    }
+
 
 
 }

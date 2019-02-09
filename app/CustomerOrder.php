@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CustomerOrder extends Model
 {
@@ -79,6 +80,17 @@ class CustomerOrder extends Model
             ->get();
 
         return $result;
+    }
+
+    /**
+     * Funkcia dotiahne počet objednávok za posledne 2 dni
+     *
+     * @return mixed
+     */
+    public function getNumbOfOrders() {
+        $numbOfOrders = DB::select( DB::raw("select order_date, count(order_id) as numb from customer_order where (order_date <= DATE(sysdate() + INTERVAL +1 DAY) AND  order_date >= DATE(sysdate() + INTERVAL -1 DAY)) group by order_date;"));
+
+        return $numbOfOrders;
     }
 
 }

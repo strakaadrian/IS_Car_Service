@@ -27,6 +27,8 @@ $(document).ready(function() {
     $('#car_type_parts_div').hide();
     $('.error-add-car-parts-div').hide();
     $('.error-add-new-service-div').hide();
+    $('#car_type_graph_div').hide();
+
 
 
 
@@ -952,6 +954,27 @@ $(document).ready(function() {
 
 
 
+    // funkcia, ktora nam zobrazi modely aut pre danu značku
+    $("#car_brand_graph").change(function() {
+
+        $('#car_type_graph').empty();
+        $car_brand = $('#car_brand_graph').val();
+
+        $.ajax({
+            type: "POST",
+            url: "../../products/getCarModels",
+            dateType: 'json',
+            data: {car_brand: $car_brand},
+            success: function (data) {
+                $dataResult = JSON.parse(data);
+
+                $.each($dataResult, function () {
+                    $("<option/>").val(this.car_type_id).text(this.car_type_name).appendTo("#car_type_graph");
+                });
+                $('#car_type_graph_div').show();
+            }
+        });
+    });
 
 
 });
