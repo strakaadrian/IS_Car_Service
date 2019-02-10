@@ -109,6 +109,26 @@ body, html {
 
 /* --- MENU NAVBAR  FINISH*/
 
+.home-img {
+    width: 100%;
+}
+
+.carousel-item-show {
+    width: 100%;
+    height: auto;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.carousel-indicators li {
+    background-color: #999;
+    background-color: rgba(70,70,70,.25);
+}
+
+.carousel-indicators .active {
+    background-color: #444;
+}
+
 body {
     font: 20px Verdana, sans-serif;
     line-height: 1.8;

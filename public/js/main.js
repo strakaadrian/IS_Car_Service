@@ -953,7 +953,6 @@ $(document).ready(function() {
     });
 
 
-
     // funkcia, ktora nam zobrazi modely aut pre danu značku
     $("#car_brand_graph").change(function() {
 

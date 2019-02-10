@@ -23,8 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $services = Service::all()->take(10);
-
-        return view('home', compact('services'));
+        return view('home');
     }
 }

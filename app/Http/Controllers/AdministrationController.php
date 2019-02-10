@@ -154,7 +154,7 @@ class AdministrationController extends Controller
         } else {
             $employees =  $emp->getAllEmployees();
         }
-        return view('absence', compact('employees'));
+        return view('Administration/Absence/absence', compact('employees'));
     }
 
     /**
@@ -170,7 +170,7 @@ class AdministrationController extends Controller
 
         $identification_no = $request->rc;
 
-        $outputView =  view('absence-emp',compact('emp_absence','identification_no'))->render();
+        $outputView =  view('Administration/Absence/absence-emp',compact('emp_absence','identification_no'))->render();
         return response()->json(['html'=>$outputView]);
     }
 
