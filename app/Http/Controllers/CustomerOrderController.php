@@ -16,7 +16,7 @@ class CustomerOrderController extends Controller
         $customerOrders = new CustomerOrder;
         $orders = $customerOrders->getOrdersByUserId();
 
-        return view('customer-order', compact('orders'));
+        return view('Customer/CustomerOrder/customer-order', compact('orders'));
     }
 
     /**

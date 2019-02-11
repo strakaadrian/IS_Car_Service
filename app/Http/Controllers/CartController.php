@@ -22,7 +22,7 @@ class CartController extends Controller
             $forPayment += $part->quantity * $part->part_price;
         }
 
-        return view('cart', compact('parts','forPayment'));
+        return view('Customer/Cart/cart', compact('parts','forPayment'));
     }
 
     /**

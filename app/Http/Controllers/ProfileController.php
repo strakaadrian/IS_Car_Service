@@ -29,7 +29,7 @@ class ProfileController extends Controller
 
         $countries = Country::all('country_id','country_name');
 
-        return view('profile', compact('customer','countries'));
+        return view('Customer/Profile/profile', compact('customer','countries'));
     }
 
     /**

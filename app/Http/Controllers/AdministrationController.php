@@ -25,7 +25,7 @@ class AdministrationController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index() {
-        return view('admin-home');
+        return view('Administration/admin-home');
     }
 
     /**
@@ -42,7 +42,7 @@ class AdministrationController extends Controller
         } else {
             $car_service = CarService::pluck('service_name','ico');
         }
-        return view('add-employee',compact('countries','car_service'));
+        return view('Administration/Employee/add-employee',compact('countries','car_service'));
     }
 
     /**
@@ -72,7 +72,7 @@ class AdministrationController extends Controller
             $employees =  $emp->getAllEmployees();
         }
 
-        return view('terminate-emp', compact('employees'));
+        return view('Administration/Employee/terminate-emp', compact('employees'));
     }
 
 
@@ -112,7 +112,7 @@ class AdministrationController extends Controller
             $car_service = CarService::pluck('service_name','ico');
         }
 
-        return view('update-employee', compact('employees','countries','car_service'));
+        return view('Administration/Employee/update-employee', compact('employees','countries','car_service'));
     }
 
     /**

@@ -23,7 +23,7 @@ class ServiceController extends Controller
     public function index() {
         $services = Service::orderBy('type')->get();
 
-        return view('service',compact('services'));
+        return view('Customer/Service/service',compact('services'));
     }
 
     /**
@@ -35,7 +35,7 @@ class ServiceController extends Controller
         $car_services = CarService::pluck('service_name','ico');
         $service = Service::where('service_id', $id)->get();
 
-        return view('order-service', compact('service','countries','car_services','id'));
+        return view('Customer/CustomerOrder/order-service', compact('service','countries','car_services','id'));
     }
 
     /**

@@ -20,7 +20,7 @@ class ProductController extends Controller
         $car_part = CarPart::pluck('part_name','car_part_id');
         $car_parts_by_model = collect([]);
 
-        return view('products',compact('car_brand','car_type','car_part', 'car_parts_by_model'));
+        return view('Customer/Products/products',compact('car_brand','car_type','car_part', 'car_parts_by_model'));
     }
 
     /**
@@ -68,7 +68,7 @@ class ProductController extends Controller
                 ->get();
         }
 
-        $outputView =  view('products-items',compact('car_parts_by_model'))->render();
+        $outputView =  view('Customer/Products/products-items',compact('car_parts_by_model'))->render();
         return response()->json(['html'=>$outputView]);
     }
 

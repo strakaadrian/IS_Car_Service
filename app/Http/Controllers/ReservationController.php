@@ -22,7 +22,7 @@ class ReservationController extends Controller
 
         $reserv = $reserModel->getReservations();
 
-        return view('reservation', compact('reserv','reserModel'));
+        return view('Customer/Reservation/reservation', compact('reserv','reserModel'));
     }
 
     /**

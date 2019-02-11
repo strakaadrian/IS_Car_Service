@@ -25,6 +25,6 @@ class AboutController extends Controller
     {
         $services = Service::all()->take(10);
 
-        return view('about', compact('services'));
+        return view('Customer/About/about', compact('services'));
     }
 }

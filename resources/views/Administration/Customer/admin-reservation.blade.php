@@ -1,4 +1,4 @@
-@extends('administration')
+@extends('Administration/administration')
 
 @section('title', 'Správa rezervácii')
 

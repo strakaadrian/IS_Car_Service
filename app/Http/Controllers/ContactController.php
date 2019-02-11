@@ -13,7 +13,7 @@ class ContactController extends Controller
     public function index() {
         $car_services = CarService::pluck('service_name','ico');
 
-        return view('contact',compact('car_services'));
+        return view('Customer/Contact/contact',compact('car_services'));
     }
 
     /**
