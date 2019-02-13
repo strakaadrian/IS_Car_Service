@@ -61,8 +61,6 @@ class CustomerOrderController extends Controller
 
         $result = $customerOrder->getNumbOfOrders();
 
-
-
         foreach($result as $weekReservations) {
             array_push($resDataset, $weekReservations->numb);
 
@@ -70,8 +68,8 @@ class CustomerOrderController extends Controller
                 array_push($resLabels, 'Dnes');
             } elseif($weekReservations->order_date == Carbon::yesterday()->toDateString()) {
                 array_push($resLabels, 'Včera');
-            } elseif($weekReservations->order_date == Carbon::tomorrow()->toDateString()) {
-                array_push($resLabels, 'Zajtra');
+            } elseif($weekReservations->order_date == Carbon::now()->subDays(2)->toDateString()) {
+                array_push($resLabels, 'Predvčerom');
             }
         }
 

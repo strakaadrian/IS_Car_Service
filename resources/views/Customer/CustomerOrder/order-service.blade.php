@@ -15,24 +15,24 @@
 
             {{ Form::open(array('action' => 'ServiceController@createCustomer', 'id' => 'facturation-id')) }}
             <div class="form-group">
-                {!! Form::Label('country_id', 'Štát:') !!}
-                <select class="form-control" name="country_id" id="country_id">
-                    @foreach($countries as $country)
-                        @if($country->country_id == 'SVK')
-                            <option selected="selected" value="{{$country->country_id}}">{{$country->country_name}}</option>
-                        @else
-                            <option  value="{{$country->country_id}}">{{$country->country_name}}</option>
-                        @endif
-                    @endforeach
-                </select>
-                {!! Form::label('town', 'Mesto:') !!}
-                {!! Form::text('town', $value = null, ['class' => 'form-control', 'required']); !!}
-                <div class="small-box">
+                <div class="medium-box">
+                    {!! Form::Label('country_id', 'Štát:') !!}
+                    <select class="form-control" name="country_id" id="country_id">
+                        @foreach($countries as $country)
+                            @if($country->country_id == 'SVK')
+                                <option selected="selected" value="{{$country->country_id}}">{{$country->country_name}}</option>
+                            @else
+                                <option  value="{{$country->country_id}}">{{$country->country_name}}</option>
+                            @endif
+                        @endforeach
+                    </select>
+                    {!! Form::label('town', 'Mesto:') !!}
+                    {!! Form::text('town', $value = null, ['class' => 'form-control', 'required']); !!}
+
                     {!! Form::label('psc', 'Psč:') !!}
                     {!! Form::text('psc', $value = null, ['class' => 'form-control','maxlength' => 5, 'required']); !!}
-                </div>
 
-                <div class="medium-box">
+
                     {!! Form::label('rc', 'Rodné číslo:') !!}
                     {!! Form::text('rc', $value = null, ['class' => 'form-control','maxlength' => 11,'minlength' => 11, 'required']); !!}
 

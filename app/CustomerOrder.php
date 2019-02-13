@@ -88,7 +88,7 @@ class CustomerOrder extends Model
      * @return mixed
      */
     public function getNumbOfOrders() {
-        $numbOfOrders = DB::select( DB::raw("select order_date, count(order_id) as numb from customer_order where (order_date <= DATE(sysdate() + INTERVAL +1 DAY) AND  order_date >= DATE(sysdate() + INTERVAL -1 DAY)) group by order_date;"));
+        $numbOfOrders = DB::select( DB::raw("select order_date, count(order_id) as numb from customer_order where (order_date <= sysdate() AND  order_date >= DATE(sysdate() + INTERVAL -2 DAY)) group by order_date;"));
 
         return $numbOfOrders;
     }
