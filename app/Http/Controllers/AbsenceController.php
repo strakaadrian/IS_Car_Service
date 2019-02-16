@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class AbsenceController extends Controller
 {
     /**
-     * Funkcia zmaze zamestnancovu absenciu
+     * Funkcia zavola model Absence a funkciu deleteAbsence, ktora zmaze zamestnancovu absenciu
      *
      * @param Request $request
      */
@@ -18,7 +18,7 @@ class AbsenceController extends Controller
     }
 
     /**
-     * Funkcia, ktora prida zamestnancovi absenciu na dany datum
+     * Funkcia, ktora vytvori novy zaznam v tabulke Absence pre daneho zamestnanca
      *
      * @param Request $request
      */

@@ -17,7 +17,7 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Funkcia zobrazi uvodny VIEW
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */

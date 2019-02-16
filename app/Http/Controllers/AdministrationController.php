@@ -37,6 +37,7 @@ class AdministrationController extends Controller
         $service = new CarService;
         $countries = Country::all('country_id','country_name');
 
+        // ak je prihlaseny uzivatel iba adminom, tak dotiahne len autoservis kde je administrativnym pracovnikom, ak je uzivatel superAdmin tak dotiahne vsetky autoservisy
         if(Auth::user()->isAdmin()) {
             $car_service = $service->getEmpCarService(Auth::user()->id);
         } else {
@@ -64,20 +65,19 @@ class AdministrationController extends Controller
     public function getEmployeeRc() {
         $emp = new Employee;
 
+        //ak je user iba adminom v danej firme dotiahnem zamestnancov len danej firmy, inak ak je superAdmin dotiahnem vsetkych zamestnancov
         if(Auth::user()->isAdmin()) {
             $ico = $emp->getAdminCompany(Auth::user()->id);
-
             $employees = $emp->getEmployeeByIco($ico[0]->ico);
         } else {
             $employees =  $emp->getAllEmployees();
         }
-
         return view('Administration/Employee/terminate-emp', compact('employees'));
     }
 
 
     /**
-     * Funkcia, ktora nastavi termination_date zaestnancovi
+     * Funkcia, ktora ukonci p. pomer zamestnancovi a to tak, ze mu nastavi termination_date na datum, ktory si zvolime
      *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -99,24 +99,20 @@ class AdministrationController extends Controller
         $service = new CarService;
         $countries = Country::all('country_id','country_name');
 
-
+        //ak je user iba adminom v danej firme dotiahnem zamestnancov len danej firmy, inak ak je superAdmin dotiahnem vsetkych zamestnancov
         if(Auth::user()->isAdmin()) {
             $ico = $emp->getAdminCompany(Auth::user()->id);
-
             $employees = $emp->getEmployeeByIco($ico[0]->ico);
-
             $car_service = $service->getEmpCarService(Auth::user()->id);
         } else {
             $employees =  $emp->getAllEmployees();
-
             $car_service = CarService::pluck('service_name','ico');
         }
-
         return view('Administration/Employee/update-employee', compact('employees','countries','car_service'));
     }
 
     /**
-     * Funkcia, ktora dotiahne informacie o konkretnom zamestnancovi
+     * Funkcia, ktora dotiahne informacie o konkretnom zamestnanovi a posle ich naspat AJAXU ako JSON
      *
      * @param Request $request
      */
@@ -130,7 +126,8 @@ class AdministrationController extends Controller
     /**
      *Funkcia, ktorá aktualizuje údaje o zamestnancovi / spravuje ju administrátor
      *
-     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function updateEmployeeData(Request $request) {
         $employee = new Employee;
@@ -147,9 +144,9 @@ class AdministrationController extends Controller
     public function absence() {
         $emp = new Employee;
 
+        // ak je prihlaseny uzivatel iba adminom, tak dotiahne len autoservis kde je administrativnym pracovnikom, ak je uzivatel superAdmin tak dotiahne vsetky autoservisy
         if(Auth::user()->isAdmin()) {
             $ico = $emp->getAdminCompany(Auth::user()->id);
-
             $employees = $emp->getEmployeeByIco($ico[0]->ico);
         } else {
             $employees =  $emp->getAllEmployees();
@@ -158,7 +155,7 @@ class AdministrationController extends Controller
     }
 
     /**
-     * Funckia, ktora dotiahne zamestnancove absenice a nasledne zavola view kam ich vypise
+     * Funckia, ktora dotiahne zamestnancove absencice a nasledne zavola view kam ich vypise (funkcia vrati view AJAXU, ktory ho vypise)
      *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -167,14 +164,9 @@ class AdministrationController extends Controller
     public function employeeAbsence(Request $request) {
         $emp = new Employee;
         $emp_absence = $emp->getEmpAbsence($request->rc);
-
         $identification_no = $request->rc;
 
         $outputView =  view('Administration/Absence/absence-emp',compact('emp_absence','identification_no'))->render();
         return response()->json(['html'=>$outputView]);
     }
-
-
-
-
 }

@@ -45,6 +45,7 @@ class ReservationController extends Controller
         $res = new  Reservation;
         $emp = new Employee;
 
+        // ak je prihlaseny uzivatel adminom tak tak dotiahnem rezervacie len v danom autoservise inak ak je superAdmin dotiahnem vsetky autoservisy
         if(Auth::user()->isAdmin()) {
             $ico = $emp->getAdminCompany(Auth::user()->id);
             $reservations = $res->getAdminReservations($ico[0]->ico);
@@ -65,6 +66,11 @@ class ReservationController extends Controller
         $res->deleteFromReservationsById($request->reservation_id);
     }
 
+    /**
+     * Funkcia dotiahne pocet hodin prace na danej rezervacii podla reservation_id
+     *
+     * @param Request $request
+     */
     public function getWorkHours(Request $request) {
         $result = Reservation::where('reservation_id',$request->reservation_id)
             ->select('work_hours')

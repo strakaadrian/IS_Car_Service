@@ -17,7 +17,7 @@ class AboutController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Funkcia dotiahne z databazy 10 servisov na ukazku ake ponukame a vrati view "about"
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */

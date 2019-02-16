@@ -24,7 +24,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Funkcia, ktora dotiahne modely aut na zaklade znacky
+     * Funkcia, ktora dotiahne modely aut na zaklade znacky a vrati ich ako JSON AJAXU
      *
      * @param Request $request
      */
@@ -36,7 +36,7 @@ class ProductController extends Controller
     }
 
     /**
-     *Funkcia, ktorá dotiahne autosúčiastky na základe modelu auta
+     *Funkcia, ktorá dotiahne autosúčiastky na základe modelu auta a vrati ich ako JSON AJAXU
      *
      * @param Request $request
      */
@@ -49,13 +49,15 @@ class ProductController extends Controller
 
     /**
      *
-     * Funkcia, ktorá nám dotiahne konkrétne autosúčiastky
+     * Funkcia, ktorá nám dotiahne konkrétne autosúčiastky a view posle AJAXU ktory ho vypise
      *
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Throwable
      */
     public function getCarPartsForSale(Request $request) {
+
+        // ak je zaskrknute policke ze chcem dotiahnut vsetky autosuciastky dotiahnem vsetky inak danu konkretnu len
         if($request->all_parts == "true") {
             $car_parts_by_model = CarPart::where('car_type_id',$request->car_type_id)
                 ->select('car_part_id','part_name','part_price','stock','image')
@@ -67,9 +69,7 @@ class ProductController extends Controller
             ])->select('car_part_id','part_name','part_price','stock','image')
                 ->get();
         }
-
         $outputView =  view('Customer/Products/products-items',compact('car_parts_by_model'))->render();
         return response()->json(['html'=>$outputView]);
     }
-
 }

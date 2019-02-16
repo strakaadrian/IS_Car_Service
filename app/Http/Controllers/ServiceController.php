@@ -111,7 +111,6 @@ class ServiceController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function adminServices() {
-
         $services = Service::orderBy('type')->get();
 
         return view('Administration/Services/admin-services', compact('services'));

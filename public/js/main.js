@@ -8,7 +8,7 @@ $(document).ready(function() {
 
 
     /*
-     na uvod schovam warningy
+     na zacaitku po nacitany schovam vsetky upozornenia v aplikacii
     */
     $('.error-order-div').hide();
     $('.error-profile-div').hide();
@@ -379,7 +379,6 @@ $(document).ready(function() {
     });
 
     // funkcia, ktorá na základe daných parametrov vyhľadá autosúčiastky
-
     $("#submit-products-button").click(function() {
         $brand_id = $('#car_brand').val();
         $car_type_id = $('#car_type').val();
@@ -462,7 +461,6 @@ $(document).ready(function() {
     });
 
     // Funkcia, ktorá odstráni danú zákazníkovu rezerváciu
-
     $(".reservation-delete-button").click(function() {
 
         $reservation_id = this.id;
@@ -602,7 +600,6 @@ $(document).ready(function() {
                     $('.error-absence-div').hide();
                 }
             });
-
         }
     });
 

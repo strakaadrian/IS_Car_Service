@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class CarPartsController extends Controller
 {
     /**
-     * Funkcia vypise vsetky autosuciastky a ich mnozstva
+     * Funkcia vypise vsetky autosuciastky a ich mnozstva do view watch-car-parts
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -33,6 +33,7 @@ class CarPartsController extends Controller
      * Aktualizujem mnozstvo danej suciastky na sklade
      *
      * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function updateCarParts(Request $request) {
         $car_part = new CarPart;
@@ -42,7 +43,7 @@ class CarPartsController extends Controller
     }
 
     /**
-     * Funkcia vrati mnozstvo suciastky na sklade
+     * Funkcia vrati mnozstvo suciastky na sklade, mnozstvo vrati ako JSON AJAXU
      *
      * @param Request $request
      */
@@ -76,6 +77,7 @@ class CarPartsController extends Controller
         $car_part = new CarPart;
         $brand = $car_part->checkCarBrand($request->brand_name);
 
+        // skontorlujem ci je znacka duplicitna
         if($brand[0]->result == 1) {
             echo json_encode('duplicate');
             exit();
@@ -107,6 +109,7 @@ class CarPartsController extends Controller
         $car_part = new CarPart;
         $carType = $car_part->checkCarTypeExists($request->brand_id,$request->car_type_name);
 
+        // skontorlujem ci je model zadany duplicitne
         if($carType[0]->result == 1) {
             echo json_encode('duplicate');
             exit();
@@ -131,7 +134,7 @@ class CarPartsController extends Controller
 
 
     /**
-     * Funkcia dotiahne modely aut na zaklade značky
+     * Funkcia dotiahne modely aut na zaklade značky a vrati ich ako JSON AJAXU
      *
      * @param Request $request
      */
@@ -152,15 +155,18 @@ class CarPartsController extends Controller
     public function addCarPart(Request $request) {
         $car_part = new CarPart;
 
+        // skontrolujem co obrazok vyhovuje zadanym podmienkam
         $this->validate($request, [
             'image' => 'mimes:jpeg,png,bmp,tiff | max:4096',
         ]);
 
+        // ak obrazok vyhovuje podmienkam tak
         if ($request->file('image')->isValid()){
             $file = $request->file('image');
             $name = $file->getClientOriginalName();
             $image = 'parts/' . $name;
 
+            // ak obrazok uz na disku existuje tak len vytvorim novu autosuciastku a tento obrazok mu priradim, inak pridam na disk aj tento obrazok
             if(CarPart::where('image','/parts' . $name)->exists()) {
                 $car_part->addNewCarPart($request->car_type_parts, $request->car_part_name, $request->part_price, $request->stock, $image);
 

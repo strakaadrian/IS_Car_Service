@@ -8,7 +8,7 @@ use App\Charts\SampleChart;
 class CarServiceController extends Controller
 {
     /**
-     * Funkcia dotiahne najlepsie zarabajuce firmy za posledny mesiac
+     * Funkcia dotiahne GRAF pre  najlepsie zarabajuce firmy za posledny mesiac
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -31,7 +31,6 @@ class CarServiceController extends Controller
         $dataset = $chart->dataset('Zárobok', 'bar', $resDataset);
         $dataset->backgroundColor(collect(['#003f5c','#bc5090','#ef5675','#ff764a','#ffa600']));
         $dataset->color(collect(['#003f5c','#bc5090','#ef5675','#ff764a','#ffa600']));
-
 
         return view('Administration/Graphs/best-month-earnings',compact('chart'));
     }

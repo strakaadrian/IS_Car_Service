@@ -12,6 +12,11 @@ use Zend\Diactoros\Request;
 
 class CustomerOrderController extends Controller
 {
+    /**
+     * Funkcia, ktora dotiahne objednavky pre daneho prihlaseneho uzivatela
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index() {
         $customerOrders = new CustomerOrder;
         $orders = $customerOrders->getOrdersByUserId();
@@ -20,7 +25,7 @@ class CustomerOrderController extends Controller
     }
 
     /**
-     * Funkcia, ktorá nám na základe order%id dotiahne všetky údaje potrebné na faktúru a potom ju zobrazí ako PDF
+     * Funkcia, ktorá nám na základe order_id dotiahne všetky údaje potrebné na faktúru a potom ju zobrazí ako PDF
      *
      * @param $id
      * @return mixed
@@ -53,6 +58,11 @@ class CustomerOrderController extends Controller
         }
     }
 
+    /**
+     * Funkcia zostroji GRAF pre pocet objednavok za posledne 3 dni
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getNumberOfOrders() {
         $resLabels = array();
         $resDataset = array();

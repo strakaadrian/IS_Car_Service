@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class ProfileController extends Controller
 {
     /**
-     * Tato funckia nam vypise profil
+     * Tato funckia nam dotiahne udaje o danom uzivatelovi a vypise profil
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -33,7 +33,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Funkcia skontroluje ci uzivatel zadal sprecne udaje o meste a state
+     * Funkcia skontroluje ci uzivatel zadal spravne udaje o meste a state
      *
      * @param Request $request
      */
@@ -44,6 +44,12 @@ class ProfileController extends Controller
     }
 
 
+    /**
+     * Funkcia upravi profil tak ako si ho upravil uzivatel
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function updateProfile(Request $request) {
         $person = new Person;
         $person->updateUserProfile($request->country_id, $request->town, $request->psc, $request->name, $request->surname, $request->street, $request->orientation_no);

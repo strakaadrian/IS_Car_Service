@@ -46,7 +46,6 @@ class CartController extends Controller
     }
 
     /**
-     *
      * Funkcia, ktorá pridá daný item do košíku
      * @param Request $request
      */
