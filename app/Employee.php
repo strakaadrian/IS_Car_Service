@@ -150,7 +150,7 @@ class Employee extends Model
      * @return mixed
      */
     public function getEmpAbsence($rc) {
-        $absence = DB::select( DB::raw("SELECT a.absence_id, a.absence_from, a.absence_to   FROM   absence a   JOIN   employee e ON (a.hire_date = e.hire_date AND e.ico = a.ico AND  a.identification_no = e.identification_no) WHERE   e.identification_no = ? AND (e.termination_date > sysdate() OR e.termination_date IS NULL)  AND a.absence_to > sysdate() ORDER BY absence_from"),  [$rc]);
+        $absence = DB::select( DB::raw("SELECT a.absence_id, a.absence_from, a.absence_to   FROM   absence a   JOIN   employee e ON (a.hire_date = e.hire_date AND e.ico = a.ico AND  a.identification_no = e.identification_no) WHERE   e.identification_no = ? AND (e.termination_date > sysdate() OR e.termination_date IS NULL)  AND (a.absence_to > sysdate() OR a.absence_to IS NULL)  ORDER BY absence_from"),  [$rc]);
 
         return $absence;
     }

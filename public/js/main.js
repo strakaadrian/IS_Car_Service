@@ -572,7 +572,33 @@ $(document).ready(function() {
         }
     });
 
-    // funkcia, ktora zmaze danu absenciu zamestnanca
+    // funkcia, ktora aktualizuje danu absenciu zamestnanca
+    $('body').on('change','.update_absence_to',function(){
+        $absence_id = this.id;
+        $absence_date = this.value;
+        $min_date = this.min;
+
+        $dateTo = new Date($absence_date);
+        $minimalDate = new Date($min_date);
+
+        if($absence_date != "" || $dateTo < $minimalDate) {
+            if(confirm('Prajete si aktualizovať danú absenciu zamestnancovi ?')) {
+                $.ajax({
+                    type: "POST",
+                    url: "absence/employee/updateAbsence",
+                    dateType: 'json',
+                    data: {absence_id: $absence_id, absence_date: $absence_date},
+                    success: function (data) {
+                        $("#absence-employee").trigger("change");
+                    }
+                });
+            }
+        } else {
+            alert("Zadávate špatný den. Deň musí býť vyšší alebo rovný ako absencia od.")
+        }
+    });
+
+    // funkcia, ktora prida  absenciu zamestnanca
     $('body').on('click','#submit-absence-button',function(){
         $rc = $('#absence-employee').val();
         $absence_from = $('#absence_from').val();
@@ -581,7 +607,7 @@ $(document).ready(function() {
         $dateFrom = new Date($absence_from);
         $dateTo = new Date($absence_to);
 
-        if( ($absence_from == "") || ($absence_to == "") ) {
+        if( ($absence_from == "") ) {
             $('#error-absence-msg').text('Prosím vyplnte oba formuláre dátum absencie.');
             $('.error-absence-div').show();
             return false;

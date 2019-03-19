@@ -78,6 +78,7 @@ Route::post('administration/update-employee/updateEmployeeData', 'Administration
 Route::post('administration/absence/employee/employeeAbsence', 'AdministrationController@employeeAbsence');
 Route::post('administration/absence/employee/deleteEmployeeAbsence', 'AbsenceController@deleteEmployeeAbsence');
 Route::post('administration/absence/employee/addAbsence', 'AbsenceController@addAbsence');
+Route::post('administration/absence/employee/updateAbsence', 'AbsenceController@updateAbsence');
 
 //administration CUSTOMER
 Route::get('administration/add-customer', 'CustomerController@addCustomer');

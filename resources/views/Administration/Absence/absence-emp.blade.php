@@ -8,19 +8,24 @@
         </tr>
         </thead>
         <tbody>
+        {{ Form::open() }}
         @foreach($emp_absence as $emp_absence)
             <tr>
                 <td class="text-center service-row ">{{ $emp_absence->absence_from }}</td>
-                <td class="text-center service-row "> {{ $emp_absence->absence_to }}</td>
-                <td class="text-center service-row "><button type="button" class="btn btn-default absence-delete-button" value="{{$emp_absence->absence_id}}"><i class="fa fa-trash"></i> Odstrániť </button></td>
+                @if(is_null($emp_absence->absence_to))
+                    <td class="text-center service-row">
+                        {{ Form::date('update_date', null, ['class' => 'form-control update_absence_to', 'id' => $emp_absence->absence_id, 'min' => $emp_absence->absence_from]) }}
+                    </td>
+                @else
+                    <td class="text-center service-row "> {{ $emp_absence->absence_to }}</td>
+                @endif
+                <td class="text-center service-row "><button type="button" class="btn btn-default absence-delete-button" value="{{ $emp_absence->absence_id }}"><i class="fa fa-trash"></i> Odstrániť </button></td>
             </tr>
         @endforeach
         </tbody>
     </table>
 </div>
 <div class="add-absence">
-    {{ Form::open() }}
-
     <div class="date-box">
         {!! Form::label('absence_from', 'Začiatok absencie:') !!}
         {!! Form::date('absence_from',null, ['class' => 'form-control hours-box', 'required']) !!}

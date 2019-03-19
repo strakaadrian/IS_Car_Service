@@ -409,6 +409,11 @@ tbody tr:hover {
     text-align: center;
 }
 
+.shopping-cart-delete-button:hover {
+    background-color: #ff6666;
+    color: #2f2f2f;
+}
+
 .shopping-cart-error {
     margin-bottom: 10px;
 }
@@ -416,6 +421,11 @@ tbody tr:hover {
 .cart-for-payment {
     font-size: 25px;
 }
+
+.shopping-cart-quantity {
+    text-align: center;
+}
+
 
 /*
 ---------------------------------------
@@ -641,9 +651,14 @@ tbody tr:hover {
     margin-bottom: 5%;
 }
 
+.absence-delete-button:hover {
+    background-color: #ff6666;
+    color: #2f2f2f;
+}
 
-
-
+.update_absence_to {
+    text-align: center;
+}
 
 
 /* ADMIN BODY END */

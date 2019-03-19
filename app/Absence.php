@@ -34,4 +34,14 @@ class Absence extends Model
         return DB::select("call add_absence(?, ?, ?) ",[$identification_no, $absence_from, $absence_to]);
     }
 
+    /**
+     * Funkcia, ktora aktualizuje NULL datum v absence_to zamestnanca
+     *
+     * @param $absence_id
+     * @param $absence_date
+     * @return array
+     */
+    public function updateEmpAbsence($absence_id, $absence_date) {
+        return DB::select("call update_absence(?, ?) ",[$absence_id, $absence_date]);
+    }
 }
