@@ -1,0 +1,189 @@
+CREATE TABLE Country (
+country_id CHAR(3) NOT NULL,
+country_name VARCHAR(100) NOT NULL,
+PRIMARY KEY (country_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Town (
+town_id CHAR(5) NOT NULL,
+country_id CHAR(3) NOT NULL,
+town_name VARCHAR(100) NOT NULL,
+PRIMARY KEY (town_id),
+FOREIGN KEY (country_id) REFERENCES Country(country_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Person (
+identification_no CHAR(11) NOT NULL,
+town_id CHAR(5) NOT NULL,
+first_name VARCHAR(15) NOT NULL,
+last_name VARCHAR(20) NOT NULL,
+street VARCHAR(30),
+orientation_no INTEGER,
+PRIMARY KEY (identification_no),
+FOREIGN KEY (town_id) REFERENCES Town(town_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Car_service (
+ICO CHAR(8) NOT NULL,
+town_id CHAR(5) NOT NULL,
+service_name VARCHAR(30) NOT NULL,
+
+street VARCHAR(20) NOT NULL,
+orientation_no INTEGER,
+phone_number VARCHAR(15) NOT NULL,
+contact VARCHAR(40),
+PRIMARY KEY (ICO),
+FOREIGN KEY (town_id) REFERENCES Town(town_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+-- idem pouzit tabulku Users
+/*
+CREATE TABLE Login (
+email VARCHAR(50) NOT NULL,
+nick_name VARCHAR(20) NOT NULL UNIQUE,
+password VARCHAR(200),
+PRIMARY KEY (email)
+);
+*/
+
+CREATE TABLE Users (
+id INTEGER(10) NOT NULL AUTO_INCREMENT,
+name VARCHAR(30) NOT NULL,
+email VARCHAR(100) NOT NULL UNIQUE,
+email_verified_at TIMESTAMP,
+password VARCHAR(255) NOT NULL,
+remember_token VARCHAR(100),
+created_at TIMESTAMP,
+updated_at TIMESTAMP,
+PRIMARY KEY (id))
+
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Role (
+role_id INTEGER(10) NOT NULL AUTO_INCREMENT,
+role_name VARCHAR(255) NOT NULL,
+PRIMARY KEY (role_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE User_role (
+user_id INTEGER NOT NULL,
+role_id INTEGER NOT NULL,
+FOREIGN KEY (user_id) REFERENCES Users(id),
+FOREIGN KEY (role_id) REFERENCES Role(role_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Customer (
+identification_no CHAR(11) NOT NULL,
+user_id INTEGER(10),
+PRIMARY KEY (identification_no),
+FOREIGN KEY (identification_no) REFERENCES Person(identification_no),
+FOREIGN KEY (user_id) REFERENCES Users(id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Customer_order (
+order_id INTEGER NOT NULL AUTO_INCREMENT,
+identification_no CHAR(11) NOT NULL,
+status VARCHAR(15),
+
+order_date DATE,
+PRIMARY KEY (order_id),
+FOREIGN KEY (identification_no) REFERENCES Customer(identification_no))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Employee (
+hire_date DATE NOT NULL,
+ICO CHAR(8) NOT NULL,
+identification_no CHAR(11) NOT NULL,
+work_position VARCHAR(20) NOT NULL,
+working_hour_start INT NOT NULL,
+working_hour_end INT NOT NULL,
+price_per_hour FLOAT NOT NULL,
+termination_date DATE,
+PRIMARY KEY (hire_date,ICO,identification_no),
+FOREIGN KEY (ICO) REFERENCES Car_service(ICO),
+FOREIGN KEY (identification_no) REFERENCES Person(identification_no))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Absence (
+absence_id INTEGER NOT NULL AUTO_INCREMENT,
+hire_date DATE NOT NULL,
+ICO CHAR(8) NOT NULL,
+identification_no CHAR(11) NOT NULL,
+absence_from DATE NOT NULL,
+absence_to DATE NOT NULL,
+PRIMARY KEY (absence_id),
+FOREIGN KEY (hire_date,ICO,identification_no) REFERENCES
+Employee(hire_date,ICO,identification_no))
+
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Services (
+service_id INTEGER NOT NULL AUTO_INCREMENT,
+name VARCHAR(200) NOT NULL,
+type VARCHAR(50) NOT NULL,
+hour_duration INTEGER NOT NULL,
+price_per_hour float NOT NULL,
+PRIMARY KEY (service_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Reservation (
+reservation_id INTEGER NOT NULL AUTO_INCREMENT,
+order_id INTEGER NOT NULL,
+hire_date DATE NOT NULL,
+ICO CHAR(8) NOT NULL,
+identification_no CHAR(11) NOT NULL,
+service_id INTEGER NOT NULL,
+repair_date DATE NOT NULL,
+work_hours INTEGER NOT NULL,
+PRIMARY KEY (reservation_id),
+FOREIGN KEY (hire_date,ICO,identification_no) REFERENCES
+Employee(hire_date,ICO,identification_no),
+FOREIGN KEY (order_id) REFERENCES Customer_order(order_id),
+FOREIGN KEY (service_id) REFERENCES Services(service_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Car_brand (
+
+brand_id INTEGER NOT NULL AUTO_INCREMENT,
+brand_name VARCHAR(30) NOT NULL,
+PRIMARY KEY (brand_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Car_type (
+car_type_id INTEGER NOT NULL AUTO_INCREMENT,
+brand_id INTEGER NOT NULL,
+car_type_name VARCHAR(100) NOT NULL,
+PRIMARY KEY (car_type_id),
+FOREIGN KEY (brand_id) REFERENCES Car_brand(brand_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Car_parts (
+car_part_id INTEGER NOT NULL AUTO_INCREMENT,
+car_type_id INTEGER NOT NULL,
+part_name VARCHAR(100) NOT NULL,
+part_price FLOAT NOT NULL,
+stock INTEGER,
+image VARCHAR(255),
+PRIMARY KEY (car_part_id),
+FOREIGN KEY (car_type_id) REFERENCES Car_type(car_type_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Order_items (
+order_id INTEGER NOT NULL,
+car_part_id INTEGER NOT NULL,
+quantity INTEGER NOT NULL,
+
+PRIMARY KEY (order_id,car_part_id),
+FOREIGN KEY (order_id) REFERENCES Customer_order(order_id),
+FOREIGN KEY (car_part_id) REFERENCES Car_parts(car_part_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;
+
+CREATE TABLE Shopping_cart (
+user_id INTEGER NOT NULL,
+car_part_id INTEGER NOT NULL,
+quantity INTEGER NOT NULL,
+added_at TIMESTAMP,
+PRIMARY KEY (user_id,car_part_id),
+FOREIGN KEY (user_id) REFERENCES Users(id),
+FOREIGN KEY (car_part_id) REFERENCES Car_parts(car_part_id))
+CHARACTER SET utf16 COLLATE utf16_slovak_ci;

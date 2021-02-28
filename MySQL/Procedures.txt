@@ -1,0 +1,486 @@
+﻿/* procedura nam vlozi riadok do tabulky customer order */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_customer_order`(
+IN identification_no_ CHAR(11),
+IN status_ VARCHAR(15),
+OUT order_id_ INT)
+BEGIN
+
+INSERT INTO `customer_order` (identification_no, status, order_date) values (identification_no_, status_, sysdate());
+
+SELECT LAST_INSERT_ID() into order_id_;
+
+END
+
+/*procedura ktora pride rezervaciu */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_reservation`(
+IN user_id_ INTEGER,
+IN ico_ CHAR(8),
+IN service_id_ INTEGER,
+IN date_ CHAR(10),
+IN hour_ INTEGER
+)
+BEGIN
+DECLARE order_id_ INTEGER; 
+DECLARE cust_identificaton_no_ CHAR(11); 
+DECLARE emp_identificaton_no_ CHAR(11); 
+DECLARE hire_date_ DATE; 
+DECLARE hour_duration_ INTEGER;
+
+SELECT 
+    identification_no
+INTO cust_identificaton_no_ FROM
+    customer
+WHERE
+    user_id = user_id_;
+
+SELECT 
+    hour_duration
+INTO hour_duration_ FROM
+    Services
+WHERE
+    service_id = service_id_;
+
+CALL create_customer_order(cust_identificaton_no_,'prijata', order_id_);
+
+SELECT 
+    hire_date, ico, identification_no 
+INTO hire_date_, ico_, emp_identificaton_no_  FROM
+    employee
+WHERE
+    ico = ico_
+        AND (termination_date IS NULL
+        OR termination_date >= (SELECT SYSDATE()))
+        AND work_position IN (SELECT 
+            type
+        FROM
+            services
+        WHERE
+            service_id = service_id_);
+		
+INSERT INTO reservation (order_id, hire_date, ICO, identification_no, service_id, repair_date, work_hours) values (order_id_, hire_date_, ico_, emp_identificaton_no_, service_id_, ADDTIME(CONVERT(str_to_date(date_, '%Y-%m-%d'), DATETIME), SEC_TO_TIME(hour_*3600)) , hour_duration_);
+END
+
+/* procedura, ktora nam vytvori zakaznika  */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_customer`(
+IN psc_ CHAR(5), 
+IN country_id_ CHAR(3),
+IN town_name_ VARCHAR(100),
+IN identification_no_ CHAR(11),
+IN first_name_ VARCHAR(15),
+IN last_name_ VARCHAR(20),
+IN street_ VARCHAR(30),
+IN orientation_no_ INTEGER,
+IN user_id_ INTEGER)
+BEGIN
+DECLARE person_ident_no_ CHAR(11);
+DECLARE cust_ident_no_ CHAR(11);
+
+SELECT 
+    identification_no
+INTO person_ident_no_ FROM
+    person
+WHERE
+    identification_no = identification_no_;
+    
+SELECT 
+    identification_no
+INTO cust_ident_no_ FROM
+    customer
+WHERE
+    identification_no = identification_no_;
+       
+IF (person_ident_no_ IS NULL) THEN
+	IF NOT EXISTS(SELECT * FROM town WHERE town_id = psc_) THEN
+		INSERT INTO town (town_id, country_id, town_name) VALUES (psc_, country_id_, town_name_);
+	END IF;
+
+	INSERT INTO person (identification_no, town_id, first_name, last_name, street, orientation_no) VALUES (identification_no_, psc_, first_name_, last_name_, street_, orientation_no_);
+
+	IF (user_id_ IS NULL) THEN 
+		INSERT INTO customer (identification_no) VALUES (identification_no_);
+    ELSE 
+		INSERT INTO customer (identification_no, user_id) VALUES (identification_no_, user_id_);
+    END IF;
+ELSEIF (cust_ident_no_ IS NULL) THEN 
+	IF (user_id_ IS NULL) THEN 
+		INSERT INTO customer (identification_no) VALUES (identification_no_);
+    ELSE 
+		INSERT INTO customer (identification_no, user_id) VALUES (identification_no_, user_id_);
+    END IF;
+END IF;
+
+END
+
+/*Procedura, ktora nam aktualizuje profil uzivatela */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_customer`(
+IN country_id_ CHAR(3),
+IN psc_ CHAR(5),
+IN town_name_ VARCHAR(100),
+IN first_name_ VARCHAR(15),
+IN last_name_ VARCHAR(20),
+IN street_ VARCHAR(30),
+IN orientation_no_ INTEGER,
+IN user_id_ INTEGER
+)
+BEGIN
+DECLARE identification_no_ CHAR(11);
+
+SELECT 
+    identification_no
+INTO identification_no_ FROM
+    customer
+WHERE
+    user_id = user_id_; 
+
+IF NOT EXISTS(SELECT * FROM town WHERE town_id = psc_) THEN
+	INSERT INTO town VALUES (psc_,country_id_,town_name_);
+END IF;
+
+UPDATE person
+SET town_id = psc_, first_name = first_name_, last_name = last_name_, street = street_, orientation_no = orientation_no_
+WHERE identification_no = identification_no_;
+
+END
+
+
+
+
+
+
+
+
+/* procedura ktora nam updatne zaznam shopping_cart*/
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_shopping_cart`(
+IN user_id_ INTEGER,
+IN car_part_id_ INTEGER,
+IN quantity_ INTEGER
+)
+BEGIN
+
+UPDATE shopping_cart 
+SET quantity = quantity_
+WHERE user_id = user_id_
+AND car_part_id = car_part_id_;
+
+END
+
+
+/* Procedura, ktora maze veci z shopping_cart */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_from_shopping_cart`(
+IN user_id_ INTEGER,
+IN car_part_id_ INTEGER
+)
+BEGIN
+	DELETE FROM shopping_cart where user_id = user_id_ and car_part_id = car_part_id_;
+END
+
+/*Procedura, ktora prida súčiastky do košíka */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_to_shopping_cart`(
+IN user_id_ INTEGER,
+IN car_part_id_ INTEGER,
+IN quantity_ INTEGER
+)
+BEGIN
+DECLARE stock_ INTEGER;
+DECLARE quantity_in_cart_ INTEGER;
+
+SELECT 
+    stock
+INTO stock_ FROM
+    car_parts
+WHERE
+    car_part_id = car_part_id_;
+    
+SELECT 
+    quantity
+INTO quantity_in_cart_ FROM
+    shopping_cart
+WHERE
+    user_id = user_id_
+        AND car_part_id = car_part_id_; 
+
+IF EXISTS(SELECT * FROM shopping_cart where user_id = user_id_ and car_part_id = car_part_id_) THEN
+	IF ( (quantity_ + quantity_in_cart_) > stock_) THEN
+		UPDATE   shopping_cart 
+		SET 	 quantity = stock_
+		WHERE    user_id = user_id_
+        AND car_part_id = car_part_id_;
+	ELSE
+		UPDATE   shopping_cart 
+		SET 	 quantity = (quantity_in_cart_ + quantity_)
+		WHERE    user_id = user_id_
+        AND car_part_id = car_part_id_;
+	END IF;
+ELSE 
+	INSERT INTO shopping_cart (user_id, car_part_id, quantity) VALUES (user_id_, car_part_id_, quantity_);
+END IF;
+
+END
+
+/*Procedúra, ktorá zoberie veci, čo sú v košíku, vytvorí objednávku a veci pridá do order_items */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `confirm_shopping_cart`(
+IN user_id_ INTEGER,
+IN cust_order_id_ INTEGER)
+BEGIN
+DECLARE identification_no_ CHAR(11);
+DECLARE order_id_ INTEGER;
+DECLARE car_part_id_ INTEGER;
+DECLARE quantity_ INTEGER;
+DECLARE v_last_row_fetched BOOLEAN;   
+DECLARE shopping_cart_cursor CURSOR FOR 
+SELECT 
+    car_part_id, quantity
+FROM
+    shopping_cart
+WHERE
+    user_id = user_id_;
+    
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET  v_last_row_fetched = 1;  
+   
+IF (cust_order_id_ IS NULL) THEN
+	SELECT 
+		identification_no
+	INTO identification_no_ FROM
+		customer
+	WHERE
+		user_id = user_id_;
+		
+	CALL create_customer_order(identification_no_,'zrealizovana',order_id_);
+END IF;
+
+OPEN shopping_cart_cursor;
+shopping_cart: LOOP
+	FETCH shopping_cart_cursor INTO car_part_id_,quantity_;
+    IF  (v_last_row_fetched = 1) THEN
+            LEAVE shopping_cart;
+	END IF;
+
+	IF (cust_order_id_ IS NOT NULL) THEN
+		INSERT INTO order_items VALUES (cust_order_id_,car_part_id_,quantity_);
+    ELSE 	
+		INSERT INTO order_items VALUES (order_id_,car_part_id_,quantity_);
+    END IF;
+	
+    DELETE FROM shopping_cart where user_id = user_id_ AND car_part_id = car_part_id_;
+
+END LOOP shopping_cart;
+
+CLOSE shopping_cart_cursor;
+SET  v_last_row_fetched = 0;
+    
+END
+
+
+/*Procedúra, ktorá nám odstráni rezerváciu podľa id reservation_id */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_from_reservation`(
+IN reservation_id_ INTEGER
+)
+BEGIN
+DELETE FROM reservation where reservation_id = reservation_id_;
+END
+
+/* Procedura, ktora prida zamestnanca */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_employee`(
+IN country_id_ CHAR(3),
+IN town_id_ CHAR(5),
+IN town_name_ VARCHAR(100),
+IN identification_no_ CHAR(11),
+IN first_name_ VARCHAR(15),
+IN last_name_ VARCHAR(20),
+IN street_ VARCHAR(30),
+IN orientation_no_ INTEGER,
+IN hire_date_ CHAR(10),
+IN ico_ CHAR(8),
+IN work_position_ VARCHAR(20),
+IN hour_start_ INTEGER,
+IN hour_end_ INTEGER,
+IN price_per_hour_ FLOAT,
+IN termination_date_ CHAR(10)
+)
+BEGIN
+
+IF EXISTS(select * from person where identification_no = identification_no_) THEN
+	
+	IF NOT EXISTS (select * from town where town_id = town_id_) THEN
+		INSERT INTO Town VALUES (town_id_,country_id_,town_name_);
+    END IF;
+    
+    UPDATE Person
+    SET town_id = town_id_,
+        first_name = first_name_,
+        last_name = last_name_,
+        street = street_,
+        orientation_no = orientation_no_
+	WHERE identification_no = identification_no_;
+    
+    INSERT INTO Employee values (hire_date_,ico_,identification_no_,work_position_,hour_start_,hour_end_,price_per_hour_,termination_date_);
+ELSE 
+	IF NOT EXISTS (select * from town where town_id = town_id_) THEN
+		INSERT INTO Town VALUES (town_id_,country_id_,town_name_);
+    END IF;
+    
+    INSERT INTO Person values (identification_no_,town_id_,first_name_,last_name_,street_,orientation_no_);
+	INSERT INTO Employee values (hire_date_,ico_,identification_no_,work_position_,hour_start_,hour_end_,price_per_hour_,termination_date_);
+END IF;
+
+END
+/* Procedura, ktora aktualizuje termination_date pri zamestnancovi */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `terminate_employee`(
+IN identification_no_ CHAR(11),
+IN term_date_ CHAR(10)
+)
+BEGIN
+	UPDATE employee
+    SET termination_date = term_date_
+    WHERE identification_no = identification_no_;
+END
+
+/* Procedura zmaze absenciu */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_from_absence`(
+IN absence_id_ INTEGER
+)
+BEGIN
+DELETE FROM absence WHERE absence_id = absence_id_;
+END
+
+/* Procedure prida novu absenciu zamestnancovi */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_absence`(
+IN identification_no_ CHAR(11),
+IN absence_from_ CHAR(10),
+IN absence_to_ CHAR(10)
+)
+BEGIN
+DECLARE hire_date_ DATE;
+DECLARE ico_ CHAR(8);
+
+SELECT hire_date, ico INTO hire_date_,ico_ FROM employee where identification_no = identification_no_ AND (termination_date is null or termination_date >= (select sysdate()));
+
+INSERT INTO absence (hire_date, ico, identification_no, absence_from, absence_to) VALUES (hire_date_,ico_,identification_no_,absence_from_,absence_to_);
+
+END
+
+/*Procedura nastavy objednavku na zrealizovanu */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `realize_reservation`(
+IN reservation_id_ INTEGER,
+IN work_hours_ INTEGER
+)
+BEGIN
+DECLARE order_id_ INTEGER;
+
+SELECT 
+    order_id
+INTO order_id_ FROM
+    reservation
+WHERE
+    reservation_id = reservation_id_;
+    
+UPDATE reservation
+SET work_hours = work_hours_
+WHERE reservation_id = reservation_id_;
+
+UPDATE customer_order
+SET status = 'zrealizovana'
+WHERE  order_id = order_id_;
+
+END
+
+/* Procedure aktualizuje mnozstvo na sklade */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_car_parts`(
+IN car_part_id_ INTEGER,
+IN stock_ INTEGER 
+)
+BEGIN
+
+UPDATE car_parts
+SET stock = stock_ 
+WHERE car_part_id = car_part_id_;
+
+END
+
+/*Procedura vytvorí novú car brand */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_car_brand`(
+IN brand_name_ VARCHAR(30)
+)
+BEGIN
+INSERT INTO car_brand (brand_name) VALUES (brand_name_);
+END
+
+
+
+/*Procedura vytvorí novú car type*/
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_car_type`(
+IN brand_id_ INTEGER,
+IN car_type_name_ VARCHAR(100)
+)
+BEGIN
+INSERT INTO car_type (brand_id, car_type_name) VALUES (brand_id_,car_type_name_);
+END
+
+/*Procedura vytvorí novú car part*/
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_car_part`(
+IN car_type_id_ INTEGER,
+IN part_name_ VARCHAR(100),
+IN part_price_ FLOAT,
+IN stock_ INTEGER,
+IN image_ VARCHAR(255)
+)
+BEGIN
+INSERT INTO car_parts (car_type_id, part_name, part_price, stock, image) VALUES (car_type_id_, part_name_, part_price_, stock_, image_);
+END
+
+/*Procedure aktualizuje tabulku services */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `update_services`(
+IN service_id_ INTEGER,
+IN hour_duration_ INTEGER,
+IN price_per_hour_ INTEGER
+)
+BEGIN
+
+UPDATE services
+SET hour_duration = hour_duration_,
+	price_per_hour = price_per_hour_
+WHERE service_id = service_id_;
+
+END
+
+
+
+
+
+
+
+
+
+
+
+/* Prida novy service do tabulky */
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_service`(
+IN town_name_  VARCHAR(200) CHARACTER SET utf8,
+IN type_ VARCHAR(50),
+IN hour_duration_ INTEGER,
+IN price_per_hour_ INTEGER
+)
+BEGIN
+INSERT INTO services (name, type,hour_duration, price_per_hour) VALUES (town_name_,type_,hour_duration_,price_per_hour_);
+END
+
+

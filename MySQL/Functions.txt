@@ -1,0 +1,256 @@
+﻿/*Funkcia, ktora skontroluje datum ci je v poriadku */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `getDayName`(day VARCHAR(20)) RETURNS varchar(10) CHARSET latin1
+BEGIN
+DECLARE dayName VARCHAR(10);
+
+SELECT DAYNAME(str_to_date(day, '%Y-%m-%d')) into dayName;
+
+IF day <= (select sysdate()) THEN
+	RETURN 'wrong day';
+ELSEIF dayName in ('Sunday','Saturday') THEN
+	RETURN 'weekend';	
+END IF;
+RETURN NULL;
+END
+
+/*Funkcia, ktora skontroluje ci sa technik na danu sluzbu nachadza vo firme v dany datum*/
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `get_employee`(ico_ char(8) ,service_id_ INTEGER) RETURNS tinyint(1)
+BEGIN
+
+if exists (select * from employee where ico = ico_ AND (termination_date is null or termination_date >= (select sysdate())) AND  work_position in (select type from services where service_id = service_id_)) then
+	return true;
+else 
+	return false;
+end if;
+
+END
+
+
+
+
+
+
+/* funkcia nam vrati absenciu zamestnance v dany datum */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `get_absence`($ico_ CHAR(11), $service_id_ INT,$date_ CHAR(10)) RETURNS tinyint(1)
+BEGIN
+
+DECLARE absence_id_ INT;
+
+SELECT 
+    a.absence_id
+INTO absence_id_ FROM
+    absence a
+        JOIN
+    employee e USING (hire_date , ico , identification_no)
+WHERE
+    e.ico = $ico_ 
+        AND (e.termination_date IS NULL
+        OR e.termination_date >= (SELECT SYSDATE()))
+        AND e.work_position IN (SELECT 
+            type
+        FROM
+            services
+        WHERE
+            service_id = $service_id_)
+        AND (STR_TO_DATE($date_, '%Y-%m-%d') BETWEEN a.absence_from AND a.absence_to);
+
+IF (absence_id_ IS NOT NULL) THEN
+	RETURN TRUE;
+ELSE 
+	RETURN FALSE;
+END IF;     
+
+END
+
+
+
+
+
+
+
+/* funkcia ktora zisti ci v danom case zamestnanec pracuje */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `get_employee_work_time`(ico_ char(8) ,service_id_ INTEGER, order_hour_ INTEGER) RETURNS tinyint(1)
+BEGIN
+declare identification_no_ CHAR(11);
+declare type_ VARCHAR(20);
+declare hour_duration_ INTEGER;
+
+SELECT 
+    type, hour_duration
+INTO type_ , hour_duration_ FROM
+    services
+WHERE
+    service_id = service_id_;
+
+SELECT 
+    identification_no
+INTO identification_no_ FROM
+    employee
+WHERE
+    ico = ico_
+        AND (termination_date IS NULL
+        OR termination_date >= (SELECT SYSDATE()))
+        AND work_position = type_
+        AND order_hour_ >= working_hour_start
+        AND ((order_hour_ + hour_duration_) <= working_hour_end);
+        
+IF (identification_no_ IS NOT NULL) THEN
+	RETURN TRUE;
+ELSE 
+	RETURN FALSE;
+END IF;
+END
+
+
+
+
+
+/*Funkcia ktora skontroluje ci na dany den, firmu a hodinu uz nieje dana rezervacia */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `get_reservations`(ico_ CHAR(8), reservation_date_ CHAR(10), hour_ INTEGER) RETURNS tinyint(1)
+BEGIN
+
+DECLARE repair_time_ TIME;
+DECLARE hour_duration_ INTEGER;
+DECLARE v_last_row_fetched BOOLEAN;
+DECLARE reservation_cursor CURSOR FOR 
+ SELECT 
+    TIME(r.repair_date), s.hour_duration
+FROM
+    reservation r
+        JOIN
+    services s USING (service_id)
+WHERE
+    r.ico = ico_
+        AND DATE(r.repair_date) = STR_TO_DATE(reservation_date_, '%Y-%m-%d');
+        
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET  v_last_row_fetched = 1;
+        
+OPEN reservation_cursor;
+
+get_reservation: LOOP
+	FETCH reservation_cursor INTO repair_time_,hour_duration_;
+    IF  (v_last_row_fetched = 1) THEN
+            LEAVE get_reservation;
+	END IF;
+    
+	IF( (TIME_TO_SEC(TIME(repair_time_)) <= (hour_*3600)   &&  (hour_*3600) < (TIME_TO_SEC(TIME(repair_time_)) + (hour_duration_*3600) ))) THEN
+		RETURN TRUE;
+	END IF;
+END LOOP get_reservation;
+
+CLOSE reservation_cursor;
+SET  v_last_row_fetched = 0;
+
+RETURN FALSE;
+END
+
+// Funkcia skontroluje uzivatelov vstup ci zadal spravne mesto psc a krajinu
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `check_town`(town_id_ CHAR(5), town_name_ VARCHAR(100), country_id_ CHAR(3)) RETURNS tinyint(1)
+BEGIN
+DECLARE var_town_name_ VARCHAR(100);
+DECLARE var_country_id_ CHAR(3);
+
+SELECT 
+    town_name, country_id
+INTO var_town_name_ , var_country_id_ FROM
+    town
+WHERE
+    town_id = town_id_;
+    
+ 
+IF EXISTS (SELECT * FROM town WHERE town_name = town_name_ AND country_id = country_id_ AND town_id != town_id_) THEN
+	RETURN 0;
+END IF;
+
+IF (var_town_name_ IS NOT NULL && var_country_id_ IS NOT NULL) THEN
+	IF (var_town_name_ != town_name_ || var_country_id_ != country_id_) THEN
+		RETURN 0;
+	END IF;
+END IF;
+
+RETURN 1;
+END
+
+
+/*Funkcia, ktorá skontroluje rezerváciu, či je aktuálna */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `check_reservation_date`(reservation_id_ INTEGER) RETURNS tinyint(1)
+BEGIN
+DECLARE repair_date_ DATE;
+
+SELECT 
+    repair_date
+INTO repair_date_ FROM
+    reservation
+WHERE
+    reservation_id = reservation_id_;
+
+IF(repair_date_ >= NOW() + INTERVAL 1 DAY) THEN
+	RETURN TRUE;
+ELSE 
+	RETURN FALSE;
+END IF;
+
+END
+
+/* Funkcia overí duplicitu pri vytváraní zákazníka */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `duplicate_customer`(identification_no_ CHAR(11)) RETURNS tinyint(1)
+BEGIN
+IF EXISTS(select * from customer where identification_no = identification_no_) THEN 
+	RETURN TRUE;
+ELSE 
+	RETURN FALSE;
+END IF;
+
+END
+
+
+
+
+
+
+
+
+
+
+/* Funkcia, ktora zisti ci dana car brand uz nieje v systeme */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `check_car_brand`(brand_name_ VARCHAR(30)) RETURNS tinyint(1)
+BEGIN
+IF EXISTS (SELECT * FROM car_brand WHERE brand_name = brand_name_) THEN
+	RETURN TRUE;
+ELSE 
+	RETURN FALSE;
+END IF;
+END
+
+/*Funkcia zisti ci dany typ auta sa uz v systeme nenachadza */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `check_car_type`(brand_id_ INTEGER, car_type_name_ VARCHAR(100)) RETURNS tinyint(1)
+BEGIN
+
+IF EXISTS(SELECT * FROM car_type WHERE brand_id = brand_id_ AND car_type_name = car_type_name_) THEN
+	RETURN TRUE;
+ELSE 
+	RETURN FALSE;
+END IF;
+END
+
+/*Funkcia zisti ci dana autosciastka uz v systeme nenachadza */
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `check_car_part`(car_type_id_ INTEGER, part_name_ VARCHAR(100)) RETURNS tinyint(1)
+BEGIN
+IF EXISTS(SELECT * FROM car_parts WHERE car_type_id = car_type_id_ AND part_name = part_name_) THEN 
+	RETURN TRUE;
+ELSE 
+	RETURN FALSE;
+END IF;
+END
+
